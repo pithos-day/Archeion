@@ -1,0 +1,11 @@
+---
+import Default from '@astrojs/starlight/components/MarkdownContent.astro';
+import Infobox from '../Infobox.astro';
+
+const { title, infobox } = Astro.locals.starlightRoute.entry.data;
+---
+
+<Default>
+  {infobox && <Infobox title={title} infobox={infobox} />}
+  <slot />
+</Default>

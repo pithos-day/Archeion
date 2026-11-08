@@ -17,6 +17,7 @@ export default defineConfig({
       pagination: false,
       components: {
         Footer: './src/components/overrides/Footer.astro',
+        MarkdownContent: './src/components/overrides/MarkdownContent.astro',
       },
       sidebar: [
         {
