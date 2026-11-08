@@ -1,14 +1,18 @@
 ---
 import Default from '@astrojs/starlight/components/PageTitle.astro';
+import VersionTabs from '../VersionTabs.astro';
 
 const { entry, siteTitle } = Astro.locals.starlightRoute;
 // 「出典」は記事ページだけに出す。メインページと、本文 (body) を持たない
 // src/pages の特別ページ (StarlightPage で作る仮想エントリー) には出さない。
 const isArticle = Astro.url.pathname !== '/' && Boolean(entry.body);
+// 著者別の版があれば、総合版と版のどちらでもタブを出す
+const rootId = entry.data.versionOf ?? entry.id;
 ---
 
 <Default />
 {isArticle && <p class="tagline">出典: {siteTitle}</p>}
+{isArticle && <VersionTabs rootId={rootId} currentId={entry.id} />}
 
 <style>
   .tagline {

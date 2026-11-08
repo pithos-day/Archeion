@@ -1,0 +1,71 @@
+---
+import { articleHref, getVersions } from '../lib/articles';
+
+interface Props {
+  /** 総合版の id。 */
+  rootId: string;
+  /** 今表示しているページの id。 */
+  currentId: string;
+}
+
+const { rootId, currentId } = Astro.props;
+const versions = await getVersions(rootId);
+const tabs = [
+  { id: rootId, label: '総合版', href: `/${rootId}/` },
+  ...versions.map((version) => ({
+    id: version.id,
+    label: version.data.versionLabel ?? version.data.title,
+    href: articleHref(version),
+  })),
+];
+---
+
+{
+  versions.length > 0 && (
+    <nav class="version-tabs" aria-label="版の切り替え">
+      <ul>
+        {tabs.map((tab) => (
+          <li>
+            <a href={tab.href} aria-current={tab.id === currentId ? 'page' : undefined}>
+              {tab.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .version-tabs ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--wiki-border);
+  }
+  .version-tabs li {
+    margin: 0;
+  }
+  .version-tabs a {
+    display: block;
+    margin-bottom: -1px;
+    padding: 0.3em 0.9em;
+    border: 1px solid transparent;
+    font-size: var(--sl-text-sm);
+    color: var(--wiki-link);
+    text-decoration: none;
+  }
+  .version-tabs a:hover {
+    text-decoration: underline;
+  }
+  .version-tabs a[aria-current='page'] {
+    border-color: var(--wiki-border);
+    border-bottom-color: var(--sl-color-bg);
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    font-weight: 700;
+  }
+</style>

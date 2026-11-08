@@ -10,6 +10,12 @@ export const collections = {
       extend: z.object({
         /** 記事が属するカテゴリ。ページ末尾に表示し、カテゴリページで一覧化する。 */
         categories: z.array(z.string()).default([]),
+        /** 著者別の版のとき、総合版の id (例: `articles/heracles`)。 */
+        versionOf: z.string().optional(),
+        /** 版のタブに出す名前 (例: `ヘシオドス版`)。 */
+        versionLabel: z.string().optional(),
+        /** 版のタブの並び順。小さいほど左。 */
+        versionOrder: z.number().default(0),
         /** 本文右上に表示する情報ボックス。 */
         infobox: z
           .object({

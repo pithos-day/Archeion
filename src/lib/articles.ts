@@ -14,10 +14,21 @@ export function categoryHref(category: string): string {
   return `/categories/${encodeURIComponent(category)}/`;
 }
 
-/** メインページを除いた全記事を、タイトル順で返す。 */
+/** メインページを除いた全ページ (著者別の版を含む) を返す。 */
+function getAllPages(): Promise<Article[]> {
+  return getCollection('docs', (entry) => entry.id !== 'index' && !entry.data.draft);
+}
+
+/** 著者別の版を除いた記事 (総合版) を、タイトル順で返す。 */
 export async function getArticles(): Promise<Article[]> {
-  const entries = await getCollection('docs', (entry) => entry.id !== 'index' && !entry.data.draft);
+  const entries = (await getAllPages()).filter((entry) => !entry.data.versionOf);
   return entries.sort((a, b) => a.data.title.localeCompare(b.data.title, 'ja'));
+}
+
+/** 総合版の id から、その記事の著者別の版をタブの並び順で返す。 */
+export async function getVersions(rootId: string): Promise<Article[]> {
+  const entries = (await getAllPages()).filter((entry) => entry.data.versionOf === rootId);
+  return entries.sort((a, b) => a.data.versionOrder - b.data.versionOrder);
 }
 
 /** カテゴリ名 → 所属記事 の Map を、カテゴリ名順で返す。 */
@@ -76,10 +87,12 @@ let backlinkMap: Promise<Map<string, Article[]>> | undefined;
 export function getBacklinkMap(): Promise<Map<string, Article[]>> {
   backlinkMap ??= (async () => {
     const map = new Map<string, Article[]>();
-    for (const article of await getArticles()) {
-      const self = articleHref(article);
+    // 著者別の版からのリンクも数える
+    for (const article of await getAllPages()) {
+      // 同じ記事の総合版と版のあいだのリンクは数えない
+      const family = `/${article.data.versionOf ?? article.id}/`;
       for (const href of new Set(extractInternalHrefs(article.body ?? ''))) {
-        if (href === self) continue;
+        if (href.startsWith(family)) continue;
         map.set(href, [...(map.get(href) ?? []), article]);
       }
     }
