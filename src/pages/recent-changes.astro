@@ -1,0 +1,36 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { articleHref, getRecentArticles } from '../lib/articles';
+
+const MAX_ITEMS = 50;
+
+const dateFormat = new Intl.DateTimeFormat('ja-JP', { dateStyle: 'long', timeZone: 'Asia/Tokyo' });
+const timeFormat = new Intl.DateTimeFormat('ja-JP', { timeStyle: 'short', timeZone: 'Asia/Tokyo' });
+
+/** 日付ごとにまとめる (Wikipedia の「最近の更新」と同じ見せ方)。 */
+const groups = new Map<string, Awaited<ReturnType<typeof getRecentArticles>>>();
+for (const item of (await getRecentArticles()).slice(0, MAX_ITEMS)) {
+  const date = dateFormat.format(item.updatedAt);
+  groups.set(date, [...(groups.get(date) ?? []), item]);
+}
+---
+
+<StarlightPage
+  frontmatter={{ title: '最近の更新', tableOfContents: false, pagefind: false }}
+>
+  <p>最近更新された記事です（最大 {MAX_ITEMS} 件）。</p>
+  {
+    [...groups].map(([date, items]) => (
+      <>
+        <h2>{date}</h2>
+        <ul>
+          {items.map(({ article, updatedAt }) => (
+            <li>
+              {timeFormat.format(updatedAt)}　<a href={articleHref(article)}>{article.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </>
+    ))
+  }
+</StarlightPage>

@@ -1,0 +1,35 @@
+---
+import { getBacklinkMap, normalizePath } from '../lib/articles';
+import ArticleList from './ArticleList.astro';
+
+const backlinks = (await getBacklinkMap()).get(normalizePath(Astro.url.pathname)) ?? [];
+---
+
+{
+  backlinks.length > 0 && (
+    <section class="backlinks">
+      <h2>このページにリンクしているページ</h2>
+      <ArticleList articles={backlinks} />
+    </section>
+  )
+}
+
+<style>
+  .backlinks {
+    margin-top: 2rem;
+    font-size: var(--sl-text-sm);
+  }
+  h2 {
+    font-size: var(--sl-text-base);
+    font-weight: 700;
+    color: var(--sl-color-text);
+  }
+  .backlinks :global(ul) {
+    margin-top: 0.25rem;
+    padding-inline-start: 1.5em;
+  }
+  .backlinks :global(a) {
+    color: var(--wiki-link);
+    text-decoration: none;
+  }
+</style>

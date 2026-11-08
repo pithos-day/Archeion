@@ -1,9 +1,11 @@
 ---
 import Default from '@astrojs/starlight/components/Footer.astro';
+import Backlinks from '../Backlinks.astro';
 import CategoryBox from '../CategoryBox.astro';
 
 const { categories = [] } = Astro.locals.starlightRoute.entry.data;
 ---
 
+<Backlinks />
 <CategoryBox categories={categories} />
 <Default><slot /></Default>

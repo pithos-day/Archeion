@@ -1,0 +1,21 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import ArticleList from '../components/ArticleList.astro';
+import { articleHref, getArticles } from '../lib/articles';
+
+const articles = await getArticles();
+const hrefs = articles.map(articleHref);
+---
+
+<StarlightPage frontmatter={{ title: 'おまかせ表示', tableOfContents: false, pagefind: false }}>
+  <p>ランダムに選んだ記事へ移動しています……</p>
+  <noscript>
+    <p>JavaScript が無効なため移動できません。記事一覧から選んでください。</p>
+    <ArticleList articles={articles} />
+  </noscript>
+  <script is:inline define:vars={{ hrefs }}>
+    if (hrefs.length > 0) {
+      location.replace(hrefs[Math.floor(Math.random() * hrefs.length)]);
+    }
+  </script>
+</StarlightPage>
