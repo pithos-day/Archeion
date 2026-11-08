@@ -210,6 +210,16 @@ export const works = {
     title: '祭暦',
     urn: 'urn:cts:latinLit:phi0959.phi007.perseus-lat2',
   },
+  'ov-ibis': {
+    author: 'ovid',
+    title: 'イビス',
+    urn: 'urn:cts:latinLit:phi0959.phi010.perseus-lat2',
+  },
+  'plut-thes': {
+    author: 'plutarch',
+    title: 'テセウス伝',
+    urn: 'urn:cts:greekLit:tlg0007.tlg001.perseus-grc2',
+  },
 } as const satisfies Record<string, Work>;
 
 export type WorkId = keyof typeof works;
