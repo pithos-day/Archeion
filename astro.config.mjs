@@ -1,9 +1,23 @@
 // @ts-check
+import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
+  markdown: {
+    processor: satteri({
+      features: {
+        gfm: {
+          footnotes: {
+            label: '脚注',
+            backLabel: (referenceNumber, rerunIndex) =>
+              `本文の参照 ${referenceNumber}${rerunIndex > 1 ? `-${rerunIndex}` : ''} に戻る`,
+          },
+        },
+      },
+    }),
+  },
   integrations: [
     starlight({
       title: 'Archeion',

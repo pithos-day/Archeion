@@ -121,6 +121,57 @@ h1#_top {
   background: color-mix(in srgb, var(--wiki-border) 25%, var(--wiki-box-bg));
 }
 
+/* ---------- 脚注 ([n]) ---------- */
+
+/* 本文の参照を Wikipedia 風の [1] にする */
+.sl-markdown-content sup:has(> a[data-footnote-ref]) {
+  font-size: 0.75em;
+  line-height: 1;
+}
+
+.sl-markdown-content a[data-footnote-ref]::before {
+  content: '[';
+}
+
+.sl-markdown-content a[data-footnote-ref]::after {
+  content: ']';
+}
+
+/* 脚注の一覧は本文の「## 脚注」見出しの下に来るので、自動の見出しは隠したままにする */
+.sl-markdown-content .footnotes {
+  margin-top: 0.5rem;
+  font-size: var(--sl-text-sm);
+}
+
+.sl-markdown-content .footnotes .sl-heading-wrapper {
+  display: none;
+}
+
+.sl-markdown-content .footnotes ol {
+  padding-inline-start: 2em;
+}
+
+.sl-markdown-content .footnotes ol > * + * {
+  margin-top: 0.25rem;
+}
+
+.sl-markdown-content .footnotes li p {
+  margin: 0;
+}
+
+.sl-markdown-content .footnotes li:target {
+  background: var(--sl-color-accent-low);
+}
+
+.sl-markdown-content .footnotes [data-footnote-backref] {
+  margin-inline-start: 0.25em;
+}
+
+/* 原典の引用 (ギリシャ語・ラテン語) */
+.sl-markdown-content .footnotes :is([lang='grc'], [lang='la']) {
+  font-family: var(--wiki-font-serif);
+}
+
 /* ---------- メインページ ---------- */
 
 .main-page .welcome {
