@@ -97,10 +97,45 @@ export const works = {
     title: '縛られたプロメテウス',
     urn: 'urn:cts:greekLit:tlg0085.tlg003.perseus-grc2',
   },
+  'aesch-sept': {
+    author: 'aeschylus',
+    title: 'テーバイ攻めの七将',
+    urn: 'urn:cts:greekLit:tlg0085.tlg004.perseus-grc2',
+  },
   'soph-tr': {
     author: 'sophocles',
     title: 'トラキスの女たち',
     urn: 'urn:cts:greekLit:tlg0011.tlg001.perseus-grc2',
+  },
+  'soph-aj': {
+    author: 'sophocles',
+    title: 'アイアス',
+    urn: 'urn:cts:greekLit:tlg0011.tlg003.perseus-grc2',
+  },
+  'soph-ot': {
+    author: 'sophocles',
+    title: 'オイディプス王',
+    urn: 'urn:cts:greekLit:tlg0011.tlg004.perseus-grc2',
+  },
+  'soph-ph': {
+    author: 'sophocles',
+    title: 'ピロクテテス',
+    urn: 'urn:cts:greekLit:tlg0011.tlg006.perseus-grc2',
+  },
+  'eur-cyc': {
+    author: 'euripides',
+    title: 'キュクロプス',
+    urn: 'urn:cts:greekLit:tlg0006.tlg001.perseus-grc2',
+  },
+  'eur-hel': {
+    author: 'euripides',
+    title: 'ヘレネ',
+    urn: 'urn:cts:greekLit:tlg0006.tlg014.perseus-grc2',
+  },
+  'eur-phoen': {
+    author: 'euripides',
+    title: 'フェニキアの女たち',
+    urn: 'urn:cts:greekLit:tlg0006.tlg015.perseus-grc2',
   },
   'eur-alc': {
     author: 'euripides',
