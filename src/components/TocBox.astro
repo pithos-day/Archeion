@@ -1,0 +1,103 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+interface Section {
+  heading: MarkdownHeading;
+  number: string;
+  children: Section[];
+}
+
+/** h2 / h3 を「1」「1.1」のように番号付きの入れ子にする。 */
+function toSections(headings: MarkdownHeading[]): Section[] {
+  const sections: Section[] = [];
+  for (const heading of headings) {
+    const parent = sections.at(-1);
+    if (heading.depth === 2) {
+      sections.push({ heading, number: `${sections.length + 1}`, children: [] });
+    } else if (heading.depth === 3 && parent) {
+      parent.children.push({
+        heading,
+        number: `${parent.number}.${parent.children.length + 1}`,
+        children: [],
+      });
+    }
+  }
+  return sections;
+}
+
+const sections = toSections(Astro.props.headings);
+---
+
+{
+  sections.length >= 2 && (
+    <nav class="toc not-content" aria-labelledby="wiki-toc-title">
+      <details open>
+        <summary id="wiki-toc-title">目次</summary>
+        <ol>
+          {sections.map((section) => (
+            <li>
+              <a href={`#${section.heading.slug}`}>
+                <span class="number">{section.number}</span>
+                {section.heading.text}
+              </a>
+              {section.children.length > 0 && (
+                <ol>
+                  {section.children.map((child) => (
+                    <li>
+                      <a href={`#${child.heading.slug}`}>
+                        <span class="number">{child.number}</span>
+                        {child.heading.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          ))}
+        </ol>
+      </details>
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    display: inline-block;
+    min-width: 12rem;
+    max-width: 100%;
+    margin-block: 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--wiki-border);
+    background: var(--wiki-box-bg);
+    font-size: var(--sl-text-sm);
+  }
+  summary {
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+  }
+  ol {
+    list-style: none;
+    margin: 0.25rem 0 0;
+    padding: 0;
+  }
+  ol ol {
+    margin: 0;
+    padding-inline-start: 1.5em;
+  }
+  a {
+    color: var(--wiki-link);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  .number {
+    margin-inline-end: 0.5em;
+    color: var(--sl-color-text);
+  }
+</style>

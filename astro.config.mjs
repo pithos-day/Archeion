@@ -15,9 +15,12 @@ export default defineConfig({
       lastUpdated: true,
       customCss: ['./src/styles/wiki.css'],
       pagination: false,
+      // 右カラムの目次は使わず、本文内の目次ボックス (TocBox) で表示する
+      tableOfContents: false,
       components: {
         Footer: './src/components/overrides/Footer.astro',
         MarkdownContent: './src/components/overrides/MarkdownContent.astro',
+        PageTitle: './src/components/overrides/PageTitle.astro',
       },
       sidebar: [
         {

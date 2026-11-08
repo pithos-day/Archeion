@@ -1,0 +1,16 @@
+---
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+
+const { siteTitle } = Astro.locals.starlightRoute;
+---
+
+<Default />
+<p class="tagline">出典: {siteTitle}</p>
+
+<style>
+  .tagline {
+    margin-top: 0.25rem;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-3);
+  }
+</style>

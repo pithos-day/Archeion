@@ -15,3 +15,13 @@ infobox:
 ## 参考
 
 - [Diátaxis の「How-to guides」解説](https://diataxis.fr/how-to-guides/)
+
+## 手順
+
+### 準備
+
+作業に必要なものをそろえます。
+
+### 実行
+
+手順に沿って作業を進めます。

@@ -1,11 +1,15 @@
 ---
 import Default from '@astrojs/starlight/components/MarkdownContent.astro';
 import Infobox from '../Infobox.astro';
+import TocBox from '../TocBox.astro';
 
-const { title, infobox } = Astro.locals.starlightRoute.entry.data;
+const { entry, headings } = Astro.locals.starlightRoute;
+const { title, infobox, template, tableOfContents } = entry.data;
+const showToc = template !== 'splash' && tableOfContents !== false;
 ---
 
 <Default>
   {infobox && <Infobox title={title} infobox={infobox} />}
+  {showToc && <TocBox headings={headings} />}
   <slot />
 </Default>
