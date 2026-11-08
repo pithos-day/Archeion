@@ -167,11 +167,6 @@ h1#_top {
   margin-inline-start: 0.25em;
 }
 
-/* 原典の引用 (ギリシャ語・ラテン語) */
-.sl-markdown-content .footnotes :is([lang='grc'], [lang='la']) {
-  font-family: var(--wiki-font-serif);
-}
-
 /* ---------- メインページ ---------- */
 
 .main-page .welcome {

@@ -1,0 +1,132 @@
+---
+import { authors, citeLabel, scaifeUrl } from '../data/sources';
+import {
+  type ArticleClaims,
+  scoreTopic,
+  summarizeAuthors,
+  type VariantStatus,
+} from '../lib/claims';
+
+interface Props {
+  claims: ArticleClaims;
+}
+
+const topics = Astro.props.claims.map(scoreTopic);
+const authorSummaries = summarizeAuthors(topics);
+
+const STATUS_LABEL: Record<VariantStatus, string> = {
+  adopted: '採用',
+  alternative: '異説 (併記)',
+  minor: '—',
+};
+
+function formatScore(score: number): string {
+  return Number.isInteger(score) ? `${score}` : score.toFixed(1);
+}
+---
+
+<p class="claims-note">
+  総合版の記述は、<a href="/policy/">編集方針</a>の定量基準で選んでいる。スコアは
+  「年代係数 × 記述係数」を著者ごとに合計したもの（言及・暗示の出典には「言及」と付けた）。
+</p>
+
+<table class="claims-table">
+  <thead>
+    <tr>
+      <th scope="col">論点</th>
+      <th scope="col">説</th>
+      <th scope="col">出典</th>
+      <th scope="col">スコア</th>
+      <th scope="col">判定</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      topics.map((topic) =>
+        topic.variants.map((variant, index) => (
+          <tr class={variant.status}>
+            {index === 0 && (
+              <th scope="rowgroup" rowspan={topic.variants.length}>
+                {topic.label}
+              </th>
+            )}
+            <td>{variant.label}</td>
+            <td>
+              <ul>
+                {variant.sources.map((source) => (
+                  <li>
+                    <a href={scaifeUrl(source.work, source.loc)}>{citeLabel(source.work, source.loc)}</a>
+                    {source.kind === 'mention' && '（言及）'}
+                  </li>
+                ))}
+              </ul>
+            </td>
+            <td class="score">{formatScore(variant.score)}</td>
+            <td>{STATUS_LABEL[variant.status]}</td>
+          </tr>
+        )),
+      )
+    }
+  </tbody>
+</table>
+
+<table class="claims-table">
+  <caption>著者別の版の要否（4 論点以上に現れ、2 論点以上で採用説と異なる著者に版を作る）</caption>
+  <thead>
+    <tr>
+      <th scope="col">著者</th>
+      <th scope="col">現れる論点</th>
+      <th scope="col">採用説と異なる論点</th>
+      <th scope="col">版</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      authorSummaries.map((summary) => (
+        <tr class={summary.needsVersion ? 'adopted' : undefined}>
+          <th scope="row">{authors[summary.authorId].name}</th>
+          <td class="score">{summary.topics}</td>
+          <td class="score">{summary.differences}</td>
+          <td>{summary.needsVersion ? '作る' : '—'}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<style>
+  .claims-note {
+    font-size: var(--sl-text-sm);
+  }
+  .claims-table {
+    font-size: var(--sl-text-sm);
+  }
+  .claims-table caption {
+    caption-side: top;
+    padding-bottom: 0.25rem;
+    text-align: start;
+  }
+  .claims-table th[scope='rowgroup'] {
+    vertical-align: top;
+    text-align: start;
+  }
+  .claims-table ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .claims-table li {
+    margin: 0;
+  }
+  .score {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+  .adopted td:first-of-type,
+  .adopted th[scope='row'] {
+    font-weight: 700;
+  }
+  .minor {
+    color: var(--sl-color-gray-3);
+  }
+</style>

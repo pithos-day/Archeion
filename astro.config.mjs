@@ -44,6 +44,7 @@ export default defineConfig({
             { label: '最近の更新', link: '/recent-changes/' },
             { label: 'おまかせ表示', link: '/random/' },
             { label: 'カテゴリ一覧', link: '/categories/' },
+            { label: '編集方針', link: '/policy/' },
           ],
         },
         {

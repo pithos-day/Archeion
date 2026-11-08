@@ -14,9 +14,9 @@ export function categoryHref(category: string): string {
   return `/categories/${encodeURIComponent(category)}/`;
 }
 
-/** メインページを除いた全ページ (著者別の版を含む) を返す。 */
+/** 記事のページ (著者別の版を含む) をすべて返す。メインページや編集方針などは含まない。 */
 function getAllPages(): Promise<Article[]> {
-  return getCollection('docs', (entry) => entry.id !== 'index' && !entry.data.draft);
+  return getCollection('docs', (entry) => entry.id.startsWith('articles/') && !entry.data.draft);
 }
 
 /** 著者別の版を除いた記事 (総合版) を、タイトル順で返す。 */
