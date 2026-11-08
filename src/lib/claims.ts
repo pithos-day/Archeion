@@ -10,16 +10,16 @@
  */
 import { type AuthorId, authors, type WorkId, works } from '../data/sources';
 
-export type SourceKind = 'narrative' | 'mention';
+type SourceKind = 'narrative' | 'mention';
 
-export interface ClaimSource {
+interface ClaimSource {
   work: WorkId;
   /** 箇所。`270-283`、`4.765-803`、`2.4.2` など。 */
   loc: string;
   kind: SourceKind;
 }
 
-export interface Variant {
+interface Variant {
   /** 説の要約。 */
   label: string;
   sources: ClaimSource[];
@@ -43,7 +43,7 @@ const VERSION_MIN_DIFFERENCES = 2;
 
 export type VariantStatus = 'adopted' | 'alternative' | 'minor';
 
-export interface ScoredVariant extends Variant {
+interface ScoredVariant extends Variant {
   score: number;
   /** 説を支持する著者 (古い順)。 */
   authorIds: AuthorId[];

@@ -6,6 +6,8 @@ import TocBox from '../TocBox.astro';
 const { entry, headings } = Astro.locals.starlightRoute;
 const { title, infobox, template, tableOfContents } = entry.data;
 const showToc = template !== 'splash' && tableOfContents !== false;
+// 脚注の一覧に自動で付く見出しは、本文の「## 脚注」と重なるので目次に出さない
+const tocHeadings = headings.filter((heading) => heading.slug !== 'footnote-label');
 
 /**
  * Wikipedia と同じく、目次はリード文の後 (最初の h2 の直前) に置く。
@@ -22,7 +24,7 @@ const [lead, rest] = firstH2 === -1 ? [html, ''] : [html.slice(0, firstH2), html
     showToc ? (
       <>
         <Fragment set:html={lead} />
-        <TocBox headings={headings} />
+        <TocBox headings={tocHeadings} />
         <Fragment set:html={rest} />
       </>
     ) : (

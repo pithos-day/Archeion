@@ -86,6 +86,13 @@ h1#_top {
   font-weight: 700;
 }
 
+/* 記事冒頭の案内 (「〜については〜を参照」) */
+.sl-markdown-content .hatnote {
+  padding-inline-start: 1.6em;
+  font-size: var(--sl-text-sm);
+  font-style: italic;
+}
+
 /* ---------- リンク ---------- */
 
 .sl-markdown-content a:not(:where(.not-content, .not-content *)) {
