@@ -6,10 +6,27 @@ import TocBox from '../TocBox.astro';
 const { entry, headings } = Astro.locals.starlightRoute;
 const { title, infobox, template, tableOfContents } = entry.data;
 const showToc = template !== 'splash' && tableOfContents !== false;
+
+/**
+ * Wikipedia と同じく、目次はリード文の後 (最初の h2 の直前) に置く。
+ * そのため本文を HTML として受け取り、最初の h2 の位置で分割する。
+ */
+const html = showToc ? await Astro.slots.render('default') : '';
+const firstH2 = html.search(/<div class="sl-heading-wrapper level-h2|<h2[\s>]/);
+const [lead, rest] = firstH2 === -1 ? [html, ''] : [html.slice(0, firstH2), html.slice(firstH2)];
 ---
 
 <Default>
   {infobox && <Infobox title={title} infobox={infobox} />}
-  {showToc && <TocBox headings={headings} />}
-  <slot />
+  {
+    showToc ? (
+      <>
+        <Fragment set:html={lead} />
+        <TocBox headings={headings} />
+        <Fragment set:html={rest} />
+      </>
+    ) : (
+      <slot />
+    )
+  }
 </Default>

@@ -1,11 +1,14 @@
 ---
 import Default from '@astrojs/starlight/components/PageTitle.astro';
 
-const { siteTitle } = Astro.locals.starlightRoute;
+const { entry, siteTitle } = Astro.locals.starlightRoute;
+// 「出典」は記事ページだけに出す。メインページと、本文 (body) を持たない
+// src/pages の特別ページ (StarlightPage で作る仮想エントリー) には出さない。
+const isArticle = Astro.url.pathname !== '/' && Boolean(entry.body);
 ---
 
 <Default />
-<p class="tagline">出典: {siteTitle}</p>
+{isArticle && <p class="tagline">出典: {siteTitle}</p>}
 
 <style>
   .tagline {
