@@ -15,10 +15,18 @@ const tocHeadings = headings.filter((heading) => heading.slug !== 'footnote-labe
  */
 const html = showToc ? await Astro.slots.render('default') : '';
 const firstH2 = html.search(/<div class="sl-heading-wrapper level-h2|<h2[\s>]/);
-const [lead, rest] = firstH2 === -1 ? [html, ''] : [html.slice(0, firstH2), html.slice(firstH2)];
+const [beforeH2, rest] =
+  firstH2 === -1 ? [html, ''] : [html.slice(0, firstH2), html.slice(firstH2)];
+
+/** 記事冒頭の ambox は、Wikipedia と同じく情報ボックスより上に全幅で置く。 */
+const amboxEnds = [...beforeH2.matchAll(/<i data-ambox-end[^>]*><\/i>/g)];
+const lastAmboxEnd = amboxEnds.at(-1);
+const bannerEnd = lastAmboxEnd ? (lastAmboxEnd.index ?? 0) + lastAmboxEnd[0].length : 0;
+const [banners, lead] = [beforeH2.slice(0, bannerEnd), beforeH2.slice(bannerEnd)];
 ---
 
 <Default>
+  {showToc && <Fragment set:html={banners} />}
   {infobox && <Infobox title={title} infobox={infobox} />}
   {
     showToc ? (

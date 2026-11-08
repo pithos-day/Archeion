@@ -1,0 +1,56 @@
+---
+/**
+ * Wikipedia の記事メッセージボックス (ambox) 風の案内。記事冒頭の
+ * 「〜の語りは◯◯版を参照」などに使う。
+ */
+interface Props {
+  /** notice: 案内 (青) / content: 内容についての注意 (橙) */
+  type?: 'notice' | 'content';
+}
+
+const { type = 'notice' } = Astro.props;
+---
+
+<div class:list={['ambox', `ambox-${type}`, 'not-content']} role="note">
+  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="11" fill="currentColor"></circle>
+    <rect x="10.75" y="10" width="2.5" height="8" rx="1" fill="var(--ambox-bg)"></rect>
+    <circle cx="12" cy="6.75" r="1.5" fill="var(--ambox-bg)"></circle>
+  </svg>
+  <div class="text"><slot /></div>
+</div>
+<!-- 本文冒頭の ambox を情報ボックスより前へ移すための目印 (MarkdownContent.astro) -->
+<i data-ambox-end hidden></i>
+
+<style>
+  .ambox {
+    --ambox-bg: var(--wiki-box-bg);
+    --ambox-accent: #36c;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin: 0 0 1rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--wiki-border);
+    border-inline-start: 10px solid var(--ambox-accent);
+    background: var(--ambox-bg);
+    font-size: var(--sl-text-sm);
+    line-height: 1.5;
+  }
+  .ambox-content {
+    --ambox-accent: #f28500;
+  }
+  .icon {
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--ambox-accent);
+  }
+  .text :global(a) {
+    color: var(--wiki-link);
+    text-decoration: none;
+  }
+  .text :global(a:hover) {
+    text-decoration: underline;
+  }
+</style>
