@@ -1,5 +1,4 @@
 ---
-
 title: リファレンスの例
 description: リファレンスページのサンプルです。
 categories: [サンプル]
