@@ -1,0 +1,24 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getWantedArticles } from '../../lib/articles';
+
+const wanted = await getWantedArticles();
+---
+
+<StarlightPage frontmatter={{ title: '執筆待ちの記事', tableOfContents: false, pagefind: false }}>
+  <p>
+    記事の本文からリンクされているが、まだ記事のない項目です（{wanted.length} 件）。リンク元の多い順に並べています。
+  </p>
+  <ol>
+    {
+      wanted.map(({ slug, name, linkedFrom }) => (
+        <li>
+          <a class="new" href={`/wanted/${slug}/`}>
+            {name}
+          </a>
+          （{linkedFrom.length} 件の記事からリンク）
+        </li>
+      ))
+    }
+  </ol>
+</StarlightPage>

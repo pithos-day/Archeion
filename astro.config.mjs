@@ -3,12 +3,13 @@ import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import { wikiFootnotes } from './src/lib/footnote-plugin.ts';
+import { redLinks } from './src/lib/red-link-plugin.ts';
 
 // https://astro.build/config
 export default defineConfig({
   markdown: {
     processor: satteri({
-      hastPlugins: [wikiFootnotes],
+      hastPlugins: [wikiFootnotes, redLinks],
       features: {
         gfm: {
           footnotes: {
@@ -46,6 +47,7 @@ export default defineConfig({
             { label: '最近の更新', link: '/recent-changes/' },
             { label: 'おまかせ表示', link: '/random/' },
             { label: 'カテゴリ一覧', link: '/categories/' },
+            { label: '執筆待ちの記事', link: '/wanted/' },
             { label: '編集方針', link: '/policy/' },
           ],
         },

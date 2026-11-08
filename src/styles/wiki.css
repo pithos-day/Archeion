@@ -9,6 +9,7 @@
     serif;
   --wiki-link: #6b9eff;
   --wiki-link-visited: #a88cf0;
+  --wiki-link-new: #fd7865;
   --wiki-border: #54595d;
   --wiki-box-bg: #202122;
 
@@ -29,6 +30,7 @@
 :root[data-theme='light'] {
   --wiki-link: #3366cc;
   --wiki-link-visited: #795cb2;
+  --wiki-link-new: #d73333;
   --wiki-border: #a2a9b1;
   --wiki-box-bg: #f8f9fa;
 
@@ -100,6 +102,13 @@ h1#_top {
 .sl-markdown-content a:not(:where(.not-content, .not-content *)):hover {
   color: var(--wiki-link);
   text-decoration: underline;
+}
+
+/* まだ記事のないページへのリンク (赤リンク) */
+.sl-markdown-content a.new,
+.sl-markdown-content a.new:visited,
+.sl-markdown-content a.new:hover {
+  color: var(--wiki-link-new);
 }
 
 /* ---------- 表 ---------- */

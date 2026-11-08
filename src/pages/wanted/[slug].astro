@@ -1,0 +1,30 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import type { GetStaticPaths } from 'astro';
+import { articleHref, getWantedArticles, type WantedArticle } from '../../lib/articles';
+
+export const getStaticPaths = (async () =>
+  (await getWantedArticles()).map((wanted) => ({
+    params: { slug: wanted.slug },
+    props: { wanted },
+  }))) satisfies GetStaticPaths;
+
+const { wanted } = Astro.props as { wanted: WantedArticle };
+---
+
+<StarlightPage
+  frontmatter={{ title: `${wanted.name}（未作成）`, tableOfContents: false, pagefind: false }}
+>
+  <p>「{wanted.name}」の記事はまだありません。</p>
+  <h2>この項目にリンクしている記事</h2>
+  <ul>
+    {
+      wanted.linkedFrom.map((article) => (
+        <li>
+          <a href={articleHref(article)}>{article.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+  <p><a href="/wanted/">執筆待ちの記事の一覧</a></p>
+</StarlightPage>

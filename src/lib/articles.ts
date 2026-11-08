@@ -100,3 +100,40 @@ export function getBacklinkMap(): Promise<Map<string, Article[]>> {
   })();
   return backlinkMap;
 }
+
+export interface WantedArticle {
+  slug: string;
+  /** 本文で最も多く使われているリンクの表記。 */
+  name: string;
+  /** その名前にリンクしている記事 (総合版にまとめる)。 */
+  linkedFrom: Article[];
+}
+
+/** 本文からリンクされているが、まだ記事のないページを、リンク元の多い順で返す。 */
+export async function getWantedArticles(): Promise<WantedArticle[]> {
+  const pages = await getAllPages();
+  const existing = new Set(pages.map((page) => page.id));
+  const byId = new Map(pages.map((page) => [page.id, page]));
+  const wanted = new Map<string, { names: Map<string, number>; linkedFrom: Set<Article> }>();
+  for (const page of pages) {
+    const root = byId.get(page.data.versionOf ?? page.id) ?? page;
+    for (const [, name = '', slug = ''] of (page.body ?? '').matchAll(
+      /\[([^\]]+)\]\(\/articles\/([a-z0-9-]+)\/\)/g,
+    )) {
+      if (existing.has(`articles/${slug}`)) continue;
+      const entry = wanted.get(slug) ?? { names: new Map(), linkedFrom: new Set() };
+      entry.names.set(name, (entry.names.get(name) ?? 0) + 1);
+      entry.linkedFrom.add(root);
+      wanted.set(slug, entry);
+    }
+  }
+  return [...wanted]
+    .map(([slug, { names, linkedFrom }]) => ({
+      slug,
+      name: [...names].sort(([, a], [, b]) => b - a)[0]?.[0] ?? slug,
+      linkedFrom: [...linkedFrom].sort((a, b) => a.data.title.localeCompare(b.data.title, 'ja')),
+    }))
+    .sort(
+      (a, b) => b.linkedFrom.length - a.linkedFrom.length || a.name.localeCompare(b.name, 'ja'),
+    );
+}
