@@ -13,6 +13,8 @@ export default defineConfig({
       },
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/pithos-day/Archeion' }],
       lastUpdated: true,
+      customCss: ['./src/styles/wiki.css'],
+      pagination: false,
       sidebar: [
         {
           label: 'ガイド',
