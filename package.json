@@ -15,7 +15,8 @@
     "lint:fix": "biome check --write .",
     "lint-staged": "lint-staged",
     "knip": "knip",
-    "verify:citations": "node scripts/verify-citations.ts"
+    "verify:citations": "node scripts/verify-citations.ts",
+    "link:names": "node scripts/link-names.ts"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,json,jsonc,astro,css,yaml,yml}": [
