@@ -29,6 +29,8 @@ export const authors = {
   ovid: { name: 'オウィディウス', era: 1, year: 8 },
   apollodorus: { name: 'アポロドロス', era: 1, year: 150 },
   pausanias: { name: 'パウサニアス', era: 1, year: 160 },
+  plutarch: { name: 'プルタルコス', era: 1, year: 100 },
+  nonnus: { name: 'ノンノス', era: 1, year: 450 },
 } as const satisfies Record<string, Author>;
 
 export type AuthorId = keyof typeof authors;
@@ -182,6 +184,31 @@ export const works = {
     author: 'pausanias',
     title: 'ギリシア案内記',
     urn: 'urn:cts:greekLit:tlg0525.tlg001.perseus-grc2',
+  },
+  'nonn-dion': {
+    author: 'nonnus',
+    title: 'ディオニュシアカ',
+    urn: 'urn:cts:greekLit:tlg2045.tlg001.perseus-grc2',
+  },
+  'plut-sert': {
+    author: 'plutarch',
+    title: 'セルトリウス伝',
+    urn: 'urn:cts:greekLit:tlg0007.tlg042.perseus-grc2',
+  },
+  'eur-ia': {
+    author: 'euripides',
+    title: 'アウリスのイピゲネイア',
+    urn: 'urn:cts:greekLit:tlg0006.tlg018.perseus-grc2',
+  },
+  'eur-med': {
+    author: 'euripides',
+    title: 'メデイア',
+    urn: 'urn:cts:greekLit:tlg0006.tlg003.perseus-grc2',
+  },
+  'ov-fast': {
+    author: 'ovid',
+    title: '祭暦',
+    urn: 'urn:cts:latinLit:phi0959.phi007.perseus-lat2',
   },
 } as const satisfies Record<string, Work>;
 
