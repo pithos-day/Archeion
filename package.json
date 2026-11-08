@@ -1,0 +1,35 @@
+{
+  "name": "archeion",
+  "version": "0.0.1",
+  "description": "Astro Starlight で作る Wiki 風の静的サイト",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "author": "pithos",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pithos-day/Archeion.git"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.10.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.10.1",
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.10",
+    "astro": "^7.3.6",
+    "sharp": "^0.35.3"
+  }
+}

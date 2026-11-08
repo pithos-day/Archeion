@@ -1,0 +1,22 @@
+---
+title: Archeion
+description: Astro Starlight で作る Wiki 風の静的サイト
+template: splash
+hero:
+  tagline: 知識を記録し、整理し、共有するための Wiki
+  actions:
+    - text: ガイドを読む
+      link: /guides/example/
+      icon: right-arrow
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="ページを追加する" icon="add-document">
+    `src/content/docs/` に Markdown / MDX ファイルを置くと、そのパスがページの URL になります。
+  </Card>
+  <Card title="サイトを設定する" icon="setting">
+    サイドバーなどの設定は `astro.config.mjs` で編集します。
+  </Card>
+</CardGrid>

@@ -1,0 +1,4 @@
+# ビルドスクリプトの実行ポリシー (pnpm v11+ は allowBuilds マップを使用)
+allowBuilds:
+  esbuild: true
+  sharp: true
