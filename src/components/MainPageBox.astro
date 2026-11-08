@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string;
+  tone?: 'blue' | 'green';
+}
+
+const { title, tone = 'blue' } = Astro.props;
+---
+
+<section class:list={['main-box', tone]}>
+  <h2>{title}</h2>
+  <div class="body"><slot /></div>
+</section>
+
+<style>
+  .main-box {
+    border: 1px solid var(--box-border);
+    background: var(--box-bg);
+  }
+  .blue {
+    --box-border: #a3b0bf;
+    --box-bg: #f5faff;
+    --box-head: #cedff2;
+  }
+  .green {
+    --box-border: #a3bfb1;
+    --box-bg: #f5fffa;
+    --box-head: #cef2e0;
+  }
+  :global([data-theme='dark']) .blue {
+    --box-border: #3d4b5a;
+    --box-bg: #181d22;
+    --box-head: #232d36;
+  }
+  :global([data-theme='dark']) .green {
+    --box-border: #3d5a4b;
+    --box-bg: #18221d;
+    --box-head: #23362c;
+  }
+  h2 {
+    margin: 0;
+    padding: 0.2rem 0.6rem;
+    border: none;
+    background: var(--box-head);
+    font-family: var(--wiki-font-serif);
+    font-size: var(--sl-text-lg);
+    font-weight: 700;
+  }
+  .body {
+    padding: 0.5rem 0.75rem;
+  }
+</style>

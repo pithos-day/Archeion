@@ -24,12 +24,17 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: 'ガイド',
-          items: [{ autogenerate: { directory: 'guides' } }],
+          label: '案内',
+          items: [
+            { label: 'メインページ', link: '/' },
+            { label: '最近の更新', link: '/recent-changes/' },
+            { label: 'おまかせ表示', link: '/random/' },
+            { label: 'カテゴリ一覧', link: '/categories/' },
+          ],
         },
         {
-          label: 'リファレンス',
-          items: [{ autogenerate: { directory: 'reference' } }],
+          label: '記事',
+          items: [{ autogenerate: { directory: 'articles' } }],
         },
       ],
     }),

@@ -1,0 +1,25 @@
+---
+import { articleHref, getRecentArticles } from '../lib/articles';
+
+interface Props {
+  limit?: number;
+}
+
+const { limit = 10 } = Astro.props;
+const items = (await getRecentArticles()).slice(0, limit);
+const dateFormat = new Intl.DateTimeFormat('ja-JP', {
+  month: 'numeric',
+  day: 'numeric',
+  timeZone: 'Asia/Tokyo',
+});
+---
+
+<ul>
+  {
+    items.map(({ article, updatedAt }) => (
+      <li>
+        <a href={articleHref(article)}>{article.data.title}</a>（{dateFormat.format(updatedAt)}）
+      </li>
+    ))
+  }
+</ul>

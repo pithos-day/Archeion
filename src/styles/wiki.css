@@ -121,6 +121,48 @@ h1#_top {
   background: color-mix(in srgb, var(--wiki-border) 25%, var(--wiki-box-bg));
 }
 
+/* ---------- メインページ ---------- */
+
+.main-page .welcome {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--wiki-border);
+  background: var(--wiki-box-bg);
+  text-align: center;
+}
+
+.main-page .welcome-title {
+  font-family: var(--wiki-font-serif);
+  font-size: var(--sl-text-2xl);
+}
+
+.main-page .columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.main-page ul {
+  padding-inline-start: 1.5em;
+  list-style: disc;
+}
+
+.main-page a {
+  color: var(--wiki-link);
+  text-decoration: none;
+}
+
+.main-page a:hover {
+  text-decoration: underline;
+}
+
+.main-page .more {
+  margin-top: 0.5rem;
+  text-align: end;
+  font-size: var(--sl-text-sm);
+}
+
 /* ---------- ヘッダー・サイドバー ---------- */
 
 .content-panel + .content-panel {

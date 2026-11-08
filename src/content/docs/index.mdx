@@ -1,22 +1,32 @@
 ---
-title: Archeion
-description: Astro Starlight で作る Wiki 風の静的サイト
-template: splash
-hero:
-  tagline: 知識を記録し、整理し、共有するための Wiki
-  actions:
-    - text: ガイドを読む
-      link: /guides/example/
-      icon: right-arrow
+title: メインページ
+description: Archeion は、知識を記録し、整理し、共有するための Wiki です。
+tableOfContents: false
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import CategoryList from '../../components/CategoryList.astro';
+import MainPageBox from '../../components/MainPageBox.astro';
+import RecentArticles from '../../components/RecentArticles.astro';
 
-<CardGrid>
-  <Card title="ページを追加する" icon="add-document">
-    `src/content/docs/` に Markdown / MDX ファイルを置くと、そのパスがページの URL になります。
-  </Card>
-  <Card title="サイトを設定する" icon="setting">
-    サイドバーなどの設定は `astro.config.mjs` で編集します。
-  </Card>
-</CardGrid>
+<div class="main-page not-content">
+  <div class="welcome">
+    <p class="welcome-title">Archeion へようこそ</p>
+    <p>知識を記録し、整理し、共有するための Wiki です。</p>
+  </div>
+
+  <div class="columns">
+    <MainPageBox title="新着記事">
+      <RecentArticles />
+      <p class="more">
+        <a href="/recent-changes/">最近の更新をすべて見る</a>
+      </p>
+    </MainPageBox>
+
+    <MainPageBox title="カテゴリから探す" tone="green">
+      <CategoryList />
+      <p class="more">
+        <a href="/random/">おまかせ表示</a>
+      </p>
+    </MainPageBox>
+  </div>
+</div>

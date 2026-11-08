@@ -1,0 +1,15 @@
+---
+import { categoryHref, getCategoryMap } from '../lib/articles';
+
+const categoryMap = await getCategoryMap();
+---
+
+<ul>
+  {
+    [...categoryMap].map(([category, articles]) => (
+      <li>
+        <a href={categoryHref(category)}>{category}</a>（{articles.length}）
+      </li>
+    ))
+  }
+</ul>
