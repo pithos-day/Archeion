@@ -2,11 +2,13 @@
 import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
+import { wikiFootnotes } from './src/lib/footnote-plugin.ts';
 
 // https://astro.build/config
 export default defineConfig({
   markdown: {
     processor: satteri({
+      hastPlugins: [wikiFootnotes],
       features: {
         gfm: {
           footnotes: {

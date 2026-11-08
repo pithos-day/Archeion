@@ -213,6 +213,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.6.6
         version: 2.6.6
+      '@types/hast':
+        specifier: 3.0.5
+        version: 3.0.5
       husky:
         specifier: ^9.1.7
         version: 9.1.7

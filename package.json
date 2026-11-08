@@ -48,6 +48,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "@biomejs/biome": "^2.6.6",
+    "@types/hast": "3.0.5",
     "husky": "^9.1.7",
     "knip": "^6.44.1",
     "lint-staged": "^17.6.0",

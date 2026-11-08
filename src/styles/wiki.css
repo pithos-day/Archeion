@@ -86,13 +86,6 @@ h1#_top {
   font-weight: 700;
 }
 
-/* 記事冒頭の案内 (「〜については〜を参照」) */
-.sl-markdown-content .hatnote {
-  padding-inline-start: 1.6em;
-  font-size: var(--sl-text-sm);
-  font-style: italic;
-}
-
 /* ---------- リンク ---------- */
 
 .sl-markdown-content a:not(:where(.not-content, .not-content *)) {
@@ -170,8 +163,49 @@ h1#_top {
   background: var(--sl-color-accent-low);
 }
 
-.sl-markdown-content .footnotes [data-footnote-backref] {
-  margin-inline-start: 0.25em;
+/* 「^」「^ a b」の戻りリンク */
+.sl-markdown-content .footnotes .fn-backrefs {
+  margin-inline-end: 0.25em;
+}
+
+.sl-markdown-content .footnotes .fn-backrefs sup {
+  font-size: 0.8em;
+  font-style: italic;
+  font-weight: 700;
+}
+
+/* 原語の折りたたみ: 行末に小さく「［原語で表示］」を出し、開くと原文を下に出す */
+.sl-markdown-content .footnotes details.fn-original {
+  display: inline;
+  margin: 0 0 0 0.35em;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.sl-markdown-content .footnotes .fn-original summary {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  color: var(--wiki-link);
+  font-size: var(--sl-text-xs);
+  font-weight: 400;
+  list-style: none;
+  cursor: pointer;
+}
+
+.sl-markdown-content .footnotes .fn-original summary::-webkit-details-marker,
+.sl-markdown-content .footnotes .fn-original summary::before,
+.sl-markdown-content .footnotes .fn-original summary::after {
+  display: none;
+}
+
+.sl-markdown-content .footnotes .fn-original p {
+  display: block;
+  margin: 0.15rem 0 0.25rem;
+  padding-inline-start: 0.75em;
+  border-inline-start: 2px solid var(--wiki-border);
+  font-family: var(--wiki-font-serif);
 }
 
 /* ---------- メインページ ---------- */
