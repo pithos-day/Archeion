@@ -2,3 +2,7 @@
 allowBuilds:
   esbuild: true
   sharp: true
+overrides:
+  # @astrojs/astro2tsx の peer 解決で @emnapi/runtime 2.0 beta が入り、
+  # @emnapi/core 1.x と API が合わず astro check がクラッシュするため 1.x に固定
+  "@emnapi/runtime": ^1.11.3
