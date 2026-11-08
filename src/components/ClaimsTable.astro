@@ -30,6 +30,9 @@ function formatScore(score: number): string {
   「年代係数 × 記述係数」を著者ごとに合計したもの（言及・暗示の出典には「言及」と付けた）。
 </p>
 
+<details class="claims-details">
+<summary>論点表とスコアを表示（{topics.length} 論点）</summary>
+
 <table class="claims-table">
   <thead>
     <tr>
@@ -93,10 +96,28 @@ function formatScore(score: number): string {
     }
   </tbody>
 </table>
+</details>
 
 <style>
   .claims-note {
     font-size: var(--sl-text-sm);
+  }
+  .claims-details {
+    margin-top: 0.5rem;
+    border: 1px solid var(--wiki-border);
+    background: var(--wiki-box-bg);
+  }
+  .claims-details summary {
+    padding: 0.3rem 0.6rem;
+    font-size: var(--sl-text-sm);
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .claims-details[open] summary {
+    border-bottom: 1px solid var(--wiki-border);
+  }
+  .claims-details > :not(summary) {
+    margin: 0.5rem;
   }
   .claims-table {
     font-size: var(--sl-text-sm);
