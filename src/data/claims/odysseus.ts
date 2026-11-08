@@ -15,7 +15,7 @@ const claims: ArticleClaims = [
         ],
       },
       {
-        label: 'シシュポス',
+        label: 'シーシュポス',
         sources: [
           { work: 'soph-aj', loc: '189-190', kind: 'mention' },
           { work: 'soph-ph', loc: '417', kind: 'mention' },
