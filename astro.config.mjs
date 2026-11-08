@@ -15,6 +15,9 @@ export default defineConfig({
       lastUpdated: true,
       customCss: ['./src/styles/wiki.css'],
       pagination: false,
+      components: {
+        Footer: './src/components/overrides/Footer.astro',
+      },
       sidebar: [
         {
           label: 'ガイド',

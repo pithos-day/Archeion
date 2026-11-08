@@ -1,0 +1,19 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { categoryHref, getCategoryMap } from '../../lib/articles';
+
+const categoryMap = await getCategoryMap();
+---
+
+<StarlightPage frontmatter={{ title: 'カテゴリ一覧', tableOfContents: false }}>
+  <p>{categoryMap.size} 個のカテゴリがあります。</p>
+  <ul>
+    {
+      [...categoryMap].map(([category, articles]) => (
+        <li>
+          <a href={categoryHref(category)}>{category}</a>（{articles.length} 記事）
+        </li>
+      ))
+    }
+  </ul>
+</StarlightPage>

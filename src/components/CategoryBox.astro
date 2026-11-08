@@ -1,0 +1,52 @@
+---
+import { categoryHref } from '../lib/articles';
+
+interface Props {
+  categories: string[];
+}
+
+const { categories } = Astro.props;
+---
+
+{
+  categories.length > 0 && (
+    <nav class="category-box" aria-label="カテゴリ">
+      <a href="/categories/">カテゴリ</a>{": "}
+      <ul>
+        {categories.map((category) => (
+          <li>
+            <a href={categoryHref(category)}>{category}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .category-box {
+    margin-top: 2rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--wiki-border);
+    background: var(--wiki-box-bg);
+    font-size: var(--sl-text-sm);
+  }
+  ul {
+    display: inline;
+    padding: 0;
+  }
+  li {
+    display: inline;
+  }
+  li + li::before {
+    content: ' | ';
+    color: var(--sl-color-gray-3);
+  }
+  a {
+    color: var(--wiki-link);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -1,0 +1,22 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import type { GetStaticPaths } from 'astro';
+import ArticleList from '../../components/ArticleList.astro';
+import { getCategoryMap } from '../../lib/articles';
+
+export const getStaticPaths = (async () => {
+  const categoryMap = await getCategoryMap();
+  return [...categoryMap].map(([category, articles]) => ({
+    params: { category },
+    props: { category, articles },
+  }));
+}) satisfies GetStaticPaths;
+
+const { category, articles } = Astro.props;
+---
+
+<StarlightPage frontmatter={{ title: `カテゴリ: ${category}`, tableOfContents: false }}>
+  <p>カテゴリ「{category}」に属する {articles.length} 記事:</p>
+  <ArticleList articles={articles} />
+  <p><a href="/categories/">← カテゴリ一覧</a></p>
+</StarlightPage>

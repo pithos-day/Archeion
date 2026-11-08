@@ -1,0 +1,19 @@
+---
+import { type Article, articleHref } from '../lib/articles';
+
+interface Props {
+  articles: Article[];
+}
+
+const { articles } = Astro.props;
+---
+
+<ul>
+  {
+    articles.map((article) => (
+      <li>
+        <a href={articleHref(article)}>{article.data.title}</a>
+      </li>
+    ))
+  }
+</ul>
