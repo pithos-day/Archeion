@@ -32,6 +32,9 @@ export const authors = {
   plutarch: { name: 'プルタルコス', era: 1, year: 100 },
   nonnus: { name: 'ノンノス', era: 1, year: 450 },
   pherecydes: { name: 'ペレキュデス', era: 2, year: -450 },
+  'pseudo-eratosthenes': { name: '偽エラトステネス', era: 1, year: 100 },
+  hyginus: { name: 'ヒュギーヌス', era: 1, year: 150 },
+  'antoninus-liberalis': { name: 'アントニヌス・リベラリス', era: 1, year: 200 },
 } as const satisfies Record<string, Author>;
 
 export type AuthorId = keyof typeof authors;
@@ -51,8 +54,11 @@ interface CtsWork extends WorkBase {
 /**
  * 原典ファイルの形式。箇所の数え方が決まる。
  *   dfhg: DFHG (Müller『ギリシア歴史家断片集』)。箇所は断片番号 (`22`、`102a`)
+ *   numbered: 「12.」「XII.」で始まる行で章を区切った txt (Wikisource など)。
+ *     箇所は章、または章.節 (`12`、`12.3`)。ローマ数字の章もアラビア数字で書く
+ *   eulogikon: Eulogikon の Markdown。箇所は「### 」の見出し (`### book 1.3` は `1.3`、`### 1 5R` は `1.5R`)
  */
-export type LocalFormat = 'dfhg';
+export type LocalFormat = 'dfhg' | 'numbered' | 'eulogikon';
 
 /** CTS URN のない作品。リンク先と原典ファイルを個別に指定する。 */
 interface LocalWork extends WorkBase {
@@ -248,6 +254,27 @@ export const works = {
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20primum',
     file: 'DFHG/pherecydes-of-athens/PHERECYDES.txt',
     format: 'dfhg',
+  },
+  'eratosth-cat': {
+    author: 'pseudo-eratosthenes',
+    title: 'カタステリスモイ',
+    url: 'https://eulogikon.org/works/eratosthenes-cyrene-catasterisms-kly-ab',
+    file: 'Eulogikon/eratosthenes/catasterismi/md/eratosthenes-cyrene-catasterisms-kly-ab.grc.md',
+    format: 'eulogikon',
+  },
+  'hyg-fab': {
+    author: 'hyginus',
+    title: '神話集',
+    url: 'https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081',
+    file: 'Wikisource/hyginus/fabulae/txt/fabulae.txt',
+    format: 'numbered',
+  },
+  'ant-lib': {
+    author: 'antoninus-liberalis',
+    title: '変身物語集',
+    url: 'https://el.wikisource.org/w/index.php?title=%CE%9C%CE%B5%CF%84%CE%B1%CE%BC%CE%BF%CF%81%CF%86%CF%8E%CF%83%CE%B5%CF%89%CE%BD_%CF%83%CF%85%CE%BD%CE%B1%CE%B3%CF%89%CE%B3%CE%AE&oldid=148338',
+    file: 'Wikisource/antoninus-liberalis/metamorphoses/txt/metamorphoseon-synagoge.txt',
+    format: 'numbered',
   },
 } as const satisfies Record<string, Work>;
 

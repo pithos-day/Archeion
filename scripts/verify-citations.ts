@@ -119,8 +119,78 @@ function parseDfhg(lines: string[]): Passages {
   return passages;
 }
 
+const ROMAN_DIGITS: Record<string, number> = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+
+function romanToNumber(roman: string): number {
+  return [...roman].reduce((total, letter, index) => {
+    const value = ROMAN_DIGITS[letter] ?? 0;
+    return (ROMAN_DIGITS[roman[index + 1] ?? ''] ?? 0) > value ? total - value : total + value;
+  }, 0);
+}
+
+const MAX_CHAPTER_GAP = 20;
+
+/**
+ * 章を「12.」「XII.」で始まる行で区切った txt。節は「3 」「[3] 」で始まる行で区切る。
+ * 章の最初の、節の番号がない部分は第 1 節とする。箇所は `12.3` (ローマ数字はアラビア数字に直す)。
+ * ローマ数字は、前の章より大きく、差が MAX_CHAPTER_GAP 以内の番号だけを章とみなす
+ * (「C. Iulius」のような行を章と取り違えないため。本文の伝わらない章は番号が飛ぶ)。
+ */
+function parseNumbered(lines: string[]): Passages {
+  const passages: Passages = [];
+  let chapter = 0;
+  let section = '1';
+  for (const line of lines) {
+    const start = line.match(/^\s*(?:(\d+)|([IVXLCDM]+))\.(?:\s+(.*))?$/);
+    const next = start?.[1] ? Number(start[1]) : start?.[2] ? romanToNumber(start[2]) : undefined;
+    let text = line.trim();
+    if (
+      next !== undefined &&
+      (start?.[1] || (next > chapter && next <= chapter + MAX_CHAPTER_GAP))
+    ) {
+      chapter = next;
+      section = '1';
+      text = start?.[3] ?? '';
+    } else {
+      const sub = line.match(/^\s*(?:\[(\d+)\]|(\d+))\s+(.*)$/);
+      if (sub) {
+        section = sub[1] ?? sub[2];
+        text = sub[3];
+      }
+    }
+    if (chapter > 0 && text !== '') appendPassage(passages, `${chapter}.${section}`, text);
+  }
+  return passages;
+}
+
+/**
+ * Eulogikon の Markdown。本文は「## Text」から次の「## 」まで。
+ * 「### 」の見出しが箇所になる。「book 」と括弧の注記は除き、空白は「.」に直す
+ * (`### book 1.3` → `1.3`、`### 2 (t)` → `2`、`### 1 5R` → `1.5R`)。
+ */
+function parseEulogikon(lines: string[]): Passages {
+  const passages: Passages = [];
+  let inText = false;
+  let key: string | undefined;
+  for (const line of lines) {
+    if (line.startsWith('## ')) inText = line.trim() === '## Text';
+    else if (!inText) continue;
+    else if (line.startsWith('### ')) {
+      key = line
+        .slice(4)
+        .replace(/^book\s+/, '')
+        .replace(/\s*[([].*$/, '')
+        .trim()
+        .replace(/\s+/g, '.');
+    } else if (key && line.trim() !== '') appendPassage(passages, key, line.trim());
+  }
+  return passages;
+}
+
 const LOCAL_PARSERS: Record<LocalFormat, (lines: string[]) => Passages> = {
   dfhg: parseDfhg,
+  numbered: parseNumbered,
+  eulogikon: parseEulogikon,
 };
 
 const passageCache = new Map<string, Passages>();
