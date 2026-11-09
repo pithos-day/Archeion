@@ -172,6 +172,20 @@ h1#_top {
   background: var(--sl-color-accent-low);
 }
 
+/* 出典の著者 (/authors/)。年代係数ごとの表の列幅をそろえる */
+.sl-markdown-content .author-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.sl-markdown-content .author-table .author-name {
+  width: 12em;
+}
+
+.sl-markdown-content .author-table .author-year {
+  width: 8em;
+}
+
 /* 出典の著者 (/authors/) で、リンク先の著者の行 */
 .sl-markdown-content tr:target {
   background: var(--sl-color-accent-low);
