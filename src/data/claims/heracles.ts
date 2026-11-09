@@ -47,7 +47,10 @@ const claims: ArticleClaims = [
       },
       {
         label: 'どちらが自分の子か試すため、アムピトリュオンが入れた',
-        sources: [{ work: 'apollod-lib', loc: '2.4.8', kind: 'mention' }],
+        sources: [
+          { work: 'pherecyd', loc: '28', kind: 'narrative' },
+          { work: 'apollod-lib', loc: '2.4.8', kind: 'mention' },
+        ],
       },
     ],
   },
