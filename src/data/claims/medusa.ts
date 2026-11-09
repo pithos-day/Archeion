@@ -15,6 +15,10 @@ const claims: ArticleClaims = [
         ],
       },
       {
+        label: 'テュポンとエキドナの子',
+        sources: [{ work: 'hyg-fab', loc: '151.1', kind: 'narrative' }],
+      },
+      {
         label: '巨人族との戦いのときにガイアが生んだ',
         sources: [{ work: 'eur-ion', loc: '987-989', kind: 'narrative' }],
       },
@@ -26,6 +30,7 @@ const claims: ArticleClaims = [
       {
         label: 'ゴルゴン三姉妹のうちメドゥーサだけが死すべき者',
         sources: [
+          { work: 'pherecyd', loc: '26', kind: 'narrative' },
           { work: 'hes-th', loc: '276-277', kind: 'narrative' },
           { work: 'apollod-lib', loc: '2.4.2', kind: 'narrative' },
         ],
@@ -80,6 +85,7 @@ const claims: ArticleClaims = [
       {
         label: 'ペルセウス',
         sources: [
+          { work: 'pherecyd', loc: '26', kind: 'narrative' },
           { work: 'hes-th', loc: '280', kind: 'narrative' },
           { work: 'pind-p', loc: '12.11-16', kind: 'narrative' },
           { work: 'diod-1-5', loc: '3.55.3', kind: 'narrative' },
@@ -113,6 +119,7 @@ const claims: ArticleClaims = [
       {
         label: '石に変える',
         sources: [
+          { work: 'pherecyd', loc: '26', kind: 'narrative' },
           { work: 'ov-met', loc: '4.780-781', kind: 'narrative' },
           { work: 'apollod-lib', loc: '2.4.2', kind: 'narrative' },
           { work: 'paus', loc: '9.34.2', kind: 'narrative' },
@@ -130,6 +137,7 @@ const claims: ArticleClaims = [
       {
         label: 'アテナのアイギス（または盾）に付けられた',
         sources: [
+          { work: 'pherecyd', loc: '26', kind: 'narrative' },
           { work: 'hom-il', loc: '5.741', kind: 'mention' },
           { work: 'eur-ion', loc: '995-996', kind: 'mention' },
           { work: 'apollod-lib', loc: '2.4.3', kind: 'narrative' },
