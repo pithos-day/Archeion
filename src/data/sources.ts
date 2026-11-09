@@ -35,6 +35,15 @@ export const authors = {
   'pseudo-eratosthenes': { name: '偽エラトステネス', era: 1, year: 100 },
   hyginus: { name: 'ヒュギーヌス', era: 1, year: 150 },
   'antoninus-liberalis': { name: 'アントニヌス・リベラリス', era: 1, year: 200 },
+  // 叙事詩の環。散逸した作品はプロクロスの梗概で読むが、年代係数は元の作品の年代で数える。
+  stasinus: { name: 'スタシノス', era: 3, year: -650 },
+  lesches: { name: 'レスケス', era: 3, year: -650 },
+  eugammon: { name: 'エウガモン', era: 2, year: -570 },
+  // 古注と辞典は、編纂物を一人の著者として数える。引用元の著者名は脚注の訳文に書く。
+  'scholia-pindar': { name: 'ピンダロス古注', era: 1, year: 500 },
+  suda: { name: 'スーダ', era: 1, year: 970 },
+  'asclepiades-tragilensis': { name: 'アスクレピアデス', era: 1, year: -340 },
+  herodorus: { name: 'ヘロドロス', era: 2, year: -400 },
 } as const satisfies Record<string, Author>;
 
 export type AuthorId = keyof typeof authors;
@@ -67,6 +76,11 @@ interface LocalWork extends WorkBase {
   file: string;
   /** 出典表記で箇所の前に付ける語 (断片集の「断片」など)。 */
   unit?: string;
+  /**
+   * 原典ファイルの一部だけがこの作品のとき (プロクロスの梗概の『小イリアス』など)、その箇所 (`loc`) と、
+   * 出典表記で箇所の代わりに書く語 (`label`)。論点表と脚注の箇所は `loc` と同じにする。
+   */
+  part?: { loc: string; label: string };
 }
 
 export type Work = CtsWork | LocalWork;
@@ -286,6 +300,51 @@ export const works = {
     url: 'https://el.wikisource.org/w/index.php?title=%CE%9C%CE%B5%CF%84%CE%B1%CE%BC%CE%BF%CF%81%CF%86%CF%8E%CF%83%CE%B5%CF%89%CE%BD_%CF%83%CF%85%CE%BD%CE%B1%CE%B3%CF%89%CE%B3%CE%AE&oldid=148338',
     file: 'Wikisource/antoninus-liberalis/metamorphoses/txt/metamorphoses.txt',
   },
+  cypria: {
+    author: 'stasinus',
+    title: 'キュプリア',
+    url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
+    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    part: { loc: 'cypria', label: 'プロクロスの梗概' },
+  },
+  'ilias-parva': {
+    author: 'lesches',
+    title: '小イリアス',
+    url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
+    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    part: { loc: 'ilias-parva', label: 'プロクロスの梗概' },
+  },
+  telegonia: {
+    author: 'eugammon',
+    title: 'テレゴニア',
+    url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
+    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    part: { loc: 'telegonia', label: 'プロクロスの梗概' },
+  },
+  'schol-pind-n': {
+    author: 'scholia-pindar',
+    title: 'ネメア祝勝歌古注',
+    urn: 'urn:cts:greekLit:tlg5034.tlg001c.perseus-grc1',
+  },
+  'suda-lex': {
+    author: 'suda',
+    title: 'スーダ辞典',
+    urn: 'urn:cts:greekLit:tlg9010.tlg001.1st1K-grc1',
+  },
+  asclep: {
+    author: 'asclepiades-tragilensis',
+    title: '悲劇の題材',
+    url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20tertium#urn:lofts:fhg.3.asclepiades_tragilensis',
+    file: 'DFHG/asclepiades-of-tragilos/ASCLEPIADES_TRAGILENSIS.txt',
+    unit: '断片',
+  },
+  herodor: {
+    author: 'herodorus',
+    title: 'ヘラクレス物語',
+    url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20secundum#urn:lofts:fhg.2.herodorus_heracleensis',
+    file: 'DFHG/herodorus/HERODORUS_HERACLEENSIS.txt',
+    unit: '断片',
+  },
 } as const satisfies Record<string, Work>;
 
 export type WorkId = keyof typeof works;
@@ -306,6 +365,8 @@ export function sourceUrl(workId: WorkId, loc: string): string {
 /** 「ヘシオドス『神統記』270–283」「ペレキュデス『歴史』断片 22」のような出典表記。 */
 export function citeLabel(workId: WorkId, loc: string): string {
   const work: Work = works[workId];
+  if ('part' in work && work.part?.loc === loc)
+    return `${authors[work.author].name}『${work.title}』（${work.part.label}）`;
   const unit = 'unit' in work && work.unit ? `${work.unit} ` : '';
   return `${authors[work.author].name}『${work.title}』${unit}${loc.replace('-', '–')}`;
 }
