@@ -49,6 +49,7 @@ export default defineConfig({
             { label: 'カテゴリ一覧', link: '/categories/' },
             { label: '執筆待ちの記事', link: '/wanted/' },
             { label: '編集方針', link: '/policy/' },
+            { label: '出典の著者', link: '/authors/' },
           ],
         },
         {

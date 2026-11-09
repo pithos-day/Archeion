@@ -1,0 +1,64 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { type AuthorId, authors, type Work, works } from '../data/sources';
+
+/** 年代係数ごとの見出し。編集方針 (/policy/) の定量基準の表と同じ区分。 */
+const ERAS = [
+  { era: 3, label: '前8〜7世紀' },
+  { era: 2, label: '前6〜5世紀' },
+  { era: 1, label: '前4世紀以降' },
+] as const;
+
+/** 著者 → 作品名 (重複なし、登録順)。 */
+const titlesByAuthor = new Map<AuthorId, string[]>();
+for (const work of Object.values(works) as Work[]) {
+  const titles = titlesByAuthor.get(work.author) ?? [];
+  if (!titles.includes(work.title)) titles.push(work.title);
+  titlesByAuthor.set(work.author, titles);
+}
+
+const entries = (Object.entries(authors) as [AuthorId, (typeof authors)[AuthorId]][]).sort(
+  ([, a], [, b]) => a.year - b.year,
+);
+
+function formatYear(year: number): string {
+  return year < 0 ? `前${-year}年ごろ` : `${year}年ごろ`;
+}
+---
+
+<StarlightPage frontmatter={{ title: '出典の著者', tableOfContents: false }}>
+  <p>
+    記事の脚注と論点表で出典にしている著者の一覧です（{entries.length} 人）。年代係数は、<a
+      href="/policy/">編集方針</a
+    >の定量基準でスコアの計算に使う値です。
+  </p>
+  {
+    ERAS.map(({ era, label }) => (
+      <>
+        <h2>
+          年代係数 {era}（{label}）
+        </h2>
+        <table>
+          <thead>
+            <tr>
+              <th>著者</th>
+              <th>活動年</th>
+              <th>作品</th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries
+              .filter(([, author]) => author.era === era)
+              .map(([id, author]) => (
+                <tr id={id}>
+                  <td>{author.name}</td>
+                  <td>{formatYear(author.year)}</td>
+                  <td>{(titlesByAuthor.get(id) ?? []).map((title) => `『${title}』`).join('、')}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </>
+    ))
+  }
+</StarlightPage>
