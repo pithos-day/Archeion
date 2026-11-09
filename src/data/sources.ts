@@ -53,7 +53,12 @@ interface CtsWork extends WorkBase {
 
 /** CTS URN のない作品。リンク先と原典ファイルを個別に指定する。 */
 interface LocalWork extends WorkBase {
-  /** 出典のリンク先。脚注では `<url>#<箇所>` と書く。 */
+  /**
+   * 出典のリンク先。脚注では `<url>#<箇所>` と書く。
+   * DFHG の断片集は、著者のアンカー (`#urn:lofts:fhg.1.<著者>`) まで含めて書く。脚注では
+   * その続きに断片の URN の残りを書く (`<url>.pherecydis_fragmenta.historiai.liber_secundus:27`)。
+   * 断片の URN は、原典ファイルの断片の見出しの下にある。
+   */
   url: string;
   /**
    * 原典ファイル。原典コレクションの最上位からの相対パス。
@@ -246,7 +251,7 @@ export const works = {
   pherecyd: {
     author: 'pherecydes',
     title: '歴史',
-    url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20primum',
+    url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20primum#urn:lofts:fhg.1.pherecydes',
     file: 'DFHG/pherecydes-of-athens/PHERECYDES.txt',
     unit: '断片',
   },
@@ -277,10 +282,12 @@ export const SCAIFE_READER = 'https://scaife.perseus.org/reader/';
 /**
  * 原文の該当箇所を開く URL。`loc` は `4.765-803` のような箇所。
  * CTS URN のある作品は Scaife Viewer、ない作品は `<url>#<箇所>`。
+ * url にアンカーを含む作品 (DFHG) は、箇所から断片の URN を作れないので、著者の位置を開く。
  */
 export function sourceUrl(workId: WorkId, loc: string): string {
   const work: Work = works[workId];
-  return 'urn' in work ? `${SCAIFE_READER}${work.urn}:${loc}/` : `${work.url}#${loc}`;
+  if ('urn' in work) return `${SCAIFE_READER}${work.urn}:${loc}/`;
+  return work.url.includes('#') ? work.url : `${work.url}#${loc}`;
 }
 
 /** 「ヘシオドス『神統記』270–283」「ペレキュデス『歴史』断片 22」のような出典表記。 */

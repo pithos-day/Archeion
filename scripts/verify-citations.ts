@@ -5,7 +5,8 @@
  *
  * - 脚注: `[ラベル](https://scaife.perseus.org/reader/<URN>:<箇所>/) «原文»` の原文が、
  *   原典の該当箇所に含まれているか (途中を「…」で省いた引用は、各部分が順に含まれているか)。
- *   CTS URN のない作品は、出典レジストリの URL を使って `[ラベル](<url>#<箇所>) «原文»` と書く
+ *   CTS URN のない作品は、出典レジストリの URL を使って `[ラベル](<url>#<箇所>) «原文»` と書く。
+ *   DFHG の断片は `[ラベル](<url>.<断片の URN の残り>) «原文»` と書き、URN が原典にあるかも確かめる
  * - 論点表 (src/data/claims/*.ts): 出典の箇所が原典に実在するか
  *
  * 原典の場所は環境変数 MYTH_CORPUS (既定は ~/Documents/greek-mythology)。
@@ -178,19 +179,33 @@ function containsQuote(passage: string, quote: string): boolean {
 const LINK = /\]\(([^)\s]+)\)/g;
 const SCAIFE_REF = /^(urn:cts:[^:]+:[^:]+):([^/]+)\/?$/;
 
-const localWorks = new Map(
-  Object.values<Work>(works).flatMap((work) => ('urn' in work ? [] : [[work.url, work]])),
-);
+const localWorks = Object.values<Work>(works).flatMap((work) => ('urn' in work ? [] : [work]));
 
-/** 脚注のリンク先から、原典と箇所を求める。出典へのリンクでなければ undefined。 */
-function resolveLink(url: string): { source: Source; loc: string } | undefined {
+/**
+ * 脚注のリンク先から、原典と箇所を求める。出典へのリンクでなければ undefined。
+ * `anchored` は、箇所の代わりに原典のアンカー (DFHG の断片の URN) を指しているとき。
+ */
+function resolveLink(url: string): { source: Source; loc: string; anchored: boolean } | undefined {
   if (url.startsWith(SCAIFE_READER)) {
     const ref = url.slice(SCAIFE_READER.length).match(SCAIFE_REF);
-    return ref ? { source: { urn: ref[1] }, loc: ref[2] } : undefined;
+    return ref ? { source: { urn: ref[1] }, loc: ref[2], anchored: false } : undefined;
   }
-  const hash = url.lastIndexOf('#');
-  const work = hash === -1 ? undefined : localWorks.get(url.slice(0, hash));
-  return work ? { source: work, loc: decodeURIComponent(url.slice(hash + 1)) } : undefined;
+  for (const work of localWorks) {
+    if (!url.startsWith(work.url)) continue;
+    const anchorStart = work.url.indexOf('#');
+    if (anchorStart !== -1)
+      return { source: work, loc: url.slice(anchorStart + 1), anchored: true };
+    if (url[work.url.length] === '#') {
+      const loc = decodeURIComponent(url.slice(work.url.length + 1));
+      return { source: work, loc, anchored: false };
+    }
+  }
+  return undefined;
+}
+
+/** 原典に `[アンカー]` と書いてある箇所。なければ undefined。 */
+function locOfAnchor(source: Source, anchor: string): string | undefined {
+  return loadPassages(source).find(([, text]) => text.includes(`[${anchor}]`))?.[0];
 }
 
 function verifyFootnote(where: string, definition: string): void {
@@ -203,7 +218,7 @@ function verifyFootnote(where: string, definition: string): void {
     return;
   }
   links.forEach((link, index) => {
-    const { source, loc } = link;
+    const { source, loc, anchored } = link;
     const ref = `${describe(source)}:${loc}`;
     const segmentEnd = links[index + 1]?.index ?? definition.length;
     const segment = definition.slice(link.index + link.length, segmentEnd);
@@ -214,7 +229,8 @@ function verifyFootnote(where: string, definition: string): void {
     }
     let passage: string | undefined;
     try {
-      passage = getPassage(source, loc);
+      const at = anchored ? locOfAnchor(source, loc) : loc;
+      passage = at === undefined ? undefined : getPassage(source, at);
     } catch (error) {
       errors.push(`${where}: ${(error as Error).message}`);
       return;
