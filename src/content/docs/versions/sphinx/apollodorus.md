@@ -7,7 +7,7 @@ versionLabel: アポロドロス版
 versionOrder: 1
 ---
 
-この版は、後1〜2世紀ごろの神話集、[アポロドロス](/articles/apollodorus/)『ビブリオテーケー』だけにもとづく。総合版との大きな違いは、スフィンクスの親、[テーバイ](/articles/thebes/)に送った神、そしてスフィンクスの最期である。
+この版は、後1〜2世紀ごろの神話集、[アポロドロス](/authors/#apollodorus)『ビブリオテーケー』だけにもとづく。総合版との大きな違いは、スフィンクスの親、[テーバイ](/articles/thebes/)に送った神、そしてスフィンクスの最期である。
 
 **スフィンクス**は、[テュポン](/articles/typhon/)と[エキドナ](/articles/echidna/)の子で、女神[ヘラ](/articles/hera/)がテーバイに送った怪物である[^aps-sent]。
 

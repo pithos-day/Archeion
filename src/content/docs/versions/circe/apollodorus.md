@@ -7,7 +7,7 @@ versionLabel: アポロドロス版
 versionOrder: 1
 ---
 
-この版は、後1〜2世紀ごろの神話集、[アポロドロス](/articles/apollodorus/)『ビブリオテーケー』とその『摘要』だけにもとづく。総合版との大きな違いは、キルケーが部下を変えた獣の種類と、[オデュッセウス](/articles/odysseus/)とのあいだの子である。
+この版は、後1〜2世紀ごろの神話集、[アポロドロス](/authors/#apollodorus)『ビブリオテーケー』とその『摘要』だけにもとづく。総合版との大きな違いは、キルケーが部下を変えた獣の種類と、[オデュッセウス](/articles/odysseus/)とのあいだの子である。
 
 **キルケー**は、[ヘリオス](/articles/helios/)と[ペルセ](/articles/perse/)の娘で、[アイエテス](/articles/aeetes/)の姉妹である。[アイアイエ](/articles/aeaea/)島に住み、あらゆる薬に通じていた[^apc-island]。
 

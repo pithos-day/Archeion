@@ -2,6 +2,7 @@
  * 記事の本文で初めて出てくる固有名詞に、記事へのリンクを付ける。
  *
  * - 名前と slug の対応は src/data/names.ts。記事のない名前もリンクする (赤リンクになる)
+ * - 出典の著者 (src/data/sources.ts の authors) は、著者の一覧の行 (`/authors/#<id>`) へリンクする
  * - 記事ごとに、同じリンク先へは最初の 1 回だけ。すでにリンクがあれば付けない
  * - 見出し、脚注、表、JSX の行、『作品名』、«原文»、既存のリンクの中は対象外
  * - 前後がカタカナの箇所は別の語の一部とみなす (「ヘラ」と「ヘラクレス」など)
@@ -11,11 +12,18 @@
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { names } from '../src/data/names.ts';
+import { authors } from '../src/data/sources.ts';
 
 const DOCS = 'src/content/docs';
 const KATAKANA = /[ァ-ヴー・]/;
 const PROTECTED = /『[^』]*』|\[[^\]]*\]\([^)]*\)|\[\^[^\]]*\]|«[^»]*»/g;
 const SKIPPED_LINE = /^(#|\[\^|import |<|\||\s)/;
+
+/** 表記 → リンク先。長い表記から先に探す (「ペルセウス」より前に「ペルセ」を見ないように)。 */
+const targets: [string, string][] = [
+  ...Object.entries(names).map(([name, slug]): [string, string] => [name, `/articles/${slug}/`]),
+  ...Object.entries(authors).map(([id, { name }]): [string, string] => [name, `/authors/#${id}`]),
+].sort(([a], [b]) => b.length - a.length);
 
 function articleFiles(): string[] {
   const files = readdirSync(join(DOCS, 'articles')).map((name) => join(DOCS, 'articles', name));
@@ -53,22 +61,21 @@ function linkFile(file: string): string[] {
   const bodyStart = text.startsWith('---') ? text.indexOf('\n---\n', 3) + 5 : 0;
   const lines = text.slice(bodyStart).split('\n');
   const own = ownSlug(file, text);
-  const linked = new Set([own]);
-  for (const [, slug] of text.matchAll(/\]\(\/articles\/([a-z0-9-]+)\/\)/g)) linked.add(slug);
-  for (const [, slug] of text.matchAll(/href="\/articles\/([a-z0-9-]+)\/"/g)) linked.add(slug);
+  const linked = new Set([`/articles/${own}/`]);
+  for (const [, href] of text.matchAll(/(?:\]\(|href=")(\/(?:articles|authors)\/[^)"]*)/g)) {
+    linked.add(href);
+  }
 
-  // 長い名前から先に探す (「ペルセウス」より前に「ペルセ」を見ないように)
-  const entries = Object.entries(names).sort(([a], [b]) => b.length - a.length);
   const added: string[] = [];
-  for (const [name, slug] of entries) {
-    if (linked.has(slug)) continue;
+  for (const [name, href] of targets) {
+    if (linked.has(href)) continue;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i] ?? '';
       if (line.trim() === '' || SKIPPED_LINE.test(line)) continue;
       const at = findName(line, name);
       if (at === -1) continue;
-      lines[i] = `${line.slice(0, at)}[${name}](/articles/${slug}/)${line.slice(at + name.length)}`;
-      linked.add(slug);
+      lines[i] = `${line.slice(0, at)}[${name}](${href})${line.slice(at + name.length)}`;
+      linked.add(href);
       added.push(name);
       break;
     }

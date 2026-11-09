@@ -7,7 +7,7 @@ versionLabel: オウィディウス版
 versionOrder: 1
 ---
 
-この版は、ローマの詩人[オウィディウス](/articles/ovid/)の『変身物語』（後8年ごろ）だけにもとづく。[ペルセウス](/articles/perseus/)自身が、エチオピアの王[ケペウス](/articles/cepheus/)の宴で語る形をとっている。
+この版は、ローマの詩人[オウィディウス](/authors/#ovid)の『変身物語』（後8年ごろ）だけにもとづく。[ペルセウス](/articles/perseus/)自身が、エチオピアの王[ケペウス](/articles/cepheus/)の宴で語る形をとっている。
 
 **メドゥーサ**は、[ポルキュス](/articles/phorcys/)の娘である[^met-coral]。もとは並ぶ者のない美しい娘だったが、アテナ（[ミネルウァ](/articles/athena/)）の神殿で[ネプトゥヌス](/articles/poseidon/)（ポセイドン）に辱められ、その罰として髪を蛇に変えられた[^met-temple]。
 

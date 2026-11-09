@@ -7,7 +7,7 @@ versionLabel: エウリピデス版
 versionOrder: 1
 ---
 
-この版は、[アテナイ](/articles/athens/)の悲劇詩人[エウリピデス](/articles/euripides/)の『ヘラクレス』と『アルケスティス』だけにもとづく。総合版との大きな違いは、ヘラクレスが功業に就いた理由、狂気に襲われた時期、そして死後の行方である。
+この版は、[アテナイ](/articles/athens/)の悲劇詩人[エウリピデス](/authors/#euripides)の『ヘラクレス』と『アルケスティス』だけにもとづく。総合版との大きな違いは、ヘラクレスが功業に就いた理由、狂気に襲われた時期、そして死後の行方である。
 
 **ヘラクレス**は、[ゼウス](/articles/zeus/)と床を共にした[アルクメネ](/articles/alcmene/)の子で、[アルゴス](/articles/argos/)人[アムピトリュオン](/articles/amphitryon/)が父と呼ばれる[^her-father]。十二の功業を果たして冥府から帰った後、[ヘラ](/articles/hera/)の送った狂気に襲われて自分の妻子を殺した[^her-iris][^her-megara]。
 

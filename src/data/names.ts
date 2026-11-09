@@ -4,6 +4,7 @@
  * 記事の本文で初めて出てくる固有名詞にリンクを付けるのに使う (`pnpm link:names`)。
  * 記事がまだない名前もここに登録する。そのリンクは赤リンクになり、執筆待ちの記事として一覧に載る。
  * 同じ人物・場所の別の表記 (ローマ名など) は、同じ slug に向ける。
+ * 出典の著者はここに書かない。src/data/sources.ts の authors から、著者の一覧 (`/authors/`) へリンクする。
  */
 export const names: Record<string, string> = {
   // 神々
@@ -193,22 +194,4 @@ export const names: Record<string, string> = {
   テスプロトイ: 'thesprotians',
   ケパレニア: 'cephallenians',
   アルゴナウタイ: 'argonauts',
-  // 著者
-  ホメロス: 'homer',
-  ヘシオドス: 'hesiod',
-  ピンダロス: 'pindar',
-  アイスキュロス: 'aeschylus',
-  ソフォクレス: 'sophocles',
-  エウリピデス: 'euripides',
-  アポロニオス: 'apollonius-of-rhodes',
-  ディオドロス: 'diodorus-siculus',
-  オウィディウス: 'ovid',
-  アポロドロス: 'apollodorus',
-  パウサニアス: 'pausanias',
-  プルタルコス: 'plutarch',
-  ノンノス: 'nonnus',
-  ペレキュデス: 'pherecydes',
-  ヒュギーヌス: 'hyginus',
-  ヘロドロス: 'herodorus',
-  アスクレピアデス: 'asclepiades-of-tragilos',
 };
