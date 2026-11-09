@@ -12,6 +12,7 @@ const claims: ArticleClaims = [
           { work: 'hes-th', loc: '956-957', kind: 'narrative' },
           { work: 'ov-met', loc: '14.10', kind: 'mention' },
           { work: 'apollod-ep', loc: '7.14', kind: 'narrative' },
+          { work: 'hyg-fab', loc: 'pr', kind: 'narrative' },
         ],
       },
       {
@@ -34,6 +35,10 @@ const claims: ArticleClaims = [
       {
         label: 'イタリアの岬（キルカイオン）',
         sources: [{ work: 'diod-1-5', loc: '4.45.5', kind: 'mention' }],
+      },
+      {
+        label: 'アエナリア島',
+        sources: [{ work: 'hyg-fab', loc: '125.8', kind: 'narrative' }],
       },
     ],
   },
@@ -75,7 +80,26 @@ const claims: ArticleClaims = [
       },
       {
         label: 'テレゴノス',
-        sources: [{ work: 'apollod-ep', loc: '7.16', kind: 'narrative' }],
+        sources: [
+          { work: 'telegonia', loc: 'telegonia', kind: 'mention' },
+          { work: 'apollod-ep', loc: '7.16', kind: 'narrative' },
+        ],
+      },
+      {
+        label: 'ナウシトオスとテレゴノス',
+        sources: [{ work: 'hyg-fab', loc: '125.10', kind: 'narrative' }],
+      },
+    ],
+  },
+  {
+    label: 'オデュッセウスの死後',
+    variants: [
+      {
+        label: 'テレマコスがキルケーを妻とした',
+        sources: [
+          { work: 'telegonia', loc: 'telegonia', kind: 'narrative' },
+          { work: 'hyg-fab', loc: '127.3', kind: 'narrative' },
+        ],
       },
     ],
   },
