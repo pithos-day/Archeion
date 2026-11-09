@@ -193,6 +193,12 @@ export const works = {
     title: '歴史叢書',
     urn: 'urn:cts:greekLit:tlg0060.tlg001.perseus-grc5',
   },
+  'diod-frag': {
+    author: 'diodorus-siculus',
+    title: '歴史叢書',
+    url: 'https://el.wikisource.org/w/index.php?title=%CE%99%CF%83%CF%84%CE%BF%CF%81%CE%B9%CE%BA%CE%AE_%CE%92%CE%B9%CE%B2%CE%BB%CE%B9%CE%BF%CE%B8%CE%AE%CE%BA%CE%B7&oldid=105741',
+    file: 'Wikisource/diodorus-siculus/historical-library/txt/historical-library.txt',
+  },
   'ov-met': {
     author: 'ovid',
     title: '変身物語',
