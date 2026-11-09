@@ -15,7 +15,10 @@ const claims: ArticleClaims = [
       },
       {
         label: 'テュポンとエキドナの子',
-        sources: [{ work: 'apollod-lib', loc: '3.5.8', kind: 'narrative' }],
+        sources: [
+          { work: 'apollod-lib', loc: '3.5.8', kind: 'narrative' },
+          { work: 'hyg-fab', loc: '151.1', kind: 'narrative' },
+        ],
       },
     ],
   },
@@ -57,6 +60,7 @@ const claims: ArticleClaims = [
       {
         label: '四本足にも二本足にも三本足にもなるものは何か（答えは人間）',
         sources: [
+          { work: 'asclep', loc: '21', kind: 'narrative' },
           { work: 'diod-1-5', loc: '4.64.3-4', kind: 'narrative' },
           { work: 'apollod-lib', loc: '3.5.8', kind: 'narrative' },
         ],
@@ -79,6 +83,7 @@ const claims: ArticleClaims = [
         sources: [
           { work: 'diod-1-5', loc: '4.64.4', kind: 'narrative' },
           { work: 'apollod-lib', loc: '3.5.8', kind: 'narrative' },
+          { work: 'hyg-fab', loc: '67.5', kind: 'narrative' },
         ],
       },
     ],

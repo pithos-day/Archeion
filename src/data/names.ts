@@ -209,4 +209,5 @@ export const names: Record<string, string> = {
   ペレキュデス: 'pherecydes',
   ヒュギーヌス: 'hyginus',
   ヘロドロス: 'herodorus',
+  アスクレピアデス: 'asclepiades-of-tragilos',
 };
