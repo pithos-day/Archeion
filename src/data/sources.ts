@@ -340,10 +340,9 @@ export const works = {
   },
   herodor: {
     author: 'herodorus',
-    title: 'ヘラクレス物語',
+    title: '断片集',
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20secundum#urn:lofts:fhg.2.herodorus_heracleensis',
     file: 'DFHG/herodorus/HERODORUS_HERACLEENSIS.txt',
-    unit: '断片',
   },
 } as const satisfies Record<string, Work>;
 
