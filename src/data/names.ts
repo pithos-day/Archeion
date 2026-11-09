@@ -208,4 +208,5 @@ export const names: Record<string, string> = {
   ノンノス: 'nonnus',
   ペレキュデス: 'pherecydes',
   ヒュギーヌス: 'hyginus',
+  ヘロドロス: 'herodorus',
 };
