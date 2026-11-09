@@ -78,6 +78,7 @@ description: Archeion のギリシャ神話の記事で、どの説を採るか�
 本文の記述には [1] の形の脚注を付ける。脚注には次を載せる。
 
 - 著者名・作品名・箇所（行番号、または巻・章・節）。[Scaife Viewer](https://scaife.perseus.org/) の該当箇所へリンクする
+  - Scaife Viewer にない作品（断片集など）は、出典レジストリ（`src/data/sources.ts`）に登録したリンク先を使い、`<URL>#<箇所>` の形でリンクする。箇所は、断片集なら断片番号
 - 引用の日本語訳（Archeion による）
 - 原典の原文（ギリシャ語、またはラテン語）。脚注の「［原語で表示］」で開く。途中を省いたところは「…」と書く
 
@@ -87,4 +88,4 @@ description: Archeion のギリシャ神話の記事で、どの説を採るか�
 
 ## 原典テキスト
 
-原文は [Perseus Digital Library](https://github.com/PerseusDL)（`canonical-greekLit` / `canonical-latinLit`）の TEI XML から引用している。これらのテキストは [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) で提供されている。
+原文は [Perseus Digital Library](https://github.com/PerseusDL)（`canonical-greekLit` / `canonical-latinLit`）と [First1KGreek](https://github.com/OpenGreekAndLatin/First1KGreek) の TEI XML、散逸した歴史家の断片は [DFHG](http://www.dfhg-project.org/)（Müller『ギリシア歴史家断片集』のデジタル版）から引用している。これらのテキストは [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) で提供されている。

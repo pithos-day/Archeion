@@ -4,17 +4,25 @@
  *   pnpm verify:citations
  *
  * - 脚注: `[ラベル](https://scaife.perseus.org/reader/<URN>:<箇所>/) «原文»` の原文が、
- *   原典の該当箇所に含まれているか (途中を「…」で省いた引用は、各部分が順に含まれているか)
+ *   原典の該当箇所に含まれているか (途中を「…」で省いた引用は、各部分が順に含まれているか)。
+ *   CTS URN のない作品は、出典レジストリの URL を使って `[ラベル](<url>#<箇所>) «原文»` と書く
  * - 論点表 (src/data/claims/*.ts): 出典の箇所が原典に実在するか
  *
  * 原典の場所は環境変数 MYTH_CORPUS (既定は ~/Documents/greek-mythology)。
- * 原典は Perseus と First1KGreek の TEI XML から作った txt で、ファイル名は `<URN の作品部分>.txt`。
+ * Perseus と First1KGreek の原典は TEI XML から作った txt で、ファイル名は `<URN の作品部分>.txt`。
+ * そのほかの原典は、出典レジストリ (src/data/sources.ts) にファイルのパスと形式を書く。
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { scaifeUrl, works } from '../src/data/sources.ts';
+import {
+  type LocalFormat,
+  SCAIFE_READER,
+  sourceUrl,
+  type Work,
+  works,
+} from '../src/data/sources.ts';
 import type { ArticleClaims } from '../src/lib/claims.ts';
 
 const ROOT = join(import.meta.dirname, '..');
@@ -55,29 +63,27 @@ const corpusFiles = new Map(
   ]),
 );
 
+/** 照合する原典。CTS URN、または原典ファイルのパスと形式で指定する。 */
+type Source = { urn: string } | { file: string; format: LocalFormat };
+
+function describe(source: Source): string {
+  return 'urn' in source ? source.urn : source.file;
+}
+
 /** 箇所 (`4.765` など) → 本文 の組を、原典の出てくる順に並べたもの。 */
 type Passages = [key: string, text: string][];
 
-const passageCache = new Map<string, Passages>();
+function appendPassage(passages: Passages, key: string, text: string): void {
+  const last = passages.at(-1);
+  if (last && last[0] === key) last[1] += ` ${text}`;
+  else passages.push([key, text]);
+}
 
-function loadPassages(urn: string): Passages {
-  const cached = passageCache.get(urn);
-  if (cached) return cached;
-  const workPart = urn.split(':').at(-1) ?? '';
-  const path = corpusFiles.get(workPart);
-  if (!path) throw new Error(`原典ファイルが見つからない: ${workPart}.txt (${CORPUS})`);
-
-  const lines = readFileSync(path, 'utf8').split('\n');
-  const bodyStart = lines.findIndex((line) => /^={10,}$/.test(line)) + 1;
+/** TEI XML から作った txt。見出し (`# Book 1`) と韻文の行番号が箇所になる。 */
+function parseTei(lines: string[]): Passages {
   const headingPath: (string | undefined)[] = [];
   const passages: Passages = [];
-  const append = (key: string, text: string) => {
-    const last = passages.at(-1);
-    if (last && last[0] === key) last[1] += ` ${text}`;
-    else passages.push([key, text]);
-  };
-
-  for (const line of lines.slice(bodyStart)) {
+  for (const line of lines) {
     const heading = line.match(/^(#+)\s+(\S+)\s+(\S+)/);
     if (heading) {
       const [, hashes, word, value] = heading;
@@ -90,10 +96,54 @@ function loadPassages(urn: string): Passages {
     if (line.startsWith('#') || line.trim() === '') continue;
     const prefix = headingPath.filter((part) => part !== undefined);
     const verse = line.match(/^\s*(\d+[a-z]?)\s{2}(.*)$/);
-    if (verse) append([...prefix, verse[1]].join('.'), verse[2]);
-    else append(prefix.join('.'), line.trim());
+    if (verse) appendPassage(passages, [...prefix, verse[1]].join('.'), verse[2]);
+    else appendPassage(passages, prefix.join('.'), line.trim());
   }
-  passageCache.set(urn, passages);
+  return passages;
+}
+
+/**
+ * DFHG の txt。`--- fragment 22  [典拠]  (FHG p.75)` の行から次の断片までが 1 つの箇所。
+ * 同じ番号の断片が複数の典拠で続くときは、1 つの箇所にまとめる。
+ */
+function parseDfhg(lines: string[]): Passages {
+  const passages: Passages = [];
+  let fragment: string | undefined;
+  for (const line of lines) {
+    const start = line.match(/^--- fragment (\S+)/);
+    if (start) fragment = start[1];
+    else if (fragment && !line.startsWith('#') && line.trim() !== '') {
+      appendPassage(passages, fragment, line.replace(/^\[Lat\.\]\s*/, '').trim());
+    }
+  }
+  return passages;
+}
+
+const LOCAL_PARSERS: Record<LocalFormat, (lines: string[]) => Passages> = {
+  dfhg: parseDfhg,
+};
+
+const passageCache = new Map<string, Passages>();
+
+function loadPassages(source: Source): Passages {
+  const cacheKey = describe(source);
+  const cached = passageCache.get(cacheKey);
+  if (cached) return cached;
+
+  let path: string | undefined;
+  if ('urn' in source) {
+    const workPart = source.urn.split(':').at(-1) ?? '';
+    path = corpusFiles.get(workPart);
+    if (!path) throw new Error(`原典ファイルが見つからない: ${workPart}.txt (${CORPUS})`);
+  } else {
+    path = join(CORPUS, source.file);
+    if (!existsSync(path)) throw new Error(`原典ファイルが見つからない: ${path}`);
+  }
+
+  const lines = readFileSync(path, 'utf8').split('\n');
+  const body = lines.slice(lines.findIndex((line) => /^={10,}$/.test(line)) + 1);
+  const passages = 'urn' in source ? parseTei(body) : LOCAL_PARSERS[source.format](body);
+  passageCache.set(cacheKey, passages);
   return passages;
 }
 
@@ -114,8 +164,8 @@ function matchesKey(key: string, ref: string): boolean {
 }
 
 /** 原典の箇所の本文を返す。見つからなければ undefined。 */
-function getPassage(urn: string, loc: string): string | undefined {
-  const passages = loadPassages(urn);
+function getPassage(source: Source, loc: string): string | undefined {
+  const passages = loadPassages(source);
   const [start, end] = splitRange(loc);
   const from = passages.findIndex(([key]) => matchesKey(key, start));
   const to = passages.findLastIndex(([key]) => matchesKey(key, end));
@@ -150,19 +200,38 @@ function containsQuote(passage: string, quote: string): boolean {
 
 // ---------- 脚注 ----------
 
-const SCAIFE_LINK =
-  /\]\(https:\/\/scaife\.perseus\.org\/reader\/(urn:cts:[^:]+:[^:]+):([^/)]+)\/?\)/g;
+const LINK = /\]\(([^)\s]+)\)/g;
+const SCAIFE_REF = /^(urn:cts:[^:]+:[^:]+):([^/]+)\/?$/;
+
+const localWorks = new Map(
+  Object.values<Work>(works).flatMap((work) => ('urn' in work ? [] : [[work.url, work]])),
+);
+
+/** 脚注のリンク先から、原典と箇所を求める。出典へのリンクでなければ undefined。 */
+function resolveLink(url: string): { source: Source; loc: string } | undefined {
+  if (url.startsWith(SCAIFE_READER)) {
+    const ref = url.slice(SCAIFE_READER.length).match(SCAIFE_REF);
+    return ref ? { source: { urn: ref[1] }, loc: ref[2] } : undefined;
+  }
+  const hash = url.lastIndexOf('#');
+  const work = hash === -1 ? undefined : localWorks.get(url.slice(0, hash));
+  return work ? { source: work, loc: decodeURIComponent(url.slice(hash + 1)) } : undefined;
+}
 
 function verifyFootnote(where: string, definition: string): void {
-  const links = [...definition.matchAll(SCAIFE_LINK)];
+  const links = [...definition.matchAll(LINK)].flatMap((match) => {
+    const resolved = resolveLink(match[1]);
+    return resolved ? [{ ...resolved, index: match.index, length: match[0].length }] : [];
+  });
   if (links.length === 0) {
-    errors.push(`${where}: 脚注に Scaife Viewer へのリンクがない`);
+    errors.push(`${where}: 脚注に出典 (Scaife Viewer か出典レジストリの URL) へのリンクがない`);
     return;
   }
   links.forEach((link, index) => {
-    const [, urn, loc] = link;
+    const { source, loc } = link;
+    const ref = `${describe(source)}:${loc}`;
     const segmentEnd = links[index + 1]?.index ?? definition.length;
-    const segment = definition.slice((link.index ?? 0) + link[0].length, segmentEnd);
+    const segment = definition.slice(link.index + link.length, segmentEnd);
     const quote = segment.match(/«([^»]+)»/)?.[1];
     if (!quote) {
       errors.push(`${where}: ${loc} の原文 «…» がない`);
@@ -170,15 +239,15 @@ function verifyFootnote(where: string, definition: string): void {
     }
     let passage: string | undefined;
     try {
-      passage = getPassage(urn, loc);
+      passage = getPassage(source, loc);
     } catch (error) {
       errors.push(`${where}: ${(error as Error).message}`);
       return;
     }
     if (passage === undefined) {
-      errors.push(`${where}: 箇所 ${urn}:${loc} が原典にない`);
+      errors.push(`${where}: 箇所 ${ref} が原典にない`);
     } else if (!containsQuote(passage, quote)) {
-      errors.push(`${where}: 引用が ${urn}:${loc} の本文と一致しない\n    引用: ${quote}`);
+      errors.push(`${where}: 引用が ${ref} の本文と一致しない\n    引用: ${quote}`);
     }
     checkedQuotes += 1;
   });
@@ -203,8 +272,8 @@ for (const file of listFiles(CLAIMS_DIR, /\.ts$/)) {
       for (const source of variant.sources) {
         const where = `${relative(ROOT, file)}: ${topic.label} / ${variant.label}`;
         try {
-          if (getPassage(works[source.work].urn, source.loc) === undefined) {
-            errors.push(`${where}: 箇所 ${scaifeUrl(source.work, source.loc)} が原典にない`);
+          if (getPassage(works[source.work], source.loc) === undefined) {
+            errors.push(`${where}: 箇所 ${sourceUrl(source.work, source.loc)} が原典にない`);
           }
         } catch (error) {
           errors.push(`${where}: ${(error as Error).message}`);

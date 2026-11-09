@@ -31,17 +31,39 @@ export const authors = {
   pausanias: { name: 'パウサニアス', era: 1, year: 160 },
   plutarch: { name: 'プルタルコス', era: 1, year: 100 },
   nonnus: { name: 'ノンノス', era: 1, year: 450 },
+  pherecydes: { name: 'ペレキュデス', era: 2, year: -450 },
 } as const satisfies Record<string, Author>;
 
 export type AuthorId = keyof typeof authors;
 
-export interface Work {
+interface WorkBase {
   author: AuthorId;
   /** 作品名 (日本語)。 */
   title: string;
-  /** Perseus の CTS URN (版まで含む)。原典ファイル名と Scaife Viewer のリンクに使う。 */
+}
+
+/** Scaife Viewer で開ける作品 (Perseus、First1KGreek)。 */
+interface CtsWork extends WorkBase {
+  /** CTS URN (版まで含む)。原典ファイル名と Scaife Viewer のリンクに使う。 */
   urn: string;
 }
+
+/**
+ * 原典ファイルの形式。箇所の数え方が決まる。
+ *   dfhg: DFHG (Müller『ギリシア歴史家断片集』)。箇所は断片番号 (`22`、`102a`)
+ */
+export type LocalFormat = 'dfhg';
+
+/** CTS URN のない作品。リンク先と原典ファイルを個別に指定する。 */
+interface LocalWork extends WorkBase {
+  /** 出典のリンク先。脚注では `<url>#<箇所>` と書く。 */
+  url: string;
+  /** 原典ファイル。原典コレクションの最上位からの相対パス。 */
+  file: string;
+  format: LocalFormat;
+}
+
+export type Work = CtsWork | LocalWork;
 
 export const works = {
   'hom-il': {
@@ -220,17 +242,31 @@ export const works = {
     title: 'テセウス伝',
     urn: 'urn:cts:greekLit:tlg0007.tlg001.perseus-grc2',
   },
+  pherecyd: {
+    author: 'pherecydes',
+    title: '歴史',
+    url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20primum',
+    file: 'DFHG/pherecydes-of-athens/PHERECYDES.txt',
+    format: 'dfhg',
+  },
 } as const satisfies Record<string, Work>;
 
 export type WorkId = keyof typeof works;
 
-/** Scaife Viewer で原文の該当箇所を開く URL。`loc` は `4.765-803` のような箇所。 */
-export function scaifeUrl(workId: WorkId, loc: string): string {
-  return `https://scaife.perseus.org/reader/${works[workId].urn}:${loc}/`;
+export const SCAIFE_READER = 'https://scaife.perseus.org/reader/';
+
+/**
+ * 原文の該当箇所を開く URL。`loc` は `4.765-803` のような箇所。
+ * CTS URN のある作品は Scaife Viewer、ない作品は `<url>#<箇所>`。
+ */
+export function sourceUrl(workId: WorkId, loc: string): string {
+  const work: Work = works[workId];
+  return 'urn' in work ? `${SCAIFE_READER}${work.urn}:${loc}/` : `${work.url}#${loc}`;
 }
 
-/** 「ヘシオドス『神統記』270–283」のような出典表記。 */
+/** 「ヘシオドス『神統記』270–283」「ペレキュデス『歴史』断片 22」のような出典表記。 */
 export function citeLabel(workId: WorkId, loc: string): string {
-  const work = works[workId];
-  return `${authors[work.author].name}『${work.title}』${loc.replace('-', '–')}`;
+  const work: Work = works[workId];
+  const unit = 'format' in work && work.format === 'dfhg' ? '断片 ' : '';
+  return `${authors[work.author].name}『${work.title}』${unit}${loc.replace('-', '–')}`;
 }

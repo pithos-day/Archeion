@@ -1,5 +1,5 @@
 ---
-import { authors, citeLabel, scaifeUrl } from '../data/sources';
+import { authors, citeLabel, sourceUrl } from '../data/sources';
 import {
   type ArticleClaims,
   scoreTopic,
@@ -58,7 +58,7 @@ function formatScore(score: number): string {
               <ul>
                 {variant.sources.map((source) => (
                   <li>
-                    <a href={scaifeUrl(source.work, source.loc)}>{citeLabel(source.work, source.loc)}</a>
+                    <a href={sourceUrl(source.work, source.loc)}>{citeLabel(source.work, source.loc)}</a>
                     {source.kind === 'mention' && '（言及）'}
                   </li>
                 ))}
