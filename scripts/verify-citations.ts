@@ -8,7 +8,7 @@
  * - 論点表 (src/data/claims/*.ts): 出典の箇所が原典に実在するか
  *
  * 原典の場所は環境変数 MYTH_CORPUS (既定は ~/Documents/greek-mythology)。
- * 原典は Perseus の TEI XML から作った txt で、ファイル名は `<URN の作品部分>.txt`。
+ * 原典は Perseus と First1KGreek の TEI XML から作った txt で、ファイル名は `<URN の作品部分>.txt`。
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -22,8 +22,15 @@ const CORPUS = process.env.MYTH_CORPUS ?? join(homedir(), 'Documents/greek-mytho
 const CONTENT_DIR = join(ROOT, 'src/content/docs');
 const CLAIMS_DIR = join(ROOT, 'src/data/claims');
 
-/** 見出しのうち、箇所の番号として数えるもの (`# Book 1` など)。 */
-const NUMBERING_HEADINGS = new Set(['Book', 'Chapter', 'Section', 'Poem']);
+/**
+ * 見出しのうち、箇所の番号として数えるもの (`# Book 1` など)。
+ * 原典の TEI XML が CTS の引用単位として宣言している区分に合わせる。
+ * 2行目は First1KGreek の断片集と古注、Perseus のエピグラムで使う。
+ */
+const NUMBERING_HEADINGS = new Set([
+  ...['Book', 'Chapter', 'Section', 'Poem'],
+  ...['Volume', 'Work', 'Fragment', 'Epigram', 'Epigraph', 'Line', 'Part'],
+]);
 
 const errors: string[] = [];
 let checkedQuotes = 0;
