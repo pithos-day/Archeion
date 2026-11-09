@@ -150,6 +150,8 @@ export const names: Record<string, string> = {
   ベレロポンテス: 'bellerophon',
   アイギナ: 'aegina',
   アブデロス: 'abderus',
+  サルモネウス: 'salmoneus',
+  テュロ: 'tyro',
   // 場所・民族
   テーバイ: 'thebes',
   トロイア: 'troy',

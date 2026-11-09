@@ -22,6 +22,7 @@ const claims: ArticleClaims = [
         label: 'アトラスの娘メロペ',
         sources: [
           { work: 'apollod-lib', loc: '1.9.3', kind: 'narrative' },
+          { work: 'pherecyd', loc: '78', kind: 'mention' },
           { work: 'apollod-lib', loc: '3.10.1', kind: 'mention' },
           { work: 'ov-fast', loc: '4.175', kind: 'mention' },
         ],
@@ -90,6 +91,7 @@ const claims: ArticleClaims = [
           { work: 'soph-ph', loc: '417', kind: 'mention' },
           { work: 'eur-cyc', loc: '104', kind: 'mention' },
           { work: 'eur-ia', loc: '1362', kind: 'mention' },
+          { work: 'hyg-fab', loc: '201.2-4', kind: 'narrative' },
         ],
       },
     ],
@@ -100,9 +102,23 @@ const claims: ArticleClaims = [
       {
         label: 'ゼウスがアイギナをさらったことを、アソポスに告げた',
         sources: [
+          { work: 'pherecyd', loc: '78', kind: 'narrative' },
           { work: 'apollod-lib', loc: '1.9.3', kind: 'narrative' },
           { work: 'paus', loc: '2.5.1', kind: 'narrative' },
         ],
+      },
+      {
+        label: 'タナトスを縛り、冥府からも逃げ戻ったので、二度と逃げないようにされた',
+        sources: [{ work: 'pherecyd', loc: '78', kind: 'narrative' }],
+      },
+    ],
+  },
+  {
+    label: 'タナトス（死）',
+    variants: [
+      {
+        label: 'ゼウスが差し向けたタナトスを縛り、アレスが解くまで誰も死ななかった',
+        sources: [{ work: 'pherecyd', loc: '78', kind: 'narrative' }],
       },
     ],
   },
@@ -113,7 +129,9 @@ const claims: ArticleClaims = [
         label: '冥府で岩を押し上げ続ける',
         sources: [
           { work: 'hom-od', loc: '11.593-600', kind: 'narrative' },
+          { work: 'pherecyd', loc: '78', kind: 'narrative' },
           { work: 'eur-her', loc: '1103', kind: 'mention' },
+          { work: 'hyg-fab', loc: '60.3', kind: 'narrative' },
           { work: 'apollod-lib', loc: '1.9.3', kind: 'narrative' },
           { work: 'ov-met', loc: '4.460', kind: 'mention' },
         ],
