@@ -32,7 +32,6 @@ export const authors = {
   plutarch: { name: 'プルタルコス', era: 1, year: 100 },
   nonnus: { name: 'ノンノス', era: 1, year: 450 },
   pherecydes: { name: 'ペレキュデス', era: 2, year: -450 },
-  'pseudo-eratosthenes': { name: '偽エラトステネス', era: 1, year: 100 },
   hyginus: { name: 'ヒュギーヌス', era: 1, year: 150 },
   'antoninus-liberalis': { name: 'アントニヌス・リベラリス', era: 1, year: 200 },
 } as const satisfies Record<string, Author>;
@@ -260,12 +259,6 @@ export const works = {
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20primum#urn:lofts:fhg.1.pherecydes',
     file: 'DFHG/pherecydes-of-athens/PHERECYDES.txt',
     unit: '断片',
-  },
-  'eratosth-cat': {
-    author: 'pseudo-eratosthenes',
-    title: 'カタステリスモイ',
-    url: 'https://eulogikon.org/works/eratosthenes-cyrene-catasterisms-kly-ab',
-    file: 'Eulogikon/eratosthenes/catasterismi/txt/eratosthenes-cyrene-catasterisms-kly-ab.grc.txt',
   },
   'hyg-fab': {
     author: 'hyginus',
