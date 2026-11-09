@@ -10,6 +10,7 @@ export const names: Record<string, string> = {
   ゼウス: 'zeus',
   ヘラ: 'hera',
   ポセイドン: 'poseidon',
+  アムピトリテ: 'amphitrite',
   ネプトゥヌス: 'poseidon',
   ハデス: 'hades',
   プルトン: 'hades',
