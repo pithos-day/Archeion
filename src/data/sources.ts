@@ -312,7 +312,7 @@ export const works = {
     title: '小イリアス',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
     file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
-    part: { loc: 'ilias-parva', label: 'プロクロスの梗概' },
+    part: { loc: 'ilias_parva', label: 'プロクロスの梗概' },
   },
   telegonia: {
     author: 'eugammon',
