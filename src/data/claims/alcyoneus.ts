@@ -32,6 +32,10 @@ const claims: ArticleClaims = [
         label: '故郷のパレネ',
         sources: [{ work: 'apollod-lib', loc: '1.6.1', kind: 'narrative' }],
       },
+      {
+        label: 'コリントスのイストモス',
+        sources: [{ work: 'schol-pind-n', loc: '4.43', kind: 'narrative' }],
+      },
     ],
   },
   {
@@ -56,6 +60,10 @@ const claims: ArticleClaims = [
           { work: 'pind-i', loc: '6.31-35', kind: 'narrative' },
           { work: 'apollod-lib', loc: '1.6.1', kind: 'narrative' },
         ],
+      },
+      {
+        label: '投げつけられた岩を、ヘラクレスが棍棒で打ち返して殺した',
+        sources: [{ work: 'schol-pind-n', loc: '4.43', kind: 'narrative' }],
       },
     ],
   },
@@ -82,7 +90,10 @@ const claims: ArticleClaims = [
     variants: [
       {
         label: '石で戦車十二台と、その英雄二十四人を倒した',
-        sources: [{ work: 'pind-n', loc: '4.27-30', kind: 'narrative' }],
+        sources: [
+          { work: 'pind-n', loc: '4.27-30', kind: 'narrative' },
+          { work: 'schol-pind-n', loc: '4.43', kind: 'narrative' },
+        ],
       },
     ],
   },
@@ -92,6 +103,15 @@ const claims: ArticleClaims = [
       {
         label: 'ディオニュソスに向けて、トラキアのハイモス山の峰を投げつけた',
         sources: [{ work: 'nonn-dion', loc: '48.71-76', kind: 'narrative' }],
+      },
+    ],
+  },
+  {
+    label: '娘たち',
+    variants: [
+      {
+        label: '父の死後に海へ身を投げ、カワセミ（アルキュオネス）になった',
+        sources: [{ work: 'suda-lex', loc: '1.A.1298', kind: 'narrative' }],
       },
     ],
   },
