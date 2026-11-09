@@ -51,22 +51,17 @@ interface CtsWork extends WorkBase {
   urn: string;
 }
 
-/**
- * 原典ファイルの形式。箇所の数え方が決まる。
- *   dfhg: DFHG (Müller『ギリシア歴史家断片集』)。箇所は断片番号 (`22`、`102a`)
- *   numbered: 「12.」「XII.」で始まる行で章を区切った txt (Wikisource など)。
- *     箇所は章、または章.節 (`12`、`12.3`)。ローマ数字の章もアラビア数字で書く
- *   eulogikon: Eulogikon の Markdown。箇所は「### 」の見出し (`### book 1.3` は `1.3`、`### 1 5R` は `1.5R`)
- */
-export type LocalFormat = 'dfhg' | 'numbered' | 'eulogikon';
-
 /** CTS URN のない作品。リンク先と原典ファイルを個別に指定する。 */
 interface LocalWork extends WorkBase {
   /** 出典のリンク先。脚注では `<url>#<箇所>` と書く。 */
   url: string;
-  /** 原典ファイル。原典コレクションの最上位からの相対パス。 */
+  /**
+   * 原典ファイル。原典コレクションの最上位からの相対パス。
+   * 箇所は、ファイルの見出しの番号を「.」でつないだもの (`# Chapter 30` の `## Section 2` は `30.2`)。
+   */
   file: string;
-  format: LocalFormat;
+  /** 出典表記で箇所の前に付ける語 (断片集の「断片」など)。 */
+  unit?: string;
 }
 
 export type Work = CtsWork | LocalWork;
@@ -253,28 +248,25 @@ export const works = {
     title: '歴史',
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20primum',
     file: 'DFHG/pherecydes-of-athens/PHERECYDES.txt',
-    format: 'dfhg',
+    unit: '断片',
   },
   'eratosth-cat': {
     author: 'pseudo-eratosthenes',
     title: 'カタステリスモイ',
     url: 'https://eulogikon.org/works/eratosthenes-cyrene-catasterisms-kly-ab',
-    file: 'Eulogikon/eratosthenes/catasterismi/md/eratosthenes-cyrene-catasterisms-kly-ab.grc.md',
-    format: 'eulogikon',
+    file: 'Eulogikon/eratosthenes/catasterismi/txt/eratosthenes-cyrene-catasterisms-kly-ab.grc.txt',
   },
   'hyg-fab': {
     author: 'hyginus',
     title: '神話集',
     url: 'https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081',
     file: 'Wikisource/hyginus/fabulae/txt/fabulae.txt',
-    format: 'numbered',
   },
   'ant-lib': {
     author: 'antoninus-liberalis',
     title: '変身物語集',
     url: 'https://el.wikisource.org/w/index.php?title=%CE%9C%CE%B5%CF%84%CE%B1%CE%BC%CE%BF%CF%81%CF%86%CF%8E%CF%83%CE%B5%CF%89%CE%BD_%CF%83%CF%85%CE%BD%CE%B1%CE%B3%CF%89%CE%B3%CE%AE&oldid=148338',
-    file: 'Wikisource/antoninus-liberalis/metamorphoses/txt/metamorphoseon-synagoge.txt',
-    format: 'numbered',
+    file: 'Wikisource/antoninus-liberalis/metamorphoses/txt/metamorphoses.txt',
   },
 } as const satisfies Record<string, Work>;
 
@@ -294,6 +286,6 @@ export function sourceUrl(workId: WorkId, loc: string): string {
 /** 「ヘシオドス『神統記』270–283」「ペレキュデス『歴史』断片 22」のような出典表記。 */
 export function citeLabel(workId: WorkId, loc: string): string {
   const work: Work = works[workId];
-  const unit = 'format' in work && work.format === 'dfhg' ? '断片 ' : '';
+  const unit = 'unit' in work && work.unit ? `${work.unit} ` : '';
   return `${authors[work.author].name}『${work.title}』${unit}${loc.replace('-', '–')}`;
 }

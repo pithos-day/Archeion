@@ -9,20 +9,15 @@
  * - 論点表 (src/data/claims/*.ts): 出典の箇所が原典に実在するか
  *
  * 原典の場所は環境変数 MYTH_CORPUS (既定は ~/Documents/greek-mythology)。
- * Perseus と First1KGreek の原典は TEI XML から作った txt で、ファイル名は `<URN の作品部分>.txt`。
- * そのほかの原典は、出典レジストリ (src/data/sources.ts) にファイルのパスと形式を書く。
+ * 原典の txt は、どの入手元のものも同じ形式 (`=====` の行までがヘッダ、`# Book 1` などの見出し)。
+ * Perseus と First1KGreek の原典は、ファイル名が `<URN の作品部分>.txt`。
+ * そのほかの原典は、出典レジストリ (src/data/sources.ts) にファイルのパスを書く。
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import {
-  type LocalFormat,
-  SCAIFE_READER,
-  sourceUrl,
-  type Work,
-  works,
-} from '../src/data/sources.ts';
+import { SCAIFE_READER, sourceUrl, type Work, works } from '../src/data/sources.ts';
 import type { ArticleClaims } from '../src/lib/claims.ts';
 
 const ROOT = join(import.meta.dirname, '..');
@@ -33,11 +28,12 @@ const CLAIMS_DIR = join(ROOT, 'src/data/claims');
 /**
  * 見出しのうち、箇所の番号として数えるもの (`# Book 1` など)。
  * 原典の TEI XML が CTS の引用単位として宣言している区分に合わせる。
- * 2行目は First1KGreek の断片集と古注、Perseus のエピグラムで使う。
+ * 2行目は First1KGreek の断片集と古注、Perseus のエピグラム、
+ * Perseus 以外の原典 (原典コレクションの scripts/normalize.py が見出しを付ける) で使う。
  */
 const NUMBERING_HEADINGS = new Set([
   ...['Book', 'Chapter', 'Section', 'Poem'],
-  ...['Volume', 'Work', 'Fragment', 'Epigram', 'Epigraph', 'Line', 'Part'],
+  ...['Volume', 'Work', 'Fragment', 'Epigram', 'Epigraph', 'Line', 'Part', 'Page'],
 ]);
 
 const errors: string[] = [];
@@ -63,8 +59,8 @@ const corpusFiles = new Map(
   ]),
 );
 
-/** 照合する原典。CTS URN、または原典ファイルのパスと形式で指定する。 */
-type Source = { urn: string } | { file: string; format: LocalFormat };
+/** 照合する原典。CTS URN、または原典ファイルのパスで指定する。 */
+type Source = { urn: string } | { file: string };
 
 function describe(source: Source): string {
   return 'urn' in source ? source.urn : source.file;
@@ -79,7 +75,7 @@ function appendPassage(passages: Passages, key: string, text: string): void {
   else passages.push([key, text]);
 }
 
-/** TEI XML から作った txt。見出し (`# Book 1`) と韻文の行番号が箇所になる。 */
+/** 原典の txt を箇所ごとに分ける。見出し (`# Book 1`) と韻文の行番号が箇所になる。 */
 function parseTei(lines: string[]): Passages {
   const headingPath: (string | undefined)[] = [];
   const passages: Passages = [];
@@ -102,97 +98,6 @@ function parseTei(lines: string[]): Passages {
   return passages;
 }
 
-/**
- * DFHG の txt。`--- fragment 22  [典拠]  (FHG p.75)` の行から次の断片までが 1 つの箇所。
- * 同じ番号の断片が複数の典拠で続くときは、1 つの箇所にまとめる。
- */
-function parseDfhg(lines: string[]): Passages {
-  const passages: Passages = [];
-  let fragment: string | undefined;
-  for (const line of lines) {
-    const start = line.match(/^--- fragment (\S+)/);
-    if (start) fragment = start[1];
-    else if (fragment && !line.startsWith('#') && line.trim() !== '') {
-      appendPassage(passages, fragment, line.replace(/^\[Lat\.\]\s*/, '').trim());
-    }
-  }
-  return passages;
-}
-
-const ROMAN_DIGITS: Record<string, number> = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
-
-function romanToNumber(roman: string): number {
-  return [...roman].reduce((total, letter, index) => {
-    const value = ROMAN_DIGITS[letter] ?? 0;
-    return (ROMAN_DIGITS[roman[index + 1] ?? ''] ?? 0) > value ? total - value : total + value;
-  }, 0);
-}
-
-const MAX_CHAPTER_GAP = 20;
-
-/**
- * 章を「12.」「XII.」で始まる行で区切った txt。節は「3 」「[3] 」で始まる行で区切る。
- * 章の最初の、節の番号がない部分は第 1 節とする。箇所は `12.3` (ローマ数字はアラビア数字に直す)。
- * ローマ数字は、前の章より大きく、差が MAX_CHAPTER_GAP 以内の番号だけを章とみなす
- * (「C. Iulius」のような行を章と取り違えないため。本文の伝わらない章は番号が飛ぶ)。
- */
-function parseNumbered(lines: string[]): Passages {
-  const passages: Passages = [];
-  let chapter = 0;
-  let section = '1';
-  for (const line of lines) {
-    const start = line.match(/^\s*(?:(\d+)|([IVXLCDM]+))\.(?:\s+(.*))?$/);
-    const next = start?.[1] ? Number(start[1]) : start?.[2] ? romanToNumber(start[2]) : undefined;
-    let text = line.trim();
-    if (
-      next !== undefined &&
-      (start?.[1] || (next > chapter && next <= chapter + MAX_CHAPTER_GAP))
-    ) {
-      chapter = next;
-      section = '1';
-      text = start?.[3] ?? '';
-    } else {
-      const sub = line.match(/^\s*(?:\[(\d+)\]|(\d+))\s+(.*)$/);
-      if (sub) {
-        section = sub[1] ?? sub[2];
-        text = sub[3];
-      }
-    }
-    if (chapter > 0 && text !== '') appendPassage(passages, `${chapter}.${section}`, text);
-  }
-  return passages;
-}
-
-/**
- * Eulogikon の Markdown。本文は「## Text」から次の「## 」まで。
- * 「### 」の見出しが箇所になる。「book 」と括弧の注記は除き、空白は「.」に直す
- * (`### book 1.3` → `1.3`、`### 2 (t)` → `2`、`### 1 5R` → `1.5R`)。
- */
-function parseEulogikon(lines: string[]): Passages {
-  const passages: Passages = [];
-  let inText = false;
-  let key: string | undefined;
-  for (const line of lines) {
-    if (line.startsWith('## ')) inText = line.trim() === '## Text';
-    else if (!inText) continue;
-    else if (line.startsWith('### ')) {
-      key = line
-        .slice(4)
-        .replace(/^book\s+/, '')
-        .replace(/\s*[([].*$/, '')
-        .trim()
-        .replace(/\s+/g, '.');
-    } else if (key && line.trim() !== '') appendPassage(passages, key, line.trim());
-  }
-  return passages;
-}
-
-const LOCAL_PARSERS: Record<LocalFormat, (lines: string[]) => Passages> = {
-  dfhg: parseDfhg,
-  numbered: parseNumbered,
-  eulogikon: parseEulogikon,
-};
-
 const passageCache = new Map<string, Passages>();
 
 function loadPassages(source: Source): Passages {
@@ -212,7 +117,7 @@ function loadPassages(source: Source): Passages {
 
   const lines = readFileSync(path, 'utf8').split('\n');
   const body = lines.slice(lines.findIndex((line) => /^={10,}$/.test(line)) + 1);
-  const passages = 'urn' in source ? parseTei(body) : LOCAL_PARSERS[source.format](body);
+  const passages = parseTei(body);
   passageCache.set(cacheKey, passages);
   return passages;
 }
