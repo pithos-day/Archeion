@@ -20,6 +20,7 @@ const claims: ArticleClaims = [
           { work: 'soph-aj', loc: '189-190', kind: 'mention' },
           { work: 'soph-ph', loc: '417', kind: 'mention' },
           { work: 'eur-cyc', loc: '104', kind: 'mention' },
+          { work: 'hyg-fab', loc: '201.4', kind: 'narrative' },
         ],
       },
     ],
@@ -29,7 +30,11 @@ const claims: ArticleClaims = [
     variants: [
       {
         label: '狂気を装ったが、パラメデスに見破られた',
-        sources: [{ work: 'apollod-ep', loc: '3.7', kind: 'narrative' }],
+        sources: [
+          { work: 'cypria', loc: 'cypria', kind: 'narrative' },
+          { work: 'apollod-ep', loc: '3.7', kind: 'narrative' },
+          { work: 'hyg-fab', loc: '95.2', kind: 'narrative' },
+        ],
       },
     ],
   },
@@ -40,6 +45,7 @@ const claims: ArticleClaims = [
         label: 'アイアスと争って勝ち取った',
         sources: [
           { work: 'hom-od', loc: '11.543-547', kind: 'narrative' },
+          { work: 'ilias-parva', loc: 'ilias_parva', kind: 'narrative' },
           { work: 'apollod-ep', loc: '5.6', kind: 'narrative' },
         ],
       },
@@ -54,7 +60,10 @@ const claims: ArticleClaims = [
       },
       {
         label: 'ディオメデス',
-        sources: [{ work: 'apollod-ep', loc: '5.8', kind: 'narrative' }],
+        sources: [
+          { work: 'ilias-parva', loc: 'ilias_parva', kind: 'mention' },
+          { work: 'apollod-ep', loc: '5.8', kind: 'narrative' },
+        ],
       },
     ],
   },
@@ -75,7 +84,10 @@ const claims: ArticleClaims = [
     variants: [
       {
         label: '出征から二十年目に帰国した',
-        sources: [{ work: 'hom-od', loc: '2.174-176', kind: 'mention' }],
+        sources: [
+          { work: 'hom-od', loc: '2.174-176', kind: 'mention' },
+          { work: 'hyg-fab', loc: '125.19', kind: 'narrative' },
+        ],
       },
     ],
   },
@@ -85,6 +97,10 @@ const claims: ArticleClaims = [
       {
         label: '七年',
         sources: [{ work: 'hom-od', loc: '7.259-260', kind: 'narrative' }],
+      },
+      {
+        label: '一年',
+        sources: [{ work: 'hyg-fab', loc: '125.16', kind: 'narrative' }],
       },
       {
         label: '五年',
@@ -101,7 +117,11 @@ const claims: ArticleClaims = [
       },
       {
         label: 'キルケーとの子テレゴノスに誤って殺された',
-        sources: [{ work: 'apollod-ep', loc: '7.36', kind: 'narrative' }],
+        sources: [
+          { work: 'telegonia', loc: 'telegonia', kind: 'narrative' },
+          { work: 'apollod-ep', loc: '7.36', kind: 'narrative' },
+          { work: 'hyg-fab', loc: '127.1-2', kind: 'narrative' },
+        ],
       },
     ],
   },
