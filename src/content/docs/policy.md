@@ -89,4 +89,4 @@ description: Archeion のギリシャ神話の記事で、どの説を採るか�
 
 ## 原典テキスト
 
-原文は [Perseus Digital Library](https://github.com/PerseusDL)（`canonical-greekLit` / `canonical-latinLit`）と [First1KGreek](https://github.com/OpenGreekAndLatin/First1KGreek) の TEI XML、散逸した歴史家の断片は [DFHG](http://www.dfhg-project.org/)（Müller『ギリシア歴史家断片集』のデジタル版）から引用している。これらのテキストは [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) で提供されている。これらにない作品は [Wikisource](https://wikisource.org/)（CC BY-SA 4.0）と [Eulogikon](https://eulogikon.org/)（CC0／Public Domain Mark）から引用している。
+原文は [Perseus Digital Library](https://github.com/PerseusDL)（`canonical-greekLit` / `canonical-latinLit`）と [First1KGreek](https://github.com/OpenGreekAndLatin/First1KGreek) の TEI XML、散逸した歴史家の断片は [DFHG](http://www.dfhg-project.org/)（Müller『ギリシア歴史家断片集』のデジタル版）から引用している。これらのテキストは [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) で提供されている。これらにない作品は [Wikisource](https://wikisource.org/)（CC BY-SA 4.0）、[Eulogikon](https://eulogikon.org/)（CC0／Public Domain Mark）、[The Latin Library](https://www.thelatinlibrary.com/)（パブリックドメインの本文）から引用している。

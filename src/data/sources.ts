@@ -273,6 +273,12 @@ export const works = {
     url: 'https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081',
     file: 'Wikisource/hyginus/fabulae/txt/fabulae.txt',
   },
+  'hyg-astr': {
+    author: 'hyginus',
+    title: '天文詩',
+    url: 'https://www.thelatinlibrary.com/hyginus.html',
+    file: 'TheLatinLibrary/hyginus/de-astronomia/txt/de-astronomia.txt',
+  },
   'ant-lib': {
     author: 'antoninus-liberalis',
     title: '変身物語集',
