@@ -171,6 +171,7 @@ export const names: Record<string, string> = {
   リビュア: 'libya',
   リビア: 'libya',
   オリュンポス: 'olympus',
+  オリュンピア: 'olympia',
   ネメア: 'nemea',
   レルネ: 'lerna',
   ステュムパロス: 'stymphalus',
@@ -203,4 +204,6 @@ export const names: Record<string, string> = {
   パウサニアス: 'pausanias',
   プルタルコス: 'plutarch',
   ノンノス: 'nonnus',
+  ペレキュデス: 'pherecydes',
+  ヒュギーヌス: 'hyginus',
 };
