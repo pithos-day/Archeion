@@ -38,12 +38,18 @@ export const authors = {
   // 叙事詩の環。散逸した作品はプロクロスの梗概で読むが、年代係数は元の作品の年代で数える。
   stasinus: { name: 'スタシノス', era: 3, year: -650 },
   lesches: { name: 'レスケス', era: 3, year: -650 },
+  arctinus: { name: 'アルクティノス', era: 3, year: -650 },
+  agias: { name: 'アギアス', era: 3, year: -650 },
   eugammon: { name: 'エウガモン', era: 2, year: -570 },
   // 古注と辞典は、編纂物を一人の著者として数える。引用元の著者名は脚注の訳文に書く。
   'scholia-pindar': { name: 'ピンダロス古注', era: 1, year: 500 },
   suda: { name: 'スーダ', era: 1, year: 970 },
   'asclepiades-tragilensis': { name: 'アスクレピアデス', era: 1, year: -340 },
   herodorus: { name: 'ヘロドロス', era: 2, year: -400 },
+  virgil: { name: 'ウェルギリウス', era: 1, year: -19 },
+  'quintus-smyrnaeus': { name: 'クイントゥス', era: 1, year: 350 },
+  strabo: { name: 'ストラボン', era: 1, year: 10 },
+  'valerius-flaccus': { name: 'ウァレリウス・フラックス', era: 1, year: 80 },
 } as const satisfies Record<string, Author>;
 
 export type AuthorId = keyof typeof authors;
@@ -248,6 +254,11 @@ export const works = {
     title: 'アウリスのイピゲネイア',
     urn: 'urn:cts:greekLit:tlg0006.tlg018.perseus-grc2',
   },
+  'eur-tro': {
+    author: 'euripides',
+    title: 'トロイアの女たち',
+    urn: 'urn:cts:greekLit:tlg0006.tlg011.perseus-grc2',
+  },
   'eur-med': {
     author: 'euripides',
     title: 'メデイア',
@@ -314,6 +325,27 @@ export const works = {
     file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
     part: { loc: 'ilias_parva', label: 'プロクロスの梗概' },
   },
+  aethiopis: {
+    author: 'arctinus',
+    title: 'アイティオピス',
+    url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
+    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    part: { loc: 'aethiopis', label: 'プロクロスの梗概' },
+  },
+  nosti: {
+    author: 'agias',
+    title: 'ノストイ',
+    url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
+    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    part: { loc: 'nosti', label: 'プロクロスの梗概' },
+  },
+  'iliou-persis': {
+    author: 'arctinus',
+    title: 'イリオス落城',
+    url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
+    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    part: { loc: 'iliou_persis', label: 'プロクロスの梗概' },
+  },
   telegonia: {
     author: 'eugammon',
     title: 'テレゴニア',
@@ -343,6 +375,66 @@ export const works = {
     title: '断片集',
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20secundum#urn:lofts:fhg.2.herodorus_heracleensis',
     file: 'DFHG/herodorus/HERODORUS_HERACLEENSIS.txt',
+  },
+  'verg-aen': {
+    author: 'virgil',
+    title: 'アエネイス',
+    urn: 'urn:cts:latinLit:phi0690.phi003.perseus-lat2',
+  },
+  'quint-smyrn': {
+    author: 'quintus-smyrnaeus',
+    title: 'トロイア戦記',
+    urn: 'urn:cts:greekLit:tlg2046.tlg001.perseus-grc2',
+  },
+  'hes-wd': {
+    author: 'hesiod',
+    title: '仕事と日',
+    urn: 'urn:cts:greekLit:tlg0020.tlg002.perseus-grc2',
+  },
+  'h-hymn-2': {
+    author: 'homeric-hymns',
+    title: '第2歌 デメテル讃歌',
+    urn: 'urn:cts:greekLit:tlg0013.tlg002.perseus-grc2',
+  },
+  'h-hymn-3': {
+    author: 'homeric-hymns',
+    title: '第3歌 アポロン讃歌',
+    urn: 'urn:cts:greekLit:tlg0013.tlg003.perseus-grc2',
+  },
+  'h-hymn-5': {
+    author: 'homeric-hymns',
+    title: '第5歌 アプロディテ讃歌',
+    urn: 'urn:cts:greekLit:tlg0013.tlg005.perseus-grc2',
+  },
+  'h-hymn-22': {
+    author: 'homeric-hymns',
+    title: '第22歌 ポセイドン讃歌',
+    urn: 'urn:cts:greekLit:tlg0013.tlg022.perseus-grc2',
+  },
+  'aesch-ag': {
+    author: 'aeschylus',
+    title: 'アガメムノン',
+    urn: 'urn:cts:greekLit:tlg0085.tlg005.perseus-grc2',
+  },
+  'eur-hec': {
+    author: 'euripides',
+    title: 'ヘカベ',
+    urn: 'urn:cts:greekLit:tlg0006.tlg007.perseus-grc2',
+  },
+  'eur-andr': {
+    author: 'euripides',
+    title: 'アンドロマケ',
+    urn: 'urn:cts:greekLit:tlg0006.tlg006.perseus-grc2',
+  },
+  strab: {
+    author: 'strabo',
+    title: '地理誌',
+    urn: 'urn:cts:greekLit:tlg0099.tlg001.perseus-grc2',
+  },
+  'val-flac': {
+    author: 'valerius-flaccus',
+    title: 'アルゴナウティカ',
+    urn: 'urn:cts:latinLit:phi1035.phi001.perseus-lat2',
   },
 } as const satisfies Record<string, Work>;
 
