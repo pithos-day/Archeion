@@ -6,12 +6,18 @@ import apollodEp from './apollod-ep.ts';
 import apollodLib from './apollod-lib.ts';
 import cypria from './cypria.ts';
 import diod15 from './diod-1-5.ts';
+import eratosthCat from './eratosth-cat.ts';
+import hdt from './hdt.ts';
 import hygAstr from './hyg-astr.ts';
 import hygFab from './hyg-fab.ts';
 import iliasParva from './ilias-parva.ts';
 import iliouPersis from './iliou-persis.ts';
 import nosti from './nosti.ts';
 import paus from './paus.ts';
+import plutSert from './plut-sert.ts';
+import plutThes from './plut-thes.ts';
+import strab from './strab.ts';
+import sudaLex from './suda-lex.ts';
 import telegonia from './telegonia.ts';
 
 export const passages: Partial<Record<WorkId, WorkPassages>> = {
@@ -27,4 +33,10 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'hyg-astr': hygAstr,
   'diod-1-5': diod15,
   paus,
+  strab,
+  hdt,
+  'plut-thes': plutThes,
+  'plut-sert': plutSert,
+  'suda-lex': sudaLex,
+  'eratosth-cat': eratosthCat,
 };
