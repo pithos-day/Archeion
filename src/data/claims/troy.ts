@@ -26,10 +26,6 @@ const claims: ArticleClaims = [
           { work: 'strab', loc: '13.1.25', kind: 'narrative' },
         ],
       },
-      {
-        label: 'ポセイドンとアポロンが、ラオメドンのために都市を築いた',
-        sources: [{ work: 'hom-il', loc: '7.452-453', kind: 'mention' }],
-      },
     ],
   },
   {
