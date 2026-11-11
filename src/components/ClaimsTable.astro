@@ -1,18 +1,12 @@
 ---
-import { authors, citeLabel, sourceUrl } from '../data/sources';
-import {
-  type ArticleClaims,
-  scoreTopic,
-  summarizeAuthors,
-  type VariantStatus,
-} from '../lib/claims';
+import { citeLabel, sourceUrl } from '../data/sources';
+import { type ArticleClaims, scoreTopic, type VariantStatus } from '../lib/claims';
 
 interface Props {
   claims: ArticleClaims;
 }
 
 const topics = Astro.props.claims.map(scoreTopic);
-const authorSummaries = summarizeAuthors(topics);
 
 const STATUS_LABEL: Record<VariantStatus, string> = {
   adopted: '採用',
@@ -73,29 +67,6 @@ function formatScore(score: number): string {
   </tbody>
 </table>
 
-<table class="claims-table">
-  <caption>著者別の版の要否（4 論点以上に現れ、2 論点以上で採用説と異なる著者に版を作る）</caption>
-  <thead>
-    <tr>
-      <th scope="col">著者</th>
-      <th scope="col">現れる論点</th>
-      <th scope="col">採用説と異なる論点</th>
-      <th scope="col">版</th>
-    </tr>
-  </thead>
-  <tbody>
-    {
-      authorSummaries.map((summary) => (
-        <tr class={summary.needsVersion ? 'adopted' : undefined}>
-          <th scope="row">{authors[summary.authorId].name}</th>
-          <td class="score">{summary.topics}</td>
-          <td class="score">{summary.differences}</td>
-          <td>{summary.needsVersion ? '作る' : '—'}</td>
-        </tr>
-      ))
-    }
-  </tbody>
-</table>
 </details>
 
 <style>
@@ -122,11 +93,6 @@ function formatScore(score: number): string {
   .claims-table {
     font-size: var(--sl-text-sm);
   }
-  .claims-table caption {
-    caption-side: top;
-    padding-bottom: 0.25rem;
-    text-align: start;
-  }
   .claims-table th[scope='rowgroup'] {
     vertical-align: top;
     text-align: start;
@@ -143,8 +109,7 @@ function formatScore(score: number): string {
     text-align: end;
     font-variant-numeric: tabular-nums;
   }
-  .adopted td:first-of-type,
-  .adopted th[scope='row'] {
+  .adopted td:first-of-type {
     font-weight: 700;
   }
   .minor {

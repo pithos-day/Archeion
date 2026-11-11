@@ -6,6 +6,9 @@ slug: articles/heracles/euripides
 versionOf: articles/heracles
 versionLabel: エウリピデス版
 versionOrder: 1
+versionReason:
+  difference: 狂気に襲われるのが功業の前ではなく、功業をすべて終えた後であり、ヘラクレスは神になるのではなく、死すべき者として描かれる。
+  reception: 悲劇『ヘラクレス』として独立して知られ、セネカの悲劇『狂えるヘラクレス』の下敷きになった。
 ---
 
 この版は、[アテナイ](/articles/athens/)の悲劇詩人[エウリピデス](/authors/#euripides)の『ヘラクレス』と『アルケスティス』だけにもとづく。総合版との大きな違いは、ヘラクレスが功業に就いた理由、狂気に襲われた時期、そして死後の行方である。

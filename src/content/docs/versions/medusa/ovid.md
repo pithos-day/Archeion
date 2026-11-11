@@ -6,6 +6,9 @@ slug: articles/medusa/ovid
 versionOf: articles/medusa
 versionLabel: オウィディウス版
 versionOrder: 1
+versionReason:
+  difference: 初めから怪物だったのではなく、美しい娘が、アテナの神殿でポセイドンに辱められたことの罰として、髪を蛇に変えられた。
+  reception: 美しい娘が罰として怪物にされたというメドゥーサ像は、この語りを典拠として、後代の文学や美術に広まった。
 ---
 
 この版は、ローマの詩人[オウィディウス](/authors/#ovid)の『変身物語』（後8年ごろ）だけにもとづく。[ペルセウス](/articles/perseus/)自身が、エチオピアの王[ケペウス](/articles/cepheus/)の宴で語る形をとっている。
