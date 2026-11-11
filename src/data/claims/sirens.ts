@@ -32,7 +32,7 @@ const claims: ArticleClaims = [
           { work: 'apollod-lib', loc: '1.3.4', kind: 'narrative' },
           { work: 'apollod-ep', loc: '7.18', kind: 'narrative' },
           { work: 'paus', loc: '9.34.3', kind: 'mention' },
-          { work: 'hyg-fab', loc: '141.1', kind: 'narrative' },
+          { work: 'hyg-fab', loc: '141.1', kind: 'mention' },
         ],
       },
       {
@@ -64,7 +64,7 @@ const claims: ArticleClaims = [
         sources: [
           { work: 'ap-rh', loc: '4.896-898', kind: 'narrative' },
           { work: 'ov-met', loc: '5.554-555', kind: 'narrative' },
-          { work: 'hyg-fab', loc: '141.1', kind: 'narrative' },
+          { work: 'hyg-fab', loc: '141.1', kind: 'mention' },
         ],
       },
     ],
