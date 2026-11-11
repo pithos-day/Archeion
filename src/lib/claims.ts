@@ -6,7 +6,7 @@
  *   - 同じ著者が同じ説を複数箇所で述べても、その著者の寄与は最大値 1 回分だけ
  *   - 採用: 最高点の説。同点なら支持する著者数 → 最古の著者の順
  *   - 異説の併記: 最高点の 50% 以上
- *   - 版を作る: 4 論点以上に出典として現れ、2 論点以上で採用説と異なる説を採る著者
+ *   - 版を作る: 4 論点以上かつ全論点の半分以上に出典として現れ、2 論点以上で採用説と異なる説を採る著者
  */
 import { type AuthorId, authors, type WorkId, works } from '../data/sources';
 
@@ -38,6 +38,8 @@ const KIND_WEIGHT: Record<SourceKind, number> = { narrative: 1, mention: 0.5 };
 const ALTERNATIVE_RATIO = 0.5;
 /** 版を作る条件: 出典として現れる論点の数の下限。 */
 const VERSION_MIN_TOPICS = 4;
+/** 版を作る条件: 出典として現れる論点の、全論点に対する割合の下限。 */
+const VERSION_MIN_TOPIC_RATIO = 0.5;
 /** 版を作る条件: 採用説と異なる説を採る論点の数の下限。 */
 const VERSION_MIN_DIFFERENCES = 2;
 
@@ -106,9 +108,9 @@ export interface AuthorSummary {
 }
 
 /** 著者ごとに、版を作る条件を満たすかを判定する。古い著者から順に返す。 */
-export function summarizeAuthors(topics: ScoredTopic[]): AuthorSummary[] {
+export function summarizeAuthors(allTopics: ScoredTopic[]): AuthorSummary[] {
   const summaries = new Map<AuthorId, { topics: number; differences: number }>();
-  for (const topic of topics) {
+  for (const topic of allTopics) {
     const supported = new Map<AuthorId, Set<VariantStatus>>();
     for (const variant of topic.variants) {
       for (const author of variant.authorIds) {
@@ -127,7 +129,10 @@ export function summarizeAuthors(topics: ScoredTopic[]): AuthorSummary[] {
       authorId,
       topics,
       differences,
-      needsVersion: topics >= VERSION_MIN_TOPICS && differences >= VERSION_MIN_DIFFERENCES,
+      needsVersion:
+        topics >= VERSION_MIN_TOPICS &&
+        topics >= allTopics.length * VERSION_MIN_TOPIC_RATIO &&
+        differences >= VERSION_MIN_DIFFERENCES,
     }))
     .sort((a, b) => authors[a.authorId].year - authors[b.authorId].year);
 }
