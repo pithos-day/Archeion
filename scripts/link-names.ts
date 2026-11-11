@@ -6,17 +6,29 @@
  * - 記事ごとに、同じリンク先へは最初の 1 回だけ。すでにリンクがあれば付けない
  * - 見出し、脚注、表、JSX の行、『作品名』、«原文»、既存のリンクの中は対象外
  * - 前後がカタカナの箇所は別の語の一部とみなす (「ヘラ」と「ヘラクレス」など)
+ * - names.ts の unlinkedPhrases の語句の中は対象外 (「アルゴス人」など)
+ * - より長い登録名の中は対象外 (「トロイアの木馬」の中の「トロイア」など)
+ * - 同じ表記に手で別のリンク先を付けた記事では、その表記にはリンクしない (同名の別人を誤ってリンクしないため)
  *
  * 使い方: node scripts/link-names.ts [ファイル...]  (省略時は記事と版のすべて)
  */
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { names } from '../src/data/names.ts';
+import { names, unlinkedPhrases } from '../src/data/names.ts';
 import { authors } from '../src/data/sources.ts';
 
 const DOCS = 'src/content/docs';
 const KATAKANA = /[ァ-ヴー・]/;
-const PROTECTED = /『[^』]*』|\[[^\]]*\]\([^)]*\)|\[\^[^\]]*\]|«[^»]*»/g;
+const PROTECTED = new RegExp(
+  [
+    '『[^』]*』',
+    '\\[[^\\]]*\\]\\([^)]*\\)',
+    '\\[\\^[^\\]]*\\]',
+    '«[^»]*»',
+    ...unlinkedPhrases.map((phrase) => phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')),
+  ].join('|'),
+  'g',
+);
 const SKIPPED_LINE = /^(#|\[\^|import |<|\||\s)/;
 
 /** 表記 → リンク先。長い表記から先に探す (「ペルセウス」より前に「ペルセ」を見ないように)。 */
@@ -47,6 +59,12 @@ function findName(line: string, name: string): number {
     m.index,
     m.index + m[0].length,
   ]);
+  for (const longer of targets) {
+    if (longer[0].length <= name.length || !longer[0].includes(name)) continue;
+    for (let at = line.indexOf(longer[0]); at !== -1; at = line.indexOf(longer[0], at + 1)) {
+      protectedRanges.push([at, at + longer[0].length]);
+    }
+  }
   for (let at = line.indexOf(name); at !== -1; at = line.indexOf(name, at + 1)) {
     const end = at + name.length;
     if (protectedRanges.some(([from, to]) => at >= from && at < to)) continue;
@@ -65,10 +83,16 @@ function linkFile(file: string): string[] {
   for (const [, href] of text.matchAll(/(?:\]\(|href=")(\/(?:articles|authors)\/[^)"]*)/g)) {
     linked.add(href);
   }
+  /** 手でリンクを付けた表記 → リンク先。 */
+  const manual = new Map<string, Set<string>>();
+  for (const [, name, href] of text.matchAll(/\[([^\]^]+)\]\((\/(?:articles|authors)\/[^)]*)\)/g)) {
+    manual.set(name, (manual.get(name) ?? new Set()).add(href));
+  }
 
   const added: string[] = [];
   for (const [name, href] of targets) {
     if (linked.has(href)) continue;
+    if ([...(manual.get(name) ?? [])].some((other) => other !== href)) continue;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i] ?? '';
       if (line.trim() === '' || SKIPPED_LINE.test(line)) continue;

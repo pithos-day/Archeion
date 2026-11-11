@@ -364,3 +364,14 @@ export const names: Record<string, string> = {
   スキュロス: 'scyros',
   アルゴナウタイ: 'argonauts',
 };
+
+/**
+ * 固有名詞を含んでいても、リンクを付けない語句。
+ * 民族名 (「アルゴス人」はギリシャ人全体を指す) や、同名の別人で、リンク先の記事がふさわしくない箇所に使う。
+ */
+export const unlinkedPhrases: string[] = [
+  'アルゴス人',
+  'ダルダノス人',
+  'イピクロスの子イオラオス',
+  'トリトン川',
+];
