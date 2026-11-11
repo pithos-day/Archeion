@@ -10,40 +10,41 @@ const claims: ArticleClaims = [
         sources: [{ work: 'diod-1-5', loc: '4.41.2', kind: 'narrative' }],
       },
       {
-        label: '名簿の四十四人にイアソンを加えた四十五人',
+        label: '名簿に四十四人の名を挙げる（イアソンを除く）',
         sources: [{ work: 'apollod-lib', loc: '1.9.16', kind: 'narrative' }],
       },
     ],
   },
   {
-    label: 'ヘラクレスが離脱した場所',
+    label: 'ヘラクレスの離脱',
     variants: [
       {
-        label: 'ミュシア（ヒュラスを探した地）',
+        label: 'ミュシアでヒュラスを探すうちに、置き去りにされた',
         sources: [
+          { work: 'ap-rh', loc: '1.1240-1283', kind: 'narrative' },
           { work: 'apollod-lib', loc: '1.9.19', kind: 'narrative' },
           { work: 'hyg-fab', loc: '14.25', kind: 'narrative' },
+          { work: 'diod-1-5', loc: '4.44.5', kind: 'mention' },
         ],
       },
       {
-        label: 'アジア（水汲みに出た地）',
-        sources: [{ work: 'diod-1-5', loc: '4.44.5', kind: 'narrative' }],
+        label: '離脱せず、帰路まで同行した',
+        sources: [
+          { work: 'diod-1-5', loc: '4.49.3-4.49.6', kind: 'narrative' },
+          { work: 'diod-1-5', loc: '4.53.4', kind: 'mention' },
+        ],
       },
     ],
   },
   {
-    label: 'ヘラクレスが置き去りにされた理由',
+    label: 'ヘラクレスが置き去りにされたわけ',
     variants: [
       {
-        label: '船が風に流され、ヘラクレスを待てなかった',
+        label: '船が風を受けて出航し、ヘラクレスが残された',
         sources: [
+          { work: 'ap-rh', loc: '1.1273-1283', kind: 'narrative' },
           { work: 'hyg-fab', loc: '14.25', kind: 'narrative' },
-          { work: 'apollod-lib', loc: '1.9.19', kind: 'mention' },
         ],
-      },
-      {
-        label: 'イアソンがヘラクレスの名声をおさえるため、わざと置き去りにした',
-        sources: [{ work: 'ap-rh', loc: '1.1290-1292', kind: 'narrative' }],
       },
     ],
   },
@@ -65,7 +66,14 @@ const claims: ArticleClaims = [
     variants: [
       {
         label: 'メデイアが薬で眠らせた',
-        sources: [{ work: 'apollod-lib', loc: '1.9.23', kind: 'narrative' }],
+        sources: [
+          { work: 'ap-rh', loc: '4.156-161', kind: 'narrative' },
+          { work: 'apollod-lib', loc: '1.9.23', kind: 'narrative' },
+        ],
+      },
+      {
+        label: 'メデイアが薬で殺した',
+        sources: [{ work: 'diod-1-5', loc: '4.48.3', kind: 'narrative' }],
       },
     ],
   },
@@ -88,7 +96,8 @@ const claims: ArticleClaims = [
         label: 'メデイアの策で、娘たちが父を煮た',
         sources: [
           { work: 'apollod-lib', loc: '1.9.27', kind: 'narrative' },
-          { work: 'diod-1-5', loc: '4.50.5', kind: 'mention' },
+          { work: 'diod-1-5', loc: '4.51.1-4.52.2', kind: 'narrative' },
+          { work: 'hyg-fab', loc: '24.2-24.4', kind: 'narrative' },
         ],
       },
     ],
