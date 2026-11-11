@@ -27,19 +27,19 @@ versionOrder: 1
 
 ### 人数と船
 
-イアソンは、プリクソスの子[アルゴス](/articles/argus-shipbuilder/)を呼び寄せた。アルゴスはアテナの勧めで五十櫂船を造り、その船は造り手の名にちなんでアルゴー船と呼ばれた。船首には、アテナが、ドドナの樫の木から取った、声を発する材を取り付けた[^apd-ship]。
+イアソンは、プリクソスの子[アルゴス](/articles/argus-shipbuilder/)を呼び寄せた。アルゴスは[アテナ](/articles/athena/)の勧めで五十櫂船を造り、その船は造り手の名にちなんでアルゴー船と呼ばれた。船首には、アテナが、[ドドナ](/articles/dodona/)の樫の木から取った、声を発する材を取り付けた[^apd-ship]。
 
 集まった英雄の名簿には、イアソンを除いて四十四人の名が並ぶ[^apd-crew]。
 
 ### 主な顔ぶれ
 
-舵を取ったのは[ティーピュス](/articles/tiphys/)で、歌と竪琴の[オルペウス](/articles/orpheus/)、[ゼテス](/articles/zetes/)と[カライス](/articles/calais/)、[カストル](/articles/castor/)と[ポリュデウケス](/articles/polydeuces/)、[テラモン](/articles/telamon/)と[ペレウス](/articles/peleus/)、[ヘラクレス](/articles/heracles/)、[テセウス](/articles/theseus/)が名を連ねた。エラトスの子ポリュペモスも加わっていた。ただ一人の女性として、狩人[アタランテ](/articles/atalanta/)が乗っていた[^apd-crew]。
+舵を取ったのは[ティーピュス](/articles/tiphys/)で、歌と竪琴の[オルペウス](/articles/orpheus/)、[ゼテス](/articles/zetes/)と[カライス](/articles/calais/)、[カストル](/articles/castor/)と[ポリュデウケス](/articles/polydeuces/)、[テラモン](/articles/telamon/)と[ペレウス](/articles/peleus/)、[ヘラクレス](/articles/heracles/)、[テセウス](/articles/theseus/)が名を連ねた。エラトスの子[ポリュペモス](/articles/polyphemus-argonaut/)も加わっていた。ただ一人の女性として、狩人[アタランテ](/articles/atalanta/)が乗っていた[^apd-crew]。
 
 ## 航海
 
 ### レムノス島
 
-英雄たちは[レムノス](/articles/lemnos/)島に寄った。島の女たちは[アプロディテ](/articles/aphrodite/)を敬わなかったため、女神から悪臭を送られ、夫たちは近くのトラキアから連れてきた捕虜の女と床を共にした。怒った女たちは、夫と父を皆殺しにした。女王[ヒュプシピュレ](/articles/hypsipyle/)だけは、父トアスを隠して救った。英雄たちが着いたとき、島は女たちに治められていた。イアソンはヒュプシピュレと床を共にし、二人の息子を得た[^apd-lemnos]。
+英雄たちは[レムノス](/articles/lemnos/)島に寄った。島の女たちは[アプロディテ](/articles/aphrodite/)を敬わなかったため、女神から悪臭を送られ、夫たちは近くの[トラキア](/articles/thrace/)から連れてきた捕虜の女と床を共にした。怒った女たちは、夫と父を皆殺しにした。女王[ヒュプシピュレ](/articles/hypsipyle/)だけは、父トアスを隠して救った。英雄たちが着いたとき、島は女たちに治められていた。イアソンはヒュプシピュレと床を共にし、二人の息子を得た[^apd-lemnos]。
 
 ### キュジコス
 
@@ -73,15 +73,15 @@ versionOrder: 1
 
 ### 帰路
 
-ゼウスは、殺されたアプシュルトスのために怒り、英雄たちがエリダノス川を過ぎるころ、激しい嵐を送って船をさまよわせた。英雄たちは[アイアイエ](/articles/aeaea/)島に着き、[キルケー](/articles/circe/)の嘆願者となって殺人の罪を清めてもらった[^apd-circe]。
+[ゼウス](/articles/zeus/)は、殺されたアプシュルトスのために怒り、英雄たちが[エリダノス](/articles/eridanus/)川を過ぎるころ、激しい嵐を送って船をさまよわせた。英雄たちは[アイアイエ](/articles/aeaea/)島に着き、[キルケー](/articles/circe/)の嘆願者となって殺人の罪を清めてもらった[^apd-circe]。
 
 英雄たちが[セイレーン](/articles/sirens/)のそばを通るとき、オルペウスはセイレーンの歌に対抗する調べを歌って、仲間を引き止めた。ただ一人[ブテス](/articles/butes/)だけが歌に引かれて海へ泳いでいったが、アプロディテにさらわれ、リリュバイオンに住まわされた[^apd-sirens]。
 
-その後、英雄たちは[ヘリオス](/articles/helios/)の牛がいるトリナキア島を過ぎ、パイアケス人の島コルキュラ（ケルキュラ）に着いた。アルキノオスの妃[アレテ](/articles/arete/)は、メデイアをイアソンに娶わせた[^apd-route]。
+その後、英雄たちは[ヘリオス](/articles/helios/)の牛がいるトリナキア島を過ぎ、[パイアケス](/articles/phaeacians/)人の島コルキュラ（ケルキュラ）に着いた。アルキノオスの妃[アレテ](/articles/arete/)は、メデイアをイアソンに娶わせた[^apd-route]。
 
 ### タロス
 
-英雄たちは、[タロス](/articles/talos/)に阻まれてクレタ島に寄れなかった。タロスは一日に三度島を走り回って見張っており、近づくアルゴー船にも石を投げた。タロスは、メデイアに騙されて死んだ[^apd-talos]。
+英雄たちは、[タロス](/articles/talos/)に阻まれて[クレタ](/articles/crete/)島に寄れなかった。タロスは一日に三度島を走り回って見張っており、近づくアルゴー船にも石を投げた。タロスは、メデイアに騙されて死んだ[^apd-talos]。
 
 ## イオルコスへの帰還とペリアスの死
 

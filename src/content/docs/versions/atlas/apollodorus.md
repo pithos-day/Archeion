@@ -29,7 +29,7 @@ versionOrder: 3
 
 ## 娘たち
 
-アトラスの娘[メロペ](/articles/merope/)は、[シーシュポス](/articles/sisyphus/)の妻となった[^apd-merope]。アトラスは、オケアノスの娘[プレイオネ](/articles/pleione/)とのあいだに、アルカディアの[キュレネ](/articles/cyllene/)で七人の娘をもうけ、彼女たちは[プレイアデス](/articles/pleiades/)と呼ばれた[^apd-pleiades]。また、アトラスの娘[エレクトラ](/articles/electra/)は、ゼウスとのあいだに[イアシオン](/articles/iasion/)と[ダルダノス](/articles/dardanus/)を産んだ[^apd-electra]。
+アトラスの娘[メロペ](/articles/merope/)は、[シーシュポス](/articles/sisyphus/)の妻となった[^apd-merope]。アトラスは、[オケアノス](/articles/oceanus/)の娘[プレイオネ](/articles/pleione/)とのあいだに、[アルカディア](/articles/arcadia/)の[キュレネ](/articles/cyllene/)で七人の娘をもうけ、彼女たちは[プレイアデス](/articles/pleiades/)と呼ばれた[^apd-pleiades]。また、アトラスの娘[エレクトラ](/articles/electra/)は、ゼウスとのあいだに[イアシオン](/articles/iasion/)と[ダルダノス](/articles/dardanus/)を産んだ[^apd-electra]。
 
 ## 脚注
 

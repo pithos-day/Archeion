@@ -1,6 +1,6 @@
 ---
 title: アルゴー船（アポロドロス版）
-description: アポロドロス『ビブリオテーケー』が語るアルゴー船。プリクソスの子アルゴスがアテナの助言で五十の櫂の船を造り、船首にドドナの樫の声を出す材を据えた。
+description: アポロドロス『ビブリオテーケー』が語るアルゴー船。プリクソスの子[アルゴス](/articles/argus-shipbuilder/)がアテナの助言で五十の櫂の船を造り、船首にドドナの樫の声を出す材を据えた。
 slug: articles/argo/apollodorus
 versionOf: articles/argo
 versionLabel: アポロドロス版
@@ -9,7 +9,7 @@ versionOrder: 1
 
 この版は、後1〜2世紀ごろの神話集、[アポロドロス](/authors/#apollodorus)『ビブリオテーケー』だけにもとづく。総合版との大きな違いは、船を造った[アルゴス](/articles/argus-shipbuilder/)を[プリクソス](/articles/phrixus/)の子とすること、船首に声を出す材を据えたこと、そして最初の船はアルゴー船ではなく[ダナオス](/articles/danaus/)が造ったとすることである。
 
-**アルゴー船**は、[イアソン](/articles/jason/)が金羊毛を求めて[コルキス](/articles/colchis/)へ向かうための船である。イアソンは、[ペリアス](/articles/pelias/)に金羊毛を取ってくるよう命じられていた[^apd-pelias]。
+**アルゴー船**は、[イアソン](/articles/jason/)が[金羊毛](/articles/golden-fleece/)を求めて[コルキス](/articles/colchis/)へ向かうための船である。イアソンは、[ペリアス](/articles/pelias/)に金羊毛を取ってくるよう命じられていた[^apd-pelias]。
 
 ## 名前
 

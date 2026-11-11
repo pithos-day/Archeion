@@ -7,13 +7,13 @@ versionLabel: ヘシオドス版
 versionOrder: 1
 ---
 
-この版は、前8〜7世紀ごろの詩人、[ヘシオドス](/authors/#hesiod)『神統記』『仕事と日』だけにもとづく。総合版との大きな違いは、ゼウスを育てたのがガイアであること、王位が神々の推挙によって定まり、くじは語られないこと、テュポンがタルタロスに閉じこめられたことである。
+この版は、前8〜7世紀ごろの詩人、[ヘシオドス](/authors/#hesiod)『神統記』『仕事と日』だけにもとづく。総合版との大きな違いは、ゼウスを育てたのが[ガイア](/articles/gaia/)であること、王位が神々の推挙によって定まり、くじは語られないこと、テュポンがタルタロスに閉じこめられたことである。
 
 **ゼウス**は、[クロノス](/articles/cronus/)と[レア](/articles/rhea/)の子である。「神々の父にして人間の父」と呼ばれ、その雷鳴によって、広い大地も震える[^hes-father]。
 
 ## 誕生
 
-クロノスは、子に王位を奪われると、ガイアとウラノスから聞いていたので、レアが産む子を次々に呑みこんだ。呑まれたのは、[ヘスティア](/articles/hestia/)、[デメテル](/articles/demeter/)、[ヘラ](/articles/hera/)、[ハデス](/articles/hades/)、[ポセイドン](/articles/poseidon/)である[^hes-swallow]。
+クロノスは、子に王位を奪われると、ガイアと[ウラノス](/articles/uranus/)から聞いていたので、レアが産む子を次々に呑みこんだ。呑まれたのは、[ヘスティア](/articles/hestia/)、[デメテル](/articles/demeter/)、[ヘラ](/articles/hera/)、[ハデス](/articles/hades/)、[ポセイドン](/articles/poseidon/)である[^hes-swallow]。
 
 末子のゼウスを産むとき、レアは両親のガイアとウラノスに助けを求めた。二神はレアを[クレタ](/articles/crete/)の[リュクトス](/articles/lyctus/)へ送った。生まれたゼウスは、ガイアが引き取って広いクレタで育てることになり、アイガイオン山の険しい洞窟に隠された[^hes-lyctus]。
 
@@ -47,7 +47,7 @@ versionOrder: 1
 
 ゼウスは、次の順に女神たちを妻とした。
 
-- **[メティス](/articles/metis/)**: 神々と人間のうちで最も多くを知る女神で、最初の妻。灰色の目のアテナを産もうとしたとき、ゼウスは策略で彼女の心をあざむき、甘い言葉で自分の腹に収めた[^hes-metis]。アテナは、このあとゼウスの頭から、ゼウス自身によって生まれた[^hes-athena]。
+- **[メティス](/articles/metis/)**: 神々と人間のうちで最も多くを知る女神で、最初の妻。灰色の目の[アテナ](/articles/athena/)を産もうとしたとき、ゼウスは策略で彼女の心をあざむき、甘い言葉で自分の腹に収めた[^hes-metis]。アテナは、このあとゼウスの頭から、ゼウス自身によって生まれた[^hes-athena]。
 - **[テミス](/articles/themis/)**: [ホーライ](/articles/horae/)（エウノミア、ディケ、エイレネ）と、人間に幸と不幸を与える[モイライ](/articles/moirai/)（クロト、ラケシス、アトロポス）を産んだ[^hes-wives]。
 - **[エウリュノメ](/articles/eurynome/)**: [オケアノス](/articles/oceanus/)の娘で、三人の[カリテス](/articles/charites/)を産んだ[^hes-wives]。
 - **デメテル**: [ペルセポネ](/articles/persephone/)を産んだ。ゼウスは、ハデスがペルセポネを妻としてさらうことを許した[^hes-wives]。
@@ -55,7 +55,7 @@ versionOrder: 1
 - **[レト](/articles/leto/)**: [アポロン](/articles/apollo/)と[アルテミス](/articles/artemis/)を産んだ[^hes-wives]。
 - **ヘラ**: 最後の妻で、[ヘーベー](/articles/hebe/)、[アレス](/articles/ares/)、[エイレイテュイア](/articles/eileithyia/)を産んだ[^hes-wives]。
 
-そのほか、アトラスの娘[マイア](/articles/maia/)からは[ヘルメス](/articles/hermes/)が、[カドモス](/articles/cadmus/)の娘[セメレ](/articles/semele/)からは[ディオニュソス](/articles/dionysus/)が生まれた[^hes-maia]。
+そのほか、[アトラス](/articles/atlas/)の娘[マイア](/articles/maia/)からは[ヘルメス](/articles/hermes/)が、[カドモス](/articles/cadmus/)の娘[セメレ](/articles/semele/)からは[ディオニュソス](/articles/dionysus/)が生まれた[^hes-maia]。
 
 ## プロメテウスと火
 
