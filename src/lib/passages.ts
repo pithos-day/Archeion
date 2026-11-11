@@ -57,9 +57,9 @@ export type VersePassages = VerseSentence[];
 /** 作品ごとの引用。 */
 export type WorkPassages = ProsePassages | VersePassages;
 
-/** 文の終わり。「.」「;」「·」「?」「!」に、閉じの引用符や括弧が続いてもよい。 */
-export const SENTENCE_END = /[.;·?!][”’"»)]*$/;
-const SENTENCE_BREAK = /(?<=[.;·?!][”’"»)]*)\s+/;
+/** 文の終わり。「.」「;」「·」「?」「!」に、閉じの引用符が続いてもよい。 */
+export const SENTENCE_END = /[.;·?!][”’"»]*$/;
+const SENTENCE_BREAK = /(?<=[.;·?!][”’"»]*)\s+/;
 
 /**
  * 原文を文に分ける。区切りは、文の終わり（SENTENCE_END）のあとの空白。

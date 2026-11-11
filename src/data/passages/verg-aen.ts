@@ -46,14 +46,9 @@ const passages: VersePassages = [
   {
     lines: '2.189-191',
     original:
-      'Nam si vestra manus violasset dona Minervae, tum magnum exitium (quod di prius omen in ipsum convertant!)',
+      'Nam si vestra manus violasset dona Minervae, tum magnum exitium (quod di prius omen in ipsum convertant!) Priami imperio Phrygibusque futurum;',
     translation:
-      'もしあなたがたの手がアテナへの贈り物を汚せば、そのときは大きな破滅が——神々がその前兆をまず彼〔カルカス〕自身に向けられますように！——',
-  },
-  {
-    lines: '2.191',
-    original: 'Priami imperio Phrygibusque futurum;',
-    translation: 'プリアモスの国とプリュギア人に降りかかる。',
+      'もしあなたがたの手がアテナへの贈り物を汚せば、そのときは大きな破滅が（神々がその前兆をまず彼〔カルカス〕自身に向けられますように！）プリアモスの国とプリュギア人に降りかかる。',
   },
   {
     lines: '2.192-194',

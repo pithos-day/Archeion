@@ -104,9 +104,11 @@ const passages: VersePassages = [
       'これを恐れて、アトラスは果樹園を堅固な城壁で囲み、巨大な竜に番をさせ、よそ者をみな自分の領地から遠ざけていた。',
   },
   {
-    lines: '4.654-655',
-    original: '“at quoniam parvi tibi gratia nostra est, accipe munus!”',
-    translation: '「私の好意をお前が軽んじるのなら、贈り物を受け取れ」',
+    lines: '4.653-655',
+    original:
+      'Viribus inferior (quis enim par esset Atlantis viribus?) “at quoniam parvi tibi gratia nostra est, accipe munus!”',
+    translation:
+      '力では劣っていたので（アトラスの力に並ぶ者などいるだろうか）、〔ペルセウスは言った。〕「私の好意をお前が軽んじるのなら、贈り物を受け取れ」',
   },
   {
     lines: '4.655-656',
