@@ -9,7 +9,7 @@ versionOrder: 1
 
 この版は、ローマの詩人[オウィディウス](/authors/#ovid)の『変身物語』（後8年ごろ）だけにもとづく。[ペルセウス](/articles/perseus/)自身が、エチオピアの王[ケペウス](/articles/cepheus/)の宴で語る形をとっている。
 
-**メドゥーサ**は、[ポルキュス](/articles/phorcys/)の娘である[^met-coral]。もとは並ぶ者のない美しい娘だったが、アテナ（[ミネルウァ](/articles/athena/)）の神殿で[ネプトゥヌス](/articles/poseidon/)（ポセイドン）に辱められ、その罰として髪を蛇に変えられた[^met-temple]。
+**メドゥーサ**は、[ポルキュス](/articles/phorcys/)の娘である[^met-coral]。もとは並ぶ者のない美しい娘だったが、アテナ（[アテナ](/articles/athena/)）の神殿で[ポセイドン](/articles/poseidon/)に辱められ、その罰として髪を蛇に変えられた[^met-temple]。
 
 ## 美しい娘
 
@@ -17,9 +17,9 @@ versionOrder: 1
 
 ## 髪が蛇に変わった理由
 
-海の支配者ネプトゥヌスは、ミネルウァの神殿でメドゥーサを辱めたと言われる。ミネルウァは顔を背け、アイギスで清らかな顔を覆った。そしてこの行いが罰せられずに済むことのないよう、[ゴルゴン](/articles/gorgons/)の髪を醜い水蛇に変えた[^met-temple]。
+海の支配者ポセイドンは、アテナの神殿でメドゥーサを辱めたと言われる。アテナは顔を背け、アイギスで清らかな顔を覆った。そしてこの行いが罰せられずに済むことのないよう、[ゴルゴン](/articles/gorgons/)の髪を醜い水蛇に変えた[^met-temple]。
 
-ネプトゥヌスは、蛇の髪をしたメドゥーサに、鳥の姿で近づいたともいう[^met-neptune]。
+ポセイドンは、蛇の髪をしたメドゥーサに、鳥の姿で近づいたともいう[^met-neptune]。
 
 ## ペルセウスによる退治
 
@@ -50,7 +50,7 @@ versionOrder: 1
 ## 脚注
 
 [^met-beauty]: [オウィディウス『変身物語』4.794–797](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0959.phi006.perseus-lat2:4.794-797/)。«Clarissima forma / multorumque fuit spes invidiosa procorum / illa: neque in tota conspectior ulla capillis / pars fuit»（彼女はこのうえなく美しく、多くの求婚者たちのねたましい望みの的であった。その全身で、髪ほど人目を引くところはなかった）
-[^met-temple]: [オウィディウス『変身物語』4.798–801](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0959.phi006.perseus-lat2:4.798-801/)。«Hanc pelagi rector templo vitiasse Minervae / dicitur. Aversa est et castos aegide vultus / nata Iovis texit; neve hoc inpune fuisset, / Gorgoneum crinem turpes mutavit in hydros»（海の支配者がミネルウァの神殿で彼女を辱めたと言われる。ユッピテルの娘は顔を背け、清らかな顔をアイギスで覆った。そしてこれが罰せられずに済むことのないよう、ゴルゴンの髪を醜い水蛇に変えた）
+[^met-temple]: [オウィディウス『変身物語』4.798–801](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0959.phi006.perseus-lat2:4.798-801/)。«Hanc pelagi rector templo vitiasse Minervae / dicitur. Aversa est et castos aegide vultus / nata Iovis texit; neve hoc inpune fuisset, / Gorgoneum crinem turpes mutavit in hydros»（海の支配者がアテナの神殿で彼女を辱めたと言われる。ユッピテルの娘は顔を背け、清らかな顔をアイギスで覆った。そしてこれが罰せられずに済むことのないよう、ゴルゴンの髪を醜い水蛇に変えた）
 [^met-neptune]: [オウィディウス『変身物語』6.118–120](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0959.phi006.perseus-lat2:6.118-120/)。«et te flava comas frugum mitissima mater / sensit equum, sensit volucrem crinita colubris / mater equi volucris»（金髪の、穀物の慈しみ深い母は、馬となったあなたを知り、蛇を髪とする、翼ある馬の母は、鳥となったあなたを知った）
 [^met-graiai]: [オウィディウス『変身物語』4.772–777](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0959.phi006.perseus-lat2:4.772-777/)。«Narrat Agenorides gelido sub Atlante iacentem / esse locum … cuius in introitu geminas habitasse sorores / Phorcidas, unius partitas luminis usum. / Id se sollerti furtim, dum traditur, astu / supposita cepisse manu»（アゲノルの末裔〔ペルセウス〕は語った。冷たいアトラスのふもとに場所があり……その入り口には、一つの目の使い道を分け合うポルキュスの双子の娘が住んでいた。彼はその目が手渡されるあいだに、巧みにこっそりと手を差し入れて奪ったのだと）
 [^met-statues]: [オウィディウス『変身物語』4.779–781](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0959.phi006.perseus-lat2:4.779-781/)。«Gorgoneas tetigisse domos, passimque per agros / perque vias vidisse hominum simulacra ferarumque / in silicem ex ipsis visa conversa Medusa»（ゴルゴンの住まいに着くと、野にも道にも、メドゥーサを見て、生身から石に変えられた人や獣の像をいたるところで見たと）

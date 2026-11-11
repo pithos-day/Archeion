@@ -1,6 +1,6 @@
 ---
 title: トロイアの木馬（ウェルギリウス版）
-description: ウェルギリウス『アエネイス』第2巻の語る木馬。ミネルウァの技で造られ、ラオコーンは二人の息子とともに蛇に絡め取られた。
+description: ウェルギリウス『アエネイス』第2巻の語る木馬。アテナの技で造られ、ラオコーンは二人の息子とともに蛇に絡め取られた。
 slug: articles/trojan-horse/virgil
 versionOf: articles/trojan-horse
 versionLabel: ウェルギリウス版
@@ -13,7 +13,7 @@ versionOrder: 1
 
 ## 建造
 
-戦いに敗れ、運命にも退けられたギリシア軍の将たちは、幾年もの月日が過ぎたのち、[ミネルウァ](/articles/athena/)の技によって山のような馬を造る。切り出したモミの木で脇腹を組み、帰国を願う誓いの捧げ物だと装った[^vrg-build]。馬の中には選び抜かれた兵がくじで定められ、奥深い腹は武装した兵で満たされた[^vrg-build]。
+戦いに敗れ、運命にも退けられたギリシア軍の将たちは、幾年もの月日が過ぎたのち、[アテナ](/articles/athena/)の技によって山のような馬を造る。切り出したモミの木で脇腹を組み、帰国を願う誓いの捧げ物だと装った[^vrg-build]。馬の中には選び抜かれた兵がくじで定められ、奥深い腹は武装した兵で満たされた[^vrg-build]。
 
 ## トロイア人の議論
 
@@ -21,7 +21,7 @@ versionOrder: 1
 
 神官[ラオコーン](/articles/laocoon/)は、馬の脇腹へ槍を投げつけて叫ぶ。「何であれ、私はギリシア人を恐れる。贈り物を携えていても」[^vrg-laocoon]。
 
-そこへ、捕らえられていたギリシア人の[シノン](/articles/sinon/)が現れて偽りを語る。ギリシア軍の望みは、いつもミネルウァの加護に支えられていた。だが、不敬な[ディオメデス](/articles/diomedes/)と、悪事の考案者である[オデュッセウス](/articles/odysseus/)が、城山の番兵を殺して、聖なる神殿から運命を担う[パラディオン](/articles/palladium/)を奪ってから、ギリシア軍の望みは衰え、女神の心は離れた[^vrg-palladium]。馬は、[カルカス](/articles/calchas/)の命令で、門から入らず城内へも引けないほど大きく造られた。ミネルウァへの贈り物をトロイア人が汚せば、[プリアモス](/articles/priam/)の国に大きな破滅が及ぶ。だが城内へ引き入れれば、アジアのほうがギリシアの城壁へ大戦争を仕掛けてくる、と[^vrg-sinon]。
+そこへ、捕らえられていたギリシア人の[シノン](/articles/sinon/)が現れて偽りを語る。ギリシア軍の望みは、いつもアテナの加護に支えられていた。だが、不敬な[ディオメデス](/articles/diomedes/)と、悪事の考案者である[オデュッセウス](/articles/odysseus/)が、城山の番兵を殺して、聖なる神殿から運命を担う[パラディオン](/articles/palladium/)を奪ってから、ギリシア軍の望みは衰え、女神の心は離れた[^vrg-palladium]。馬は、[カルカス](/articles/calchas/)の命令で、門から入らず城内へも引けないほど大きく造られた。アテナへの贈り物をトロイア人が汚せば、[プリアモス](/articles/priam/)の国に大きな破滅が及ぶ。だが城内へ引き入れれば、アジアのほうがギリシアの城壁へ大戦争を仕掛けてくる、と[^vrg-sinon]。
 
 ## ラオコーンの死
 
@@ -41,13 +41,13 @@ versionOrder: 1
 
 ## 脚注
 
-[^vrg-build]: [ウェルギリウス『アエネイス』2.13–20](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0690.phi003.perseus-lat2:2.13-2.20/)。«Fracti bello fatisque repulsi / ductores Danaum, tot iam labentibus annis, / instar montis equum divina Palladis arte / aedificant, sectaque intexunt abiete costas: / votum pro reditu simulant; ea fama vagatur. / Huc delecta virum sortiti corpora furtim / includunt caeco lateri, penitusque cavernas / ingentis uterumque armato milite complent.»（戦いに敗れ、運命にも退けられたギリシア軍の将たちは、幾年もの月日が過ぎたのち、パッラス（ミネルウァ）の神技によって山のような馬を造り、切り出したモミの木で脇腹を組み立てる。帰国を願う誓いの捧げ物だと装うのである。その噂が広まる。そして選び抜かれた兵たちを、くじでひそかに定めて、暗い脇腹に閉じこめ、馬の奥深い洞窟のような腹を武装した兵で満たす。）
+[^vrg-build]: [ウェルギリウス『アエネイス』2.13–20](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0690.phi003.perseus-lat2:2.13-2.20/)。«Fracti bello fatisque repulsi / ductores Danaum, tot iam labentibus annis, / instar montis equum divina Palladis arte / aedificant, sectaque intexunt abiete costas: / votum pro reditu simulant; ea fama vagatur. / Huc delecta virum sortiti corpora furtim / includunt caeco lateri, penitusque cavernas / ingentis uterumque armato milite complent.»（戦いに敗れ、運命にも退けられたギリシア軍の将たちは、幾年もの月日が過ぎたのち、パラス（アテナ）の神技によって山のような馬を造り、切り出したモミの木で脇腹を組み立てる。帰国を願う誓いの捧げ物だと装うのである。その噂が広まる。そして選び抜かれた兵たちを、くじでひそかに定めて、暗い脇腹に閉じこめ、馬の奥深い洞窟のような腹を武装した兵で満たす。）
 
-[^vrg-debate]: [ウェルギリウス『アエネイス』2.31–39](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0690.phi003.perseus-lat2:2.31-2.39/)。«Pars stupet innuptae donum exitiale Minervae, / et molem mirantur equi; primusque Thymoetes / duci intra muros hortatur et arce locari, / … At Capys, et quorum melior sententia menti, / aut pelago Danaum insidias suspectaque dona / praecipitare iubent, subiectisque urere flammis, / … Scinditur incertum studia in contraria volgus.»（ある者は、嫁がぬ乙女ミネルウァへの、死をもたらす贈り物に驚き、馬の大きさに見とれる。最初にティモイテスが、馬を城壁の内へ引いて城山に据えるよう勧める。……だがカピュスと、より良い考えをもつ者たちは、ギリシア軍の罠と疑わしい贈り物を海へ突き落とすよう命じ、火をかけて焼くよう命じる。……群衆は定まらぬ思いのまま二つに割れた。）
+[^vrg-debate]: [ウェルギリウス『アエネイス』2.31–39](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0690.phi003.perseus-lat2:2.31-2.39/)。«Pars stupet innuptae donum exitiale Minervae, / et molem mirantur equi; primusque Thymoetes / duci intra muros hortatur et arce locari, / … At Capys, et quorum melior sententia menti, / aut pelago Danaum insidias suspectaque dona / praecipitare iubent, subiectisque urere flammis, / … Scinditur incertum studia in contraria volgus.»（ある者は、嫁がぬ乙女アテナへの、死をもたらす贈り物に驚き、馬の大きさに見とれる。最初にティモイテスが、馬を城壁の内へ引いて城山に据えるよう勧める。……だがカピュスと、より良い考えをもつ者たちは、ギリシア軍の罠と疑わしい贈り物を海へ突き落とすよう命じ、火をかけて焼くよう命じる。……群衆は定まらぬ思いのまま二つに割れた。）
 
 [^vrg-laocoon]: [ウェルギリウス『アエネイス』2.45–53](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0690.phi003.perseus-lat2:2.45-2.53/)。«Quicquid id est, timeo Danaos et dona ferentis. / Sic fatus, validis ingentem viribus hastam / in latus inque feri curvam compagibus alvum / contorsit»（何であれ、私はギリシア人を恐れる。贈り物を携えていても。こう言うと、力をこめて大きな槍を、馬の脇腹へ、そしてその湾曲した腹の継ぎ目へ投げつけた。）
 
-[^vrg-palladium]: [ウェルギリウス『アエネイス』2.162–170](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0690.phi003.perseus-lat2:2.162-2.170/)。«Omnis spes Danaum et coepti fiducia belli / Palladis auxiliis semper stetit. Impius ex quo / Tydides sed enim scelerumque inventor Ulixes, / fatale adgressi sacrato avellere templo / Palladium, caesis summae custodibus arcis, / corripuere sacram effigiem, manibusque cruentis / virgineas ausi divae contingere vittas; / ex illo fluere ac retro sublapsa referri / spes Danaum, fractae vires, aversa deae mens.»（〔シノンの言葉〕ギリシア軍のすべての望みと、始めた戦いへの自信は、いつもパッラス〔ミネルウァ〕の加護に支えられていた。だが、不敬なテュデウスの子〔ディオメデス〕と、悪事の考案者ウリクセス〔オデュッセウス〕が、運命を担うパラディオンを聖なる神殿から引き剥がそうとして、城山の頂の番兵を殺し、聖なる像を奪い取って、血まみれの手で女神の乙女の髪紐に触れるという暴挙に出てから、ギリシア軍の望みは流れ去り、後ずさりして崩れ、力は砕け、女神の心は離れた。）
+[^vrg-palladium]: [ウェルギリウス『アエネイス』2.162–170](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0690.phi003.perseus-lat2:2.162-2.170/)。«Omnis spes Danaum et coepti fiducia belli / Palladis auxiliis semper stetit. Impius ex quo / Tydides sed enim scelerumque inventor Ulixes, / fatale adgressi sacrato avellere templo / Palladium, caesis summae custodibus arcis, / corripuere sacram effigiem, manibusque cruentis / virgineas ausi divae contingere vittas; / ex illo fluere ac retro sublapsa referri / spes Danaum, fractae vires, aversa deae mens.»（〔シノンの言葉〕ギリシア軍のすべての望みと、始めた戦いへの自信は、いつもパラス〔アテナ〕の加護に支えられていた。だが、不敬なテュデウスの子〔ディオメデス〕と、悪事の考案者オデュッセウスが、運命を担うパラディオンを聖なる神殿から引き剥がそうとして、城山の頂の番兵を殺し、聖なる像を奪い取って、血まみれの手で女神の乙女の髪紐に触れるという暴挙に出てから、ギリシア軍の望みは流れ去り、後ずさりして崩れ、力は砕け、女神の心は離れた。）
 
 [^vrg-sinon]: [ウェルギリウス『アエネイス』2.185–194](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0690.phi003.perseus-lat2:2.185-2.194/)。«Hanc tamen immensam Calchas attollere molem / roboribus textis caeloque educere iussit, / ne recipi portis, aut duci in moenia possit, / … ultro Asiam magno Pelopea ad moenia bello / venturam»（しかしカルカスは、この巨大な塊を、樫の木を組んで天に届くほど高く造るよう命じた。門から迎え入れることも、城壁の内へ引くこともできないようにするためである。……むしろアジアが大きな戦争を携えて、ペロプスの城壁へ攻め寄せてくるだろう。）
 
