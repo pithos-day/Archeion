@@ -9,6 +9,7 @@ import diod15 from './diod-1-5.ts';
 import eratosthCat from './eratosth-cat.ts';
 import hdt from './hdt.ts';
 import hesTh from './hes-th.ts';
+import homIl from './hom-il.ts';
 import homOd from './hom-od.ts';
 import hygAstr from './hyg-astr.ts';
 import hygFab from './hyg-fab.ts';
@@ -43,4 +44,5 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'eratosth-cat': eratosthCat,
   'hes-th': hesTh,
   'hom-od': homOd,
+  'hom-il': homIl,
 };
