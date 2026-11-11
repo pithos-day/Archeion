@@ -9,7 +9,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
-import { splitSentences } from '../src/lib/passages.ts';
+import { SENTENCE_END, splitSentences } from '../src/lib/passages.ts';
 
 const CORPUS = process.env.MYTH_CORPUS ?? join(homedir(), 'Documents/greek-mythology');
 
@@ -195,8 +195,8 @@ export function verseSentencesOf(source: Source): CorpusVerseSentence[] {
       flush();
       book = keyBook;
     }
-    const pieces = normalize(text).split(/(?<=[.;·])\s+/);
-    const endsSentence = /[.;·]$/.test(normalize(text));
+    const pieces = splitSentences(normalize(text));
+    const endsSentence = SENTENCE_END.test(normalize(text));
     pieces.forEach((piece, index) => {
       if (piece === '') return;
       if (!current) current = { start: key, end: key, text: '' };

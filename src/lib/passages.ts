@@ -57,13 +57,17 @@ export type VersePassages = VerseSentence[];
 /** 作品ごとの引用。 */
 export type WorkPassages = ProsePassages | VersePassages;
 
+/** 文の終わり。「.」「;」「·」「?」「!」に、閉じの引用符や括弧が続いてもよい。 */
+export const SENTENCE_END = /[.;·?!][”’"»)]*$/;
+const SENTENCE_BREAK = /(?<=[.;·?!][”’"»)]*)\s+/;
+
 /**
- * 原文を文に分ける。区切りは、空白か末尾が続く「.」「;」「·」。
+ * 原文を文に分ける。区切りは、文の終わり（SENTENCE_END）のあとの空白。
  * 引用レジストリの文の番号は、照合用に正規化した原典の本文をこの関数で分けたもの。
  */
 export function splitSentences(text: string): string[] {
   return text
-    .split(/(?<=[.;·])\s+/)
+    .split(SENTENCE_BREAK)
     .map((sentence) => sentence.trim())
     .filter(Boolean);
 }
