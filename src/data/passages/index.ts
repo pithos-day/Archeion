@@ -2,6 +2,7 @@
 import type { WorkPassages } from '../../lib/passages.ts';
 import type { WorkId } from '../sources.ts';
 import aethiopis from './aethiopis.ts';
+import apRh from './ap-rh.ts';
 import apollodEp from './apollod-ep.ts';
 import apollodLib from './apollod-lib.ts';
 import cypria from './cypria.ts';
@@ -47,4 +48,5 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'hom-od': homOd,
   'hom-il': homIl,
   'ov-met': ovMet,
+  'ap-rh': apRh,
 };
