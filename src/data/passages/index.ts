@@ -31,6 +31,10 @@ import iliouPersis from './iliou-persis.ts';
 import nosti from './nosti.ts';
 import ovMet from './ov-met.ts';
 import paus from './paus.ts';
+import pindI from './pind-i.ts';
+import pindN from './pind-n.ts';
+import pindO from './pind-o.ts';
+import pindP from './pind-p.ts';
 import plutSert from './plut-sert.ts';
 import plutThes from './plut-thes.ts';
 import sophAj from './soph-aj.ts';
@@ -83,4 +87,8 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'soph-el': sophEl,
   'aesch-pv': aeschPv,
   'aesch-ag': aeschAg,
+  'pind-o': pindO,
+  'pind-p': pindP,
+  'pind-n': pindN,
+  'pind-i': pindI,
 };
