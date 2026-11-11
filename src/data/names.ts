@@ -89,6 +89,7 @@ export const names: Record<string, string> = {
   ヘスペロス: 'hesperus',
   ヒュペリオン: 'hyperion',
   テルス: 'gaia',
+  プロテウス: 'proteus',
   // ムーサ、ニンフなど
   ムーサ: 'muses',
   テルプシコラ: 'terpsichore',
@@ -285,6 +286,9 @@ export const names: Record<string, string> = {
   アイアコス: 'aeacus',
   ヘシオネ: 'hesione',
   イアシオン: 'iasion',
+  ヘルミオネ: 'hermione',
+  ペロプス: 'pelops',
+  オイノネ: 'oenone',
   // 出来事・事物
   トロイア戦争: 'trojan-war',
   トロイアの木馬: 'trojan-horse',
@@ -357,5 +361,6 @@ export const names: Record<string, string> = {
   パルナッソス: 'parnassus',
   ヒュペルボレオイ: 'hyperboreans',
   キュレネ: 'cyllene',
+  スキュロス: 'scyros',
   アルゴナウタイ: 'argonauts',
 };
