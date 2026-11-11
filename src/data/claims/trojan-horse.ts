@@ -56,7 +56,7 @@ const claims: ArticleClaims = [
         sources: [{ work: 'apollod-ep', loc: '5.14', kind: 'narrative' }],
       },
       {
-        label: '30人の名を挙げ、ほかにも入ったとする',
+        label: '29人の名を挙げ、ほかにも入ったとする',
         sources: [{ work: 'quint-smyrn', loc: '12.314-335', kind: 'narrative' }],
       },
       {
