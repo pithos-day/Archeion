@@ -36,6 +36,7 @@ export default defineConfig({
       tableOfContents: false,
       components: {
         Footer: './src/components/overrides/Footer.astro',
+        LastUpdated: './src/components/overrides/LastUpdated.astro',
         MarkdownContent: './src/components/overrides/MarkdownContent.astro',
         PageTitle: './src/components/overrides/PageTitle.astro',
       },

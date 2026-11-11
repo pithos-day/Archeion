@@ -1,6 +1,7 @@
 ---
 title: スフィンクス（アポロドロス版）
 description: アポロドロス『ビブリオテーケー』の語るスフィンクス。ヘラに送られてテーバイを襲い、謎を解かれて自ら身を投げた。
+created: 2026-11-08
 slug: articles/sphinx/apollodorus
 versionOf: articles/sphinx
 versionLabel: アポロドロス版

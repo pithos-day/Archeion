@@ -1,6 +1,7 @@
 ---
 title: アルゴー船（アポロドロス版）
 description: アポロドロス『ビブリオテーケー』が語るアルゴー船。プリクソスの子[アルゴス](/articles/argus-shipbuilder/)がアテナの助言で五十の櫂の船を造り、船首にドドナの樫の声を出す材を据えた。
+created: 2026-11-11
 slug: articles/argo/apollodorus
 versionOf: articles/argo
 versionLabel: アポロドロス版

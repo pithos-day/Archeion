@@ -1,6 +1,7 @@
 ---
 title: ゼウス（アポロドロス版）
 description: アポロドロス『ビブリオテーケー』第1巻が語るゼウス。クレタで生まれ、メティスの薬でクロノスの子らを吐き出させ、テュポンに腱を奪われながら勝った。
+created: 2026-11-11
 slug: articles/zeus/apollodorus
 versionOf: articles/zeus
 versionLabel: アポロドロス版

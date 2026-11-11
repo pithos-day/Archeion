@@ -1,6 +1,7 @@
 ---
 title: ポセイドン（ヒュギーヌス版）
 description: ヒュギーヌス『神話集』と『天文詩』が語るポセイドン。アテナイをめぐる争いの審判はゼウスが務め、怒った海の神は、ヘルメスに止められた。
+created: 2026-11-11
 slug: articles/poseidon/hyginus
 versionOf: articles/poseidon
 versionLabel: ヒュギーヌス版

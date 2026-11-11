@@ -1,6 +1,7 @@
 ---
 title: アルゴナウタイ（アポロドロス版）
 description: アポロドロス『ビブリオテーケー』の語るアルゴナウタイ。乗組員の名簿にはイアソンのほかに四十四人の名が並び、アプシュルトスを殺したのはメデイア自身であった。
+created: 2026-11-11
 slug: articles/argonauts/apollodorus
 versionOf: articles/argonauts
 versionLabel: アポロドロス版

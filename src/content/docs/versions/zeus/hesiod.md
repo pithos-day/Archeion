@@ -1,6 +1,7 @@
 ---
 title: ゼウス（ヘシオドス版）
 description: ヘシオドスの『神統記』と『仕事と日』が語るゼウス。ガイアに育てられ、神々に推されて王となり、テュポンをタルタロスに閉じこめた。
+created: 2026-11-11
 slug: articles/zeus/hesiod
 versionOf: articles/zeus
 versionLabel: ヘシオドス版

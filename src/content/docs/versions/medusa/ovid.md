@@ -1,6 +1,7 @@
 ---
 title: メドゥーサ（オウィディウス版）
 description: オウィディウス『変身物語』の語るメドゥーサ。美しい娘が、アテナの神殿での出来事のために髪を蛇に変えられた。
+created: 2026-11-08
 slug: articles/medusa/ovid
 versionOf: articles/medusa
 versionLabel: オウィディウス版

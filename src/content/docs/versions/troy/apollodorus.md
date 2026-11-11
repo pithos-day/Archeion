@@ -1,6 +1,7 @@
 ---
 title: イリオス（アポロドロス版）
 description: アポロドロス『ビブリオテーケー』と『摘要』の語るイリオス。イロスが建て、神々が築いた城壁に囲まれ、ヘラクレスは第九の功業の帰りに海獣を退治し、のちに十八隻の船で攻め落とした。最後はパラディオンを盗まれて滅びた。
+created: 2026-11-11
 slug: articles/troy/apollodorus
 versionOf: articles/troy
 versionLabel: アポロドロス版

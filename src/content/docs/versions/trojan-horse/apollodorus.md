@@ -1,6 +1,7 @@
 ---
 title: トロイアの木馬（アポロドロス版）
 description: アポロドロス『摘要』の語る木馬。オデュッセウスの発案でエペイオスが造り、ラオコーンの二人の息子が蛇に殺された。
+created: 2026-11-11
 slug: articles/trojan-horse/apollodorus
 versionOf: articles/trojan-horse
 versionLabel: アポロドロス版

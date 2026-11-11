@@ -1,6 +1,7 @@
 ---
 title: トロイアの木馬（ヒュギーヌス版）
 description: ヒュギーヌス『神話集』の語る木馬。アテナの助言で造られ、ラオコーンは二人の息子とともに蛇に殺された。
+created: 2026-11-11
 slug: articles/trojan-horse/hyginus
 versionOf: articles/trojan-horse
 versionLabel: ヒュギーヌス版

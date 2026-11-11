@@ -1,6 +1,7 @@
 ---
 title: ヘラクレス（エウリピデス版）
 description: エウリピデスの悲劇『ヘラクレス』『アルケスティス』の語るヘラクレス。功業を終えて帰った後に、ヘラの送った狂気で妻子を殺す。
+created: 2026-11-08
 slug: articles/heracles/euripides
 versionOf: articles/heracles
 versionLabel: エウリピデス版

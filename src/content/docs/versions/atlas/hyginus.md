@@ -1,6 +1,7 @@
 ---
 title: アトラス（ヒュギーヌス版）
 description: ヒュギーヌス『神話集』と『天文詩』の語るアトラス。ティタノマキアの将として天を負わされ、その娘たちは星になり、黄金の林檎はヘラクレスが竜を殺して得た。
+created: 2026-11-11
 slug: articles/atlas/hyginus
 versionOf: articles/atlas
 versionLabel: ヒュギーヌス版

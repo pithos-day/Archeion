@@ -1,6 +1,7 @@
 ---
 title: ハデス（オウィディウス版）
 description: オウィディウス『変身物語』が語るハデス。アプロディテの命でエロスの矢に射られてペルセポネを連れ去り、ペルセポネは一年の半分を冥府で過ごす。
+created: 2026-11-11
 slug: articles/hades/ovid
 versionOf: articles/hades
 versionLabel: オウィディウス版

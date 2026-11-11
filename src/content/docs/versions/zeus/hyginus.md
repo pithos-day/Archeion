@@ -1,6 +1,7 @@
 ---
 title: ゼウス（ヒュギーヌス版）
 description: ヒュギーヌスの『神話集』が語るゼウス。乳母アマルテイアが揺りかごを木に吊るして隠し、テュポンを雷で打ち、パエトンの火を口実に人類を水で滅ぼした。
+created: 2026-11-11
 slug: articles/zeus/hyginus
 versionOf: articles/zeus
 versionLabel: ヒュギーヌス版

@@ -1,6 +1,7 @@
 ---
 title: セイレーン（ヒュギーヌス版）
 description: ヒュギーヌス『神話集』の語るセイレーン。三人の娘で、ペルセポネを助けなかった罰としてデメテルに翼を与えられた。
+created: 2026-11-11
 slug: articles/sirens/hyginus
 versionOf: articles/sirens
 versionLabel: ヒュギーヌス版

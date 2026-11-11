@@ -1,6 +1,7 @@
 ---
 title: キルケー（アポロドロス版）
 description: アポロドロス『ビブリオテーケー』と『摘要』の語るキルケー。オデュッセウスの部下を狼・豚・驢馬・獅子に変え、オデュッセウスとのあいだにテレゴノスをもうけた。
+created: 2026-11-08
 slug: articles/circe/apollodorus
 versionOf: articles/circe
 versionLabel: アポロドロス版

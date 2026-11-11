@@ -1,0 +1,25 @@
+---
+/** 作成日 (frontmatter の created) と最終更新日を並べて表示する。 */
+const { lang, lastUpdated, entry } = Astro.locals.starlightRoute;
+const { created } = entry.data;
+const format = (date: Date) =>
+  date.toLocaleDateString(lang, { dateStyle: 'medium', timeZone: 'UTC' });
+---
+
+{
+  (created || lastUpdated) && (
+    <p>
+      {created && (
+        <>
+          作成日: <time datetime={created.toISOString()}>{format(created)}</time>
+        </>
+      )}
+      {created && lastUpdated && ' / '}
+      {lastUpdated && (
+        <>
+          {Astro.locals.t('page.lastUpdated')} <time datetime={lastUpdated.toISOString()}>{format(lastUpdated)}</time>
+        </>
+      )}
+    </p>
+  )
+}

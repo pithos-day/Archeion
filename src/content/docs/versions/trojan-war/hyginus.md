@@ -1,6 +1,7 @@
 ---
 title: トロイア戦争（ヒュギーヌス版）
 description: ヒュギーヌス『神話集』が語るトロイア戦争。オデュッセウスの狂気を見破った方法、ピロクテテスが咬まれた場所、アキレウスを討った者の姿が、総合版とは異なって語られる。
+created: 2026-11-11
 slug: articles/trojan-war/hyginus
 versionOf: articles/trojan-war
 versionLabel: ヒュギーヌス版

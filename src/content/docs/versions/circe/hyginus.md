@@ -1,6 +1,7 @@
 ---
 title: キルケー（ヒュギーヌス版）
 description: ヒュギーヌス『神話集』の語るキルケー。アエナリア島に住み、オデュッセウスとのあいだにナウシトオスとテレゴノスをもうけ、スキュラを怪物に変えた。
+created: 2026-11-11
 slug: articles/circe/hyginus
 versionOf: articles/circe
 versionLabel: ヒュギーヌス版

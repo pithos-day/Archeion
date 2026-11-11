@@ -1,6 +1,7 @@
 ---
 title: アトラス（アポロドロス版）
 description: アポロドロス『ビブリオテーケー』の語るアトラス。イアペトスとアシアの子で、ヒュペルボレオイの地で黄金の林檎を持ち、ヘラクレスと天を取り替えた。
+created: 2026-11-11
 slug: articles/atlas/apollodorus
 versionOf: articles/atlas
 versionLabel: アポロドロス版

@@ -16,6 +16,8 @@ export const collections = {
         versionLabel: z.string().optional(),
         /** 版のタブの並び順。小さいほど左。 */
         versionOrder: z.number().default(0),
+        /** 記事を作成した日。手で書く (例: `created: 2026-11-11`)。 */
+        created: z.date().optional(),
         /** 本文右上に表示する情報ボックス。 */
         infobox: z
           .object({

@@ -1,6 +1,7 @@
 ---
 title: トロイアの木馬（クイントゥス版）
 description: クイントゥス『トロイア戦記』第12〜13巻の語る木馬。オデュッセウスの計略でエペイオスが造り、アテナの送った蛇がラオコーンの二人の息子を殺した。
+created: 2026-11-11
 slug: articles/trojan-horse/quintus-smyrnaeus
 versionOf: articles/trojan-horse
 versionLabel: クイントゥス版

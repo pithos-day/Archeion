@@ -1,6 +1,7 @@
 ---
 title: トロイア戦争（アポロドロス版）
 description: アポロドロス『摘要』が語るトロイア戦争。戦争の目的、アキレウスの武具の判定、ピロクテテスの傷を癒やした者が、総合版とは異なって語られる。
+created: 2026-11-11
 slug: articles/trojan-war/apollodorus
 versionOf: articles/trojan-war
 versionLabel: アポロドロス版

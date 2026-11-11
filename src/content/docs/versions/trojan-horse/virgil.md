@@ -1,6 +1,7 @@
 ---
 title: トロイアの木馬（ウェルギリウス版）
 description: ウェルギリウス『アエネイス』第2巻の語る木馬。アテナの技で造られ、ラオコーンは二人の息子とともに蛇に絡め取られた。
+created: 2026-11-11
 slug: articles/trojan-horse/virgil
 versionOf: articles/trojan-horse
 versionLabel: ウェルギリウス版
