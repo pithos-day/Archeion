@@ -15,15 +15,15 @@ versionOrder: 1
 
 ## 妻と子
 
-ポセイドンは、[アムピトリテ](/articles/amphitrite/)を妻にしようとした。アムピトリテは処女のままでいたいと、[アトラス](/articles/atlas/)のもとへ逃げた。ポセイドンは使者をいくたりも送り、その一人のイルカは、島々を巡ってアムピトリテを見つけ、ポセイドンと結婚するよう説得した。イルカは、その婚礼を取り仕切った功により、星座に置かれた[^hyg-astr]。
+ポセイドンは、[アムピトリテ](/articles/amphitrite/)を妻にしようとした。アムピトリテは処女のままでいたいと、[アトラス](/articles/atlas/)のもとへ逃げた。ポセイドンは何人もの者を捜しに送り、その一人のイルカは、島々を巡ってアムピトリテを見つけ、ポセイドンと結婚するよう説得した。イルカは、その婚礼を取り仕切った功により、星座に置かれた[^hyg-astr]。
 
-[メドゥーサ](/articles/medusa/)との間には、クリュサオルと翼をもつ馬[ペガソス](/articles/pegasus/)が生まれた[^hyg-151]。
+[メドゥーサ](/articles/medusa/)との間には、クリュサオルと馬の[ペガソス](/articles/pegasus/)が生まれた[^hyg-151]。
 
 ## アテナイ
 
 [アテナイ](/articles/athens/)の地で最初に町を建てるのは、ポセイドンと[アテナ](/articles/athena/)のどちらかをめぐって争いになり、二神はゼウスを裁き手に選んだ。アテナが最初にその地にオリーブを植えたことから、ゼウスはアテナを勝ちとした。ポセイドンは怒り、この土地に海水を流し込もうとしたが、ゼウスの命を受けたヘルメスが、それを止めた[^hyg-athens]。
 
-のちにポセイドンの子エウモルポスがアテナイを攻めたとき、ポセイドンは、息子の死を喜ぶ[エレクテウス](/articles/erechtheus/)に、その娘を生贄にするよう求めた。娘のクトニアは生贄にされ、ほかの娘たちもその後を追って死んだ。エレクテウスは、ポセイドンの願いで、ゼウスに雷で打たれた[^hyg-46]。
+のちにポセイドンの子エウモルポスがアテナイを攻め、敗れて殺された。ポセイドンは、[エレクテウス](/articles/erechtheus/)が息子の死を喜ぶことのないよう、エレクテウスの娘を自分への生贄にするよう求めた。娘のクトニアは生贄にされ、ほかの娘たちもその後を追って死んだ。エレクテウスは、ポセイドンの願いで、ゼウスに雷で打たれた[^hyg-46]。
 
 ## イリオスの城壁
 
@@ -43,9 +43,9 @@ versionOrder: 1
 
 [^hyg-athens]: [ヒュギーヌス『神話集』164.1–164.2](https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081#164.1-164.2)。«Inter Neptunum et Mineruam cum esset certatio qui primus oppidum in terra Attica conderet, Iouem iudicem sumpserunt … at Neptunus iratus in eam terram mare coepit irrigare uelle, quod Mercurius Iouis iussu id ne faceret prohibuit»（ネプトゥヌスとミネルウァのあいだに、アッティカの地で最初に町を建てるのはどちらかをめぐる争いがあったとき、二神はユピテルを裁き手に選んだ……ところが怒ったネプトゥヌスは、この土地に海水を流し込もうとしたが、ユピテルの命を受けたメルクリウスがそれを止めた）
 [^hyg-139]: [ヒュギーヌス『神話集』139.1](https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081#139.1)。«Saturnus Orcum sub Tartara deiecerat et Neptunum sub undas, quod sciret +si quis ex eo natus esset, se regno priuaret»（サトゥルヌスは、冥府の神オルクスをタルタロスの下へ、ネプトゥヌスを波の下へ投げ込んでいた。その子の誰かが、自分から王国を奪うと知っていたからである）
-[^hyg-astr]: [ヒュギーヌス『天文詩』2.17](https://www.thelatinlibrary.com/hyginus.html#2.17)。«Neptunum, quo tempore voluerit Amphitriten ducere uxorem, et illa cupiens conservare virginitatem fugerit ad Atlanta, complures eam quaesitum dimisisse, in his et Delphina quendam nomine» … «ut nuberet Neptuno, et ipse nuptias eorum administravit. Pro quo facto inter sidera Delphini effigiem collocavit.»（ネプトゥヌスがアムピトリテを妻にしようとしたとき、彼女は処女でいたいと願ってアトラスのもとへ逃げた。ネプトゥヌスは何人もの使者を送ったが、その中にデルピヌスという者がいた…ネプトゥヌスと結婚するように彼女を説得し、婚礼も取り仕切った。その功により、イルカの姿を星座の間に置いた。エラトステネスの説として）
+[^hyg-astr]: [ヒュギーヌス『天文詩』2.17](https://www.thelatinlibrary.com/hyginus.html#2.17)。«Neptunum, quo tempore voluerit Amphitriten ducere uxorem, et illa cupiens conservare virginitatem fugerit ad Atlanta, complures eam quaesitum dimisisse, in his et Delphina quendam nomine. Qui pervagatus insulas, aliquando ad virginem pervenit eique persuasit, ut nuberet Neptuno, et ipse nuptias eorum administravit. Pro quo facto inter sidera Delphini effigiem collocavit.»（〔エラトステネスの説として〕ネプトゥヌスがアムピトリテを妻にしようとしたとき、彼女は処女でいたいと願ってアトラスのもとへ逃げた。ネプトゥヌスは何人もの使者を送ったが、その中にデルピンという者がいた。彼は島々を巡り、ついに乙女のもとにたどり着いて、ネプトゥヌスと結婚するように説得し、二人の婚礼も自ら取り仕切った。その功により、〔ネプトゥヌスは〕イルカの姿を星々のあいだに置いた）
 [^hyg-151]: [ヒュギーヌス『神話集』151.2](https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081#151.2)。«ex Medusa Gorgonis filia et Neptuno nati sunt Chrysaor et equus Pegasus»（ゴルゴンの娘メドゥーサとネプトゥヌスから、クリュサオルと馬のペガソスが生まれた）
-[^hyg-46]: [ヒュギーヌス『神話集』46.2–46.4](https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081#46.2-46.4)。«Eumolpus Neptuni filius Athenas uenit oppugnaturus» … «Neptunus ne filii sui morte Erechtheus laetaretur expostulauit ut eius filia Neptuno immolaretur» … «ipse Erechtheus ab Ioue Neptuni rogatu fulmine est ictus.»（ネプトゥヌスの子エウモルポスがアテナイを攻めに来た…ネプトゥヌスは、その息子の死をエレクテウスが喜ばないように、娘をネプトゥヌスへの生贄にするよう求めた…エレクテウス自身は、ネプトゥヌスの願いでユピテルに雷で打たれた）
+[^hyg-46]: [ヒュギーヌス『神話集』46.2–46.4](https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081#46.2-46.4)。«Eumolpus Neptuni filius Athenas uenit oppugnaturus» … «is uictus cum exercitu cum esset ab Atheniensibus interfectus, Neptunus ne filii sui morte Erechtheus laetaretur expostulauit ut eius filia Neptuno immolaretur» … «ipse Erechtheus ab Ioue Neptuni rogatu fulmine est ictus.»（ネプトゥヌスの子エウモルポスがアテナイを攻めに来た…彼が軍とともに敗れ、アテナイ人に殺されると、ネプトゥヌスは、その息子の死をエレクテウスが喜ばないように、娘をネプトゥヌスへの生贄にするよう求めた…エレクテウス自身は、ネプトゥヌスの願いでユピテルに雷で打たれた）
 [^hyg-89]: [ヒュギーヌス『神話集』89.1–89.2](https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081#89.1-89.2)。«Neptunus et Apollo dicuntur Troiam muro cinxisse; his rex Laomedon uouit quod regno suo pecoris eo anno natum esset immolaturum. id uotum auaritia fefellit.» … «ob eam rem Neptunus cetum misit qui Troiam uexaret» … «si Troianorum uirgines ceto religatae fuissent finem pestilentiae futuram.»（ネプトゥヌスとアポロが、トロイアを城壁で囲んだと言われる。ラオメドン王は、その年に自分の領地で生まれた家畜を捧げると誓ったが、欲がその誓いを破った…そのためネプトゥヌスは、トロイアを荒らす海獣を送った…トロイアの乙女を海獣に縛りつければ、疫病は終わるだろう）
 [^hyg-125-3]: [ヒュギーヌス『神話集』125.3](https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081#125.3)。«inde ad Cyclopem Polyphemum Neptuni filium»（そこから、ネプトゥヌスの子である、キュクロプスのポリュペモスのもとへ）
 [^hyg-125-17]: [ヒュギーヌス『神話集』125.17](https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081#125.17)。«eamque ratim Neptunus fluctibus disiecit, quod Cyclopem filium eius lumine priuauerat»（ネプトゥヌスは、その筏を波で壊した。彼の息子キュクロプスの目を奪ったからである）
