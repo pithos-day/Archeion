@@ -1,6 +1,8 @@
 /** 引用レジストリ。作品 id → その作品の引用。型と使い方は src/lib/passages.ts。 */
 import type { WorkPassages } from '../../lib/passages.ts';
 import type { WorkId } from '../sources.ts';
+import aeschAg from './aesch-ag.ts';
+import aeschPv from './aesch-pv.ts';
 import aethiopis from './aethiopis.ts';
 import apRh from './ap-rh.ts';
 import apollodEp from './apollod-ep.ts';
@@ -31,6 +33,11 @@ import ovMet from './ov-met.ts';
 import paus from './paus.ts';
 import plutSert from './plut-sert.ts';
 import plutThes from './plut-thes.ts';
+import sophAj from './soph-aj.ts';
+import sophEl from './soph-el.ts';
+import sophOt from './soph-ot.ts';
+import sophPh from './soph-ph.ts';
+import sophTr from './soph-tr.ts';
 import strab from './strab.ts';
 import sudaLex from './suda-lex.ts';
 import telegonia from './telegonia.ts';
@@ -69,4 +76,11 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'eur-tro': eurTro,
   'eur-med': eurMed,
   'eur-hipp': eurHipp,
+  'soph-tr': sophTr,
+  'soph-aj': sophAj,
+  'soph-ot': sophOt,
+  'soph-ph': sophPh,
+  'soph-el': sophEl,
+  'aesch-pv': aeschPv,
+  'aesch-ag': aeschAg,
 };
