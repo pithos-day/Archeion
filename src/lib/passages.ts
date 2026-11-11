@@ -148,7 +148,8 @@ export function lineRange(lines: string): [start: string, end: string] {
 /** 行の範囲 [start, end] に収まる行の範囲か。 */
 export function linesWithin(lines: string, start: string, end: string): boolean {
   const [from, to] = lineRange(lines);
-  return compareLines(from, start) >= 0 && compareLines(to, end) <= 0;
+  const inside = (line: string) => compareLines(line, start) >= 0 && compareLines(line, end) <= 0;
+  return inside(from) && inside(to);
 }
 
 /** 韻文の参照の、範囲ごとの文。範囲の始まりと終わりが文の切れ目に合わなければ例外を投げる。 */
