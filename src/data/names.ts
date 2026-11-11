@@ -80,6 +80,12 @@ export const names: Record<string, string> = {
   ムネモシュネ: 'mnemosyne',
   レト: 'leto',
   ディオネ: 'dione',
+  ユピテル: 'zeus',
+  ウェヌス: 'aphrodite',
+  ディアナ: 'artemis',
+  ケレス: 'demeter',
+  クピド: 'eros',
+  エロス: 'eros',
   // ムーサ、ニンフなど
   ムーサ: 'muses',
   テルプシコラ: 'terpsichore',
