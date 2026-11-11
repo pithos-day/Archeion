@@ -55,10 +55,7 @@ const claims: ArticleClaims = [
       },
       {
         label: 'アプロディテの命でエロスの矢に射られた',
-        sources: [
-          { work: 'ov-met', loc: '5.363-384', kind: 'narrative' },
-          { work: 'claud-rapt', loc: '1.1.26-27', kind: 'mention' },
-        ],
+        sources: [{ work: 'ov-met', loc: '5.363-384', kind: 'narrative' }],
       },
     ],
   },
