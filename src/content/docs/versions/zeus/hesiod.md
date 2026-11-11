@@ -15,7 +15,7 @@ versionOrder: 1
 
 クロノスは、子に王位を奪われると、ガイアとウラノスから聞いていたので、レアが産む子を次々に呑みこんだ。呑まれたのは、[ヘスティア](/articles/hestia/)、[デメテル](/articles/demeter/)、[ヘラ](/articles/hera/)、[ハデス](/articles/hades/)、[ポセイドン](/articles/poseidon/)である[^hes-swallow]。
 
-末子のゼウスを産むとき、レアは両親のガイアとウラノスに助けを求めた。二神はレアを[クレタ](/articles/crete/)の[リュクトス](/articles/lyctus/)へ送り、レアは生まれた子を、アイガイオン山の洞窟に隠した。ゼウスは、クレタで、ガイアが引き取って育てた[^hes-lyctus]。
+末子のゼウスを産むとき、レアは両親のガイアとウラノスに助けを求めた。二神はレアを[クレタ](/articles/crete/)の[リュクトス](/articles/lyctus/)へ送った。生まれたゼウスは、ガイアが引き取って広いクレタで育てることになり、アイガイオン山の険しい洞窟に隠された[^hes-lyctus]。
 
 レアは、産着にくるんだ大きな石を赤子の代わりにクロノスに渡し、クロノスはそれを自分の腹に収めた[^hes-stone]。
 
@@ -29,9 +29,9 @@ versionOrder: 1
 
 ゼウスたち[オリュンポス](/articles/olympus/)の神々は、[ティタン](/articles/titans/)たちと十年にわたって戦ったが、どちらにも決着はつかなかった[^hes-war]。
 
-そこでガイアの計らいによって、地下に縛られていた[百腕の巨人](/articles/hecatoncheires/)たち（[ブリアレオス](/articles/briareus/)、[コットス](/articles/cottus/)、[ギュエス](/articles/gyges/)）が、光の中へ連れ戻された[^hes-hundred]。百腕の巨人たちは、岩を三百も投げてティタンたちを打ち負かし、地の底の[タルタロス](/articles/tartarus/)へ送って縛った。百腕の巨人たちは、そこでゼウスの番人となった[^hes-tartarus]。
+そこでガイアの計らいによって、地下に縛られていた[百腕の巨人](/articles/hecatoncheires/)たち（[ブリアレオス](/articles/briareus/)、[コットス](/articles/cottus/)、[ギュエス](/articles/gyges/)）が、光の中へ連れ戻された[^hes-hundred]。
 
-ゼウスは天と[オリュンポス](/articles/olympus/)から雷を投げつづけ、大地は燃え、海は煮えたぎった[^hes-battle]。
+ゼウスは天とオリュンポスから雷を投げつづけ、大地は燃え、海は煮えたぎった[^hes-battle]。百腕の巨人たちは、岩を三百も投げてティタンたちを打ち負かし、地の底の[タルタロス](/articles/tartarus/)へ送って縛った。百腕の巨人たちは、そこでゼウスの番人となった[^hes-tartarus]。
 
 ## 王となる
 
@@ -41,7 +41,7 @@ versionOrder: 1
 
 ガイアは、タルタロスとの愛によって末子の[テュポン](/articles/typhon/)を産んだ。その肩からは、恐ろしい竜である蛇の百の頭が生えていた[^hes-typhon]。
 
-ゼウスは、雷鳴と稲妻と燃える雷霆を手に、オリュンポスから跳び上がってテュポンを打ちつけた[^hes-typhon-battle]。ゼウスは心に怒りを抱き、テュポンを広い[タルタロス](/articles/tartarus/)へ投げこんだ[^hes-typhon-defeat]。
+ゼウスは、雷鳴と稲妻と燃える雷霆を手に、オリュンポスから跳び上がってテュポンを打ちつけた[^hes-typhon-battle]。ゼウスは心に怒りを抱き、テュポンを広いタルタロスへ投げこんだ[^hes-typhon-defeat]。
 
 ## 妻たち
 
@@ -50,10 +50,10 @@ versionOrder: 1
 - **[メティス](/articles/metis/)**: 神々と人間のうちで最も多くを知る女神で、最初の妻。灰色の目のアテナを産もうとしたとき、ゼウスは策略で彼女の心をあざむき、甘い言葉で自分の腹に収めた[^hes-metis]。アテナは、このあとゼウスの頭から、ゼウス自身によって生まれた[^hes-athena]。
 - **[テミス](/articles/themis/)**: [ホーライ](/articles/horae/)（エウノミア、ディケ、エイレネ）と、人間に幸と不幸を与える[モイライ](/articles/moirai/)（クロト、ラケシス、アトロポス）を産んだ[^hes-wives]。
 - **[エウリュノメ](/articles/eurynome/)**: [オケアノス](/articles/oceanus/)の娘で、三人の[カリテス](/articles/charites/)を産んだ[^hes-wives]。
-- **[デメテル](/articles/demeter/)**: [ペルセポネ](/articles/persephone/)を産んだ。ゼウスは、ハデスがペルセポネを妻としてさらうことを許した[^hes-wives]。
+- **デメテル**: [ペルセポネ](/articles/persephone/)を産んだ。ゼウスは、ハデスがペルセポネを妻としてさらうことを許した[^hes-wives]。
 - **[ムネモシュネ](/articles/mnemosyne/)**: 九人の[ムーサ](/articles/muses/)を産んだ[^hes-wives]。
 - **[レト](/articles/leto/)**: [アポロン](/articles/apollo/)と[アルテミス](/articles/artemis/)を産んだ[^hes-wives]。
-- **[ヘラ](/articles/hera/)**: 最後の妻で、[ヘーベー](/articles/hebe/)、[アレス](/articles/ares/)、[エイレイテュイア](/articles/eileithyia/)を産んだ[^hes-wives]。
+- **ヘラ**: 最後の妻で、[ヘーベー](/articles/hebe/)、[アレス](/articles/ares/)、[エイレイテュイア](/articles/eileithyia/)を産んだ[^hes-wives]。
 
 そのほか、アトラスの娘[マイア](/articles/maia/)からは[ヘルメス](/articles/hermes/)が、[カドモス](/articles/cadmus/)の娘[セメレ](/articles/semele/)からは[ディオニュソス](/articles/dionysus/)が生まれた[^hes-maia]。
 
@@ -86,7 +86,7 @@ versionOrder: 1
 [^hes-typhon-defeat]: [ヘシオドス『神統記』868](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:868/)。«ῥῖψε δέ μιν θυμῷ ἀκαχὼν ἐς Τάρταρον εὐρύν»（ゼウスは心に怒りを抱き、彼を広いタルタロスへ投げ込んだ）
 [^hes-metis]: [ヘシオドス『神統記』886–891](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:886-891/)。«Ζεὺς δὲ θεῶν βασιλεὺς πρώτην ἄλοχον θέτο Μῆτιν» … «πλεῖστα θεῶν εἰδυῖαν ἰδὲ θνητῶν ἀνθρώπων» … «ἀλλʼ ὅτε δὴ ἄρʼ ἔμελλε θεὰν γλαυκῶπιν Ἀθήνην» … «δόλῳ φρένας ἐξαπατήσας / αἱμυλίοισι λόγοισιν ἑὴν ἐσκάτθετο νηδὺν»（神々の王ゼウスは、最初の妻としてメティスを迎えた。彼女は、神々と人間のうちで最も多くを知っていた。……灰色の目の女神アテナを〔産もうとしたとき〕……策略で心をあざむき、甘い言葉で自分の腹に収めた）
 [^hes-athena]: [ヘシオドス『神統記』924](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:924/)。«αὐτὸς δʼ ἐκ κεφαλῆς γλαυκώπιδα Τριτογένειαν»（ゼウス自身が、頭から灰色の目のトリトゲネイアを〔生んだ〕）
-[^hes-wives]: [ヘシオドス『神統記』901–906](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:901-906/)。«δεύτερον ἠγάγετο λιπαρὴν Θέμιν, ἣ τέκεν Ὥρας» … «Κλωθώ τε Λάχεσίν τε καὶ Ἄτροπον»（次に輝かしいテミスを迎え、彼女はホーライを生んだ。……クロト、ラケシス、アトロポスを〔生んだ〕）；[ヘシオドス『神統記』907–909](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:907-909/)。«τρεῖς δέ οἱ Εὐρυνομη Χάριτας τέκε καλλιπαρῄους»（彼女はオケアノスの娘エウリュノメとの間に、三人の美しい頬の優雅の女神たちを生んだ）；[ヘシオドス『神統記』912–914](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:912-914/)。«ἣ τέκε Περσεφόνην λευκώλενον, ἣν Ἀιδωνεὺς / ἥρπασε ἧς παρὰ μητρός· ἔδωκε δὲ μητίετα Ζεύς»（デメテルは白い腕のペルセポネを生んだ。ハデスが母のもとから彼女をさらうことを、賢いゼウスが許した）；[ヘシオドス『神統記』915–917](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:915-917/)。«Μνημοσύνης δʼ ἐξαῦτις ἐράσσατο καλλικόμοιο» … «ἐννέα»（ゼウスは再び、美しい髪のムネモシュネを愛し、彼女から九人の〔ムーサ〕が生まれた）；[ヘシオドス『神統記』918](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:918/)。«Λητὼ δʼ Ἀπόλλωνα καὶ Ἄρτεμιν ἰοχέαιραν»（レトは、アポロンと矢を射るアルテミスを〔生んだ〕）；[ヘシオドス『神統記』921–922](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:921-922/)。«λοισθοτάτην δʼ Ἥρην θαλερὴν ποιήσατʼ ἄκοιτιν» … «ἣ δʼ Ἥβην καὶ Ἄρηα καὶ Εἰλείθυιαν ἔτικτε»（最後に、ヘラを生き生きとした妻とした。ヘラは、ヘーベー、アレス、エイレイテュイアを産んだ）
+[^hes-wives]: [ヘシオドス『神統記』901–906](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:901-906/)。«δεύτερον ἠγάγετο λιπαρὴν Θέμιν, ἣ τέκεν Ὥρας» … «Κλωθώ τε Λάχεσίν τε καὶ Ἄτροπον»（次に輝かしいテミスを迎え、彼女はホーライを生んだ。……クロト、ラケシス、アトロポスを〔生んだ〕）；[ヘシオドス『神統記』907–909](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:907-909/)。«τρεῖς δέ οἱ Εὐρυνομη Χάριτας τέκε καλλιπαρῄους»（エウリュノメは、彼に、美しい頬の三人のカリテスを生んだ）；[ヘシオドス『神統記』912–914](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:912-914/)。«ἣ τέκε Περσεφόνην λευκώλενον, ἣν Ἀιδωνεὺς / ἥρπασε ἧς παρὰ μητρός· ἔδωκε δὲ μητίετα Ζεύς»（デメテルは白い腕のペルセポネを生んだ。ハデスが母のもとから彼女をさらうことを、賢いゼウスが許した）；[ヘシオドス『神統記』915–917](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:915-917/)。«Μνημοσύνης δʼ ἐξαῦτις ἐράσσατο καλλικόμοιο» … «ἐννέα»（ゼウスは再び、美しい髪のムネモシュネを愛し、彼女から九人の〔ムーサ〕が生まれた）；[ヘシオドス『神統記』918](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:918/)。«Λητὼ δʼ Ἀπόλλωνα καὶ Ἄρτεμιν ἰοχέαιραν»（レトは、アポロンと矢を射るアルテミスを〔生んだ〕）；[ヘシオドス『神統記』921–922](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:921-922/)。«λοισθοτάτην δʼ Ἥρην θαλερὴν ποιήσατʼ ἄκοιτιν» … «ἣ δʼ Ἥβην καὶ Ἄρηα καὶ Εἰλείθυιαν ἔτικτε»（最後に、ヘラを生き生きとした妻とした。ヘラは、ヘーベー、アレス、エイレイテュイアを産んだ）
 [^hes-maia]: [ヘシオドス『神統記』938–941](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:938-941/)。«Ζηνὶ δʼ ἄρʼ Ἀτλαντὶς Μαίη τέκε κύδιμον Ἑρμῆν» … «Καδμείη δʼ ἄρα οἱ Σεμέλη τέκε φαίδιμον υἱὸν»（ゼウスとの間に、アトラスの娘マイアは名高いヘルメスを生み、カドモスの娘セメレは輝かしい息子〔ディオニュソス〕を生んだ）
 [^hes-mecone]: [ヘシオドス『神統記』535–541](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:535-541/)。«δασσάμενος προέθηκε, Διὸς νόον ἐξαπαφίσκων»（〔プロメテウスは〕ゼウスの心をあざむこうとして、牛を分けて差し出した）；[ヘシオドス『神統記』551–553](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:551-553/)。«γνῶ ῥʼ οὐδʼ ἠγνοίησε δόλον» … «χερσὶ δʼ ὅ γʼ ἀμφοτέρῃσιν ἀνείλετο λευκὸν ἄλειφαρ»（ゼウスは策略を見抜いたが、両手で白い脂を取った）
 [^hes-fire]: [ヘシオドス『神統記』563–567](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0020.tlg001.perseus-grc2:563-567/)。«οὐκ ἐδίδου Μελίῃσι πυρὸς μένος ἀκαμάτοιο / θνητοῖς ἀνθρώποις» … «ἐν κοΐλῳ νάρθηκι»（ゼウスは、疲れを知らぬ火の力を、死すべき人間に与えなかった。……中空の茴香の茎に入れて〔盗み〕）
