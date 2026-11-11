@@ -56,6 +56,7 @@ const claims: ArticleClaims = [
       {
         label: 'アプロディテの命でエロスの矢に射られた',
         sources: [{ work: 'ov-met', loc: '5.363-384', kind: 'narrative' }],
+        reception: 'オウィディウス『変身物語』の語りとして、後代に広く知られている。',
       },
     ],
   },

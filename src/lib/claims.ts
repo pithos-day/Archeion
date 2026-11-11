@@ -5,7 +5,7 @@
  *   - 記述係数: 直接の叙述 1.0 / 言及・暗示 0.5
  *   - 同じ著者が同じ説を複数箇所で述べても、その著者の寄与は最大値 1 回分だけ
  *   - 採用: 最高点の説。同点なら支持する著者数 → 最古の著者の順
- *   - 異説の併記: 最高点の 50% 以上
+ *   - 異説の併記: 最高点の 50% 以上。それ未満でも、後世に広く受け継がれている説 (reception あり)
  */
 import { type AuthorId, authors, type WorkId, works } from '../data/sources';
 
@@ -22,6 +22,8 @@ interface Variant {
   /** 説の要約。 */
   label: string;
   sources: ClaimSource[];
+  /** 後世に広く受け継がれていると判断した理由。あれば、スコアが低くても併記する。 */
+  reception?: string;
 }
 
 export interface Topic {
@@ -36,7 +38,7 @@ const KIND_WEIGHT: Record<SourceKind, number> = { narrative: 1, mention: 0.5 };
 /** 最高点に対してこの割合以上の説は、総合版に異説として併記する。 */
 const ALTERNATIVE_RATIO = 0.5;
 
-export type VariantStatus = 'adopted' | 'alternative' | 'minor';
+export type VariantStatus = 'adopted' | 'alternative' | 'received' | 'minor';
 
 interface ScoredVariant extends Variant {
   score: number;
@@ -71,6 +73,12 @@ function oldestYear(authorIds: AuthorId[]): number {
   return Math.min(...authorIds.map((id) => authors[id].year));
 }
 
+function judge(variant: Variant & { score: number }, rank: number, top: number): VariantStatus {
+  if (rank === 0) return 'adopted';
+  if (variant.score >= top * ALTERNATIVE_RATIO) return 'alternative';
+  return variant.reception ? 'received' : 'minor';
+}
+
 /** 論点の説を、スコアの高い順 (同点は著者数 → 最古の著者の順) に並べて判定する。 */
 export function scoreTopic(topic: Topic): ScoredTopic {
   const scored = topic.variants
@@ -82,10 +90,8 @@ export function scoreTopic(topic: Topic): ScoredTopic {
         oldestYear(a.authorIds) - oldestYear(b.authorIds),
     );
   const top = scored[0]?.score ?? 0;
-  const variants = scored.map((variant, index): ScoredVariant => {
-    const status: VariantStatus =
-      index === 0 ? 'adopted' : variant.score >= top * ALTERNATIVE_RATIO ? 'alternative' : 'minor';
-    return { ...variant, status };
-  });
+  const variants = scored.map(
+    (variant, index): ScoredVariant => ({ ...variant, status: judge(variant, index, top) }),
+  );
   return { label: topic.label, variants };
 }

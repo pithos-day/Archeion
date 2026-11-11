@@ -11,6 +11,7 @@ const topics = Astro.props.claims.map(scoreTopic);
 const STATUS_LABEL: Record<VariantStatus, string> = {
   adopted: '採用',
   alternative: '異説 (併記)',
+  received: '異説 (併記・後世の受容)',
   minor: '—',
 };
 
@@ -59,7 +60,10 @@ function formatScore(score: number): string {
               </ul>
             </td>
             <td class="score">{formatScore(variant.score)}</td>
-            <td>{STATUS_LABEL[variant.status]}</td>
+            <td>
+              {STATUS_LABEL[variant.status]}
+              {variant.reception && <span class="reception">{variant.reception}</span>}
+            </td>
           </tr>
         )),
       )
@@ -111,6 +115,11 @@ function formatScore(score: number): string {
   }
   .adopted td:first-of-type {
     font-weight: 700;
+  }
+  .reception {
+    display: block;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-3);
   }
   .minor {
     color: var(--sl-color-gray-3);
