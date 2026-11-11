@@ -5,6 +5,7 @@ import aethiopis from './aethiopis.ts';
 import apollodEp from './apollod-ep.ts';
 import apollodLib from './apollod-lib.ts';
 import cypria from './cypria.ts';
+import diod15 from './diod-1-5.ts';
 import hygAstr from './hyg-astr.ts';
 import hygFab from './hyg-fab.ts';
 import iliasParva from './ilias-parva.ts';
@@ -23,4 +24,5 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   telegonia,
   'hyg-fab': hygFab,
   'hyg-astr': hygAstr,
+  'diod-1-5': diod15,
 };
