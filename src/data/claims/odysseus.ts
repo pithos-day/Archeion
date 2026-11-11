@@ -11,6 +11,7 @@ const claims: ArticleClaims = [
           { work: 'hom-od', loc: '24.269-270', kind: 'narrative' },
           { work: 'hom-od', loc: '9.19', kind: 'mention' },
           { work: 'apollod-lib', loc: '3.10.8', kind: 'mention' },
+          { work: 'hyg-fab', loc: '95.1', kind: 'mention' },
           { work: 'apollod-ep', loc: '3.12', kind: 'narrative' },
         ],
       },
