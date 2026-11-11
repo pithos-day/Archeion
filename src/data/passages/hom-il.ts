@@ -288,7 +288,7 @@ const passages: VersePassages = [
   {
     lines: '9.158',
     original: 'δμηθήτω·',
-    translation: '屈服するがよい。',
+    translation: '〔アキレウスは〕屈服するがよい。',
   },
   {
     lines: '9.158-159',
@@ -407,7 +407,7 @@ const passages: VersePassages = [
   {
     lines: '16.443',
     original: 'ἔρδʼ·',
-    translation: 'するがよい。',
+    translation: '〔ヘラは答えた。〕するがよい。',
   },
   {
     lines: '16.443',
