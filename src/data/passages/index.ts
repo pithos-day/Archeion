@@ -38,6 +38,7 @@ import iliasParva from './ilias-parva.ts';
 import iliouPersis from './iliou-persis.ts';
 import nonnDion from './nonn-dion.ts';
 import nosti from './nosti.ts';
+import ovFast from './ov-fast.ts';
 import ovMet from './ov-met.ts';
 import paus from './paus.ts';
 import pindI from './pind-i.ts';
@@ -55,6 +56,9 @@ import sophTr from './soph-tr.ts';
 import strab from './strab.ts';
 import sudaLex from './suda-lex.ts';
 import telegonia from './telegonia.ts';
+import valFlac from './val-flac.ts';
+import vergAen from './verg-aen.ts';
+import vergGeo from './verg-geo.ts';
 
 export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'apollod-lib': apollodLib,
@@ -111,4 +115,8 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'arat-phaen': aratPhaen,
   'nonn-dion': nonnDion,
   'quint-smyrn': quintSmyrn,
+  'verg-aen': vergAen,
+  'verg-geo': vergGeo,
+  'val-flac': valFlac,
+  'ov-fast': ovFast,
 };
