@@ -8,6 +8,7 @@ import apollodLib from './apollod-lib.ts';
 import cypria from './cypria.ts';
 import diod15 from './diod-1-5.ts';
 import eratosthCat from './eratosth-cat.ts';
+import eurHer from './eur-her.ts';
 import hdt from './hdt.ts';
 import hesTh from './hes-th.ts';
 import homIl from './hom-il.ts';
@@ -49,4 +50,5 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'hom-il': homIl,
   'ov-met': ovMet,
   'ap-rh': apRh,
+  'eur-her': eurHer,
 };
