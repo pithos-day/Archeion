@@ -158,7 +158,7 @@ const claims: ArticleClaims = [
         ],
       },
       {
-        label: '艦隊の船が掲げた火を合図に、木馬を開けた',
+        label: 'シノンが木馬を開けて中の者を出した（ウェルギリウスでは艦隊の船が掲げた火が合図）',
         sources: [
           { work: 'verg-aen', loc: '2.254-259', kind: 'narrative' },
           { work: 'hyg-fab', loc: '108.3', kind: 'mention' },
