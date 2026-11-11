@@ -8,7 +8,16 @@ import apollodLib from './apollod-lib.ts';
 import cypria from './cypria.ts';
 import diod15 from './diod-1-5.ts';
 import eratosthCat from './eratosth-cat.ts';
+import eurAlc from './eur-alc.ts';
+import eurCyc from './eur-cyc.ts';
+import eurHel from './eur-hel.ts';
 import eurHer from './eur-her.ts';
+import eurHipp from './eur-hipp.ts';
+import eurIa from './eur-ia.ts';
+import eurIon from './eur-ion.ts';
+import eurMed from './eur-med.ts';
+import eurPhoen from './eur-phoen.ts';
+import eurTro from './eur-tro.ts';
 import hdt from './hdt.ts';
 import hesTh from './hes-th.ts';
 import homIl from './hom-il.ts';
@@ -51,4 +60,13 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'ov-met': ovMet,
   'ap-rh': apRh,
   'eur-her': eurHer,
+  'eur-cyc': eurCyc,
+  'eur-hel': eurHel,
+  'eur-phoen': eurPhoen,
+  'eur-alc': eurAlc,
+  'eur-ion': eurIon,
+  'eur-ia': eurIa,
+  'eur-tro': eurTro,
+  'eur-med': eurMed,
+  'eur-hipp': eurHipp,
 };

@@ -51,7 +51,7 @@ versionReason:
 [^her-labors]: @eur-her/1271-1278
 [^her-hades]: @eur-her/22-25
 [^her-lycus]: @eur-her/31-34
-[^alc-thanatos]: [エウリピデス『アルケスティス』1140–1142](https://scaife.perseus.org/reader/urn:cts:greekLit:tlg0006.tlg002.perseus-grc2:1140-1142/)。«μάχην συνάψας δαιμόνων τῷ κυρίῳ … τύμβον παρ’ αὐτὸν ἐκ λόχου μάρψας χεροῖν»（神々のうちの〔死を〕つかさどる者と戦いを交えて……墓のすぐそばで、待ち伏せから両手でつかみかかって）
+[^alc-thanatos]: @eur-alc/1140+1142
 [^her-iris]: @eur-her/827-832
 [^her-lyssa]: @eur-her/822-824
 [^her-delusion]: @eur-her/967-971
