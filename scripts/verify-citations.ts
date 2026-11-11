@@ -7,8 +7,8 @@
  *   原典の該当箇所に含まれているか (途中を「…」で省いた引用は、各部分が順に含まれているか)。
  *   CTS URN のない作品は、出典レジストリの URL を使って `[ラベル](<url>#<箇所>) «原文»` と書く。
  *   DFHG の断片は `[ラベル](<url>.<断片の URN の残り>) «原文»` と書き、URN が原典にあるかも確かめる
- * - 脚注の引用レジストリの参照 (`@作品/引用`): レジストリにあるか
- * - 引用レジストリ (src/data/passages/*.ts): 原文が原典の該当箇所に含まれているか
+ * - 脚注の引用レジストリの参照 (`@作品/箇所:文`): 参照する文がレジストリにあるか
+ * - 引用レジストリ (src/data/passages/*.ts): 箇所の文の数と、各文の原文が、原典を文に分けたものと一致するか
  * - 論点表 (src/data/claims/*.ts): 出典の箇所が原典に実在するか
  *
  * 原典の場所は環境変数 MYTH_CORPUS (既定は ~/Documents/greek-mythology)。
@@ -20,6 +20,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { passages } from '../src/data/passages/index.ts';
 import {
   fullRange,
   SCAIFE_READER,
@@ -29,13 +30,12 @@ import {
   works,
 } from '../src/data/sources.ts';
 import type { ArticleClaims } from '../src/lib/claims.ts';
-import type { WorkPassages } from '../src/lib/passages.ts';
+import { PASSAGE_REFS, resolvePassage, splitSentences } from '../src/lib/passages.ts';
 
 const ROOT = join(import.meta.dirname, '..');
 const CORPUS = process.env.MYTH_CORPUS ?? join(homedir(), 'Documents/greek-mythology');
 const CONTENT_DIR = join(ROOT, 'src/content/docs');
 const CLAIMS_DIR = join(ROOT, 'src/data/claims');
-const PASSAGES_DIR = join(ROOT, 'src/data/passages');
 
 /**
  * 見出しのうち、箇所の番号として数えるもの (`# Book 1` など)。
@@ -221,48 +221,58 @@ function locOfAnchor(source: Source, anchor: string): string | undefined {
 
 // ---------- 引用レジストリ ----------
 
-/** 作品 id → その作品の引用。index.ts は拡張子なしで import しているので、作品のファイルを直接読む。 */
-const registry = new Map<string, WorkPassages>();
-for (const file of listFiles(PASSAGES_DIR, /\.ts$/)) {
-  const workId = file.split('/').at(-1)?.replace(/\.ts$/, '') ?? '';
-  if (workId === 'index') continue;
-  const module = (await import(pathToFileURL(file).href)) as { default: WorkPassages };
-  registry.set(workId, module.default);
+/** 原典の箇所を文に分ける。番号は引用レジストリの文の番号と同じ。 */
+function sentencesOf(source: Source, loc: string): string[] | undefined {
+  const text = getPassage(source, loc);
+  return text === undefined ? undefined : splitSentences(normalize(text));
 }
 
 function verifyRegistry(): void {
-  for (const [workId, passages] of registry) {
+  for (const [workId, sections] of Object.entries(passages)) {
+    const file = `src/data/passages/${workId}.ts`;
     if (!(workId in works)) {
-      errors.push(`src/data/passages/${workId}.ts: 出典レジストリにない作品`);
+      errors.push(`${file}: 出典レジストリにない作品`);
       continue;
     }
     const source: Source = works[workId as WorkId];
-    for (const [id, passage] of Object.entries(passages)) {
-      const where = `src/data/passages/${workId}.ts: ${id}`;
-      let text: string | undefined;
+    for (const [loc, section] of Object.entries(sections ?? {})) {
+      let corpus: string[] | undefined;
       try {
-        text = getPassage(source, passage.loc);
+        corpus = sentencesOf(source, loc);
       } catch (error) {
-        errors.push(`${where}: ${(error as Error).message}`);
+        errors.push(`${file}: ${loc}: ${(error as Error).message}`);
         continue;
       }
-      const quote = passage.original.join(' … ');
-      if (text === undefined) errors.push(`${where}: 箇所 ${passage.loc} が原典にない`);
-      else if (!containsQuote(text, quote))
-        errors.push(`${where}: 引用が ${passage.loc} の本文と一致しない\n    引用: ${quote}`);
-      checkedQuotes += 1;
+      if (corpus === undefined) {
+        errors.push(`${file}: 箇所 ${loc} が原典にない`);
+        continue;
+      }
+      if (section.length !== corpus.length)
+        errors.push(`${file}: ${loc} の文の数は ${corpus.length} (length: ${section.length})`);
+      for (const [number, sentence] of Object.entries(section.sentences)) {
+        const expected = corpus[Number(number) - 1];
+        if (expected === undefined) errors.push(`${file}: ${loc}:${number} は原典にない文の番号`);
+        else if (normalize(sentence.original) !== expected)
+          errors.push(
+            `${file}: ${loc}:${number} の原文が原典の文と一致しない\n    原典: ${expected}\n    原文: ${sentence.original}`,
+          );
+        if (sentence.translation.trim() === '') errors.push(`${file}: ${loc}:${number} の訳がない`);
+        checkedQuotes += 1;
+      }
     }
   }
 }
 
-/** 脚注が引用レジストリの参照 (`@作品/引用`) だけなら、参照先があるかを確かめて true を返す。 */
+/** 脚注が引用レジストリの参照 (`@作品/箇所:文`) だけなら、参照先があるかを確かめて true を返す。 */
 function verifyPassageRefs(where: string, definition: string): boolean {
   const body = definition.replace(/^\[\^[^\]]+\]:\s*/, '').trim();
-  if (!body.startsWith('@')) return false;
+  if (!PASSAGE_REFS.test(body)) return false;
   for (const ref of body.split(/\s+/)) {
-    const [, workId, id] = ref.match(/^@([\w-]+)\/(\S+)$/) ?? [];
-    if (!workId || !id) errors.push(`${where}: 引用の参照の形が正しくない: ${ref}`);
-    else if (!registry.get(workId)?.[id]) errors.push(`${where}: 引用レジストリにない: ${ref}`);
+    try {
+      resolvePassage(ref);
+    } catch (error) {
+      errors.push(`${where}: ${(error as Error).message}`);
+    }
   }
   return true;
 }
