@@ -476,13 +476,24 @@ export type WorkId = keyof typeof works;
 export const SCAIFE_READER = 'https://scaife.perseus.org/reader/';
 
 /**
+ * 範囲の終わりを、始まりと同じ形に補う。Scaife Viewer は `10.343-347` を読めないので `10.343-10.347` にする。
+ */
+export function fullRange(loc: string): string {
+  const [start, end] = loc.split('-');
+  if (end === undefined) return loc;
+  const startParts = start.split('.');
+  const endParts = end.split('.');
+  return `${start}-${[...startParts.slice(0, startParts.length - endParts.length), ...endParts].join('.')}`;
+}
+
+/**
  * 原文の該当箇所を開く URL。`loc` は `4.765-803` のような箇所。
  * CTS URN のある作品は Scaife Viewer、ない作品は `<url>#<箇所>`。
  * url にアンカーを含む作品 (DFHG) は、箇所から断片の URN を作れないので、著者の位置を開く。
  */
 export function sourceUrl(workId: WorkId, loc: string): string {
   const work: Work = works[workId];
-  if ('urn' in work) return `${SCAIFE_READER}${work.urn}:${loc}/`;
+  if ('urn' in work) return `${SCAIFE_READER}${work.urn}:${fullRange(loc)}/`;
   return work.url.includes('#') ? work.url : `${work.url}#${loc}`;
 }
 

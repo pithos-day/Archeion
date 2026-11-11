@@ -18,7 +18,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { SCAIFE_READER, sourceUrl, type Work, works } from '../src/data/sources.ts';
+import { fullRange, SCAIFE_READER, sourceUrl, type Work, works } from '../src/data/sources.ts';
 import type { ArticleClaims } from '../src/lib/claims.ts';
 
 const ROOT = join(import.meta.dirname, '..');
@@ -220,6 +220,8 @@ function verifyFootnote(where: string, definition: string): void {
   links.forEach((link, index) => {
     const { source, loc, anchored } = link;
     const ref = `${describe(source)}:${loc}`;
+    if ('urn' in source && fullRange(loc) !== loc)
+      errors.push(`${where}: 範囲の終わりを始まりと同じ形で書く (${loc} → ${fullRange(loc)})`);
     const segmentEnd = links[index + 1]?.index ?? definition.length;
     const segment = definition.slice(link.index + link.length, segmentEnd);
     const quote = segment.match(/«([^»]+)»/)?.[1];
