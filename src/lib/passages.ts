@@ -20,6 +20,11 @@ interface Sentence {
   original: string;
   /** 日本語訳 (Archeion による)。文末の句読点まで書く。 */
   translation: string;
+  /**
+   * 訳についての保守用の記録 (本文の読みの判断など)。脚注には出さない。
+   * 訳文の中に注釈を書かず、ここに書く。
+   */
+  note?: string;
 }
 
 interface Section {
