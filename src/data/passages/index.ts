@@ -16,6 +16,7 @@ import hygFab from './hyg-fab.ts';
 import iliasParva from './ilias-parva.ts';
 import iliouPersis from './iliou-persis.ts';
 import nosti from './nosti.ts';
+import ovMet from './ov-met.ts';
 import paus from './paus.ts';
 import plutSert from './plut-sert.ts';
 import plutThes from './plut-thes.ts';
@@ -45,4 +46,5 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'hes-th': hesTh,
   'hom-od': homOd,
   'hom-il': homIl,
+  'ov-met': ovMet,
 };
