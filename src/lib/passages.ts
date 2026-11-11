@@ -6,11 +6,16 @@
  * 記事の脚注には `[^id]: @<作品 id>/<箇所>:<文の番号>` と参照だけを書く。参照はビルド時に
  * `[出典](URL)。«原文»（訳）` に展開する (src/lib/footnote-plugin.ts)。
  *
- * 参照の書き方:
+ * 散文の作品 (ProsePassages) の参照の書き方:
  * - `@apollod-lib/1.1.5`         1.1.5 の全文
  * - `@apollod-lib/1.1.5:2`       1.1.5 の 2 文目
  * - `@apollod-lib/1.1.5:1-2,4`   1.1.5 の 1〜2 文目と 4 文目 (間は «…» … «…» と「……」でつなぐ)
  * - `@apollod-lib/1.9.16:3-4+1.9.17:1`  箇所をまたぐ引用。出典表記は 1.9.16–17 になる
+ *
+ * 韻文の作品 (VersePassages) は、文が行をまたぎ、行の途中で始まることもあるので、文ごとに
+ * 行の範囲を持たせる。参照には行の範囲を書き、その範囲に収まる文を引く:
+ * - `@hom-od/12.39-46`           12.39〜46 行にある文 (範囲の始まりと終わりは文の切れ目に合わせる)
+ * - `@hom-od/12.173-175+12.178`  続いていない範囲を «…» … «…» と「……」でつなぐ。出典表記は 12.173–178
  */
 import { passages } from '../data/passages/index.ts';
 import { citeLabel, sourceUrl, type WorkId } from '../data/sources.ts';
@@ -27,6 +32,15 @@ interface Sentence {
   note?: string;
 }
 
+/** 韻文の一文。 */
+interface VerseSentence extends Sentence {
+  /**
+   * 文のある行の範囲 (`12.39-40`、巻のない作品は `278-279`、1 行に収まる文は `41`)。
+   * 前の文が終わった行の途中で始まる文は、その行から数える。
+   */
+  lines: string;
+}
+
 interface Section {
   /** 原典のこの箇所にある文の数。 */
   length: number;
@@ -34,8 +48,14 @@ interface Section {
   sentences: Record<number, Sentence>;
 }
 
-/** 作品ごとの引用。キーは原典の箇所 (`1.1.5` など)。 */
-export type WorkPassages = Record<string, Section>;
+/** 散文の作品の引用。キーは原典の箇所 (`1.1.5` など)。 */
+export type ProsePassages = Record<string, Section>;
+
+/** 韻文の作品の引用。原典に出てくる順に並べる。 */
+export type VersePassages = VerseSentence[];
+
+/** 作品ごとの引用。 */
+export type WorkPassages = ProsePassages | VersePassages;
 
 /**
  * 原文を文に分ける。区切りは、空白か末尾が続く「.」「;」「·」。
@@ -91,13 +111,84 @@ function locRange(first: string, last: string): string {
   return `${first}-${lastParts.slice(shared).join('.')}`;
 }
 
-/** `@apollod-lib/1.1.5:1-2` を、原文と訳のまとまり、出典表記に解決する。見つからなければ例外を投げる。 */
-export function resolvePassage(ref: string): ResolvedPassage {
+/** 行の番号 (`12.39`、`123a`) を、比べられる数の並びにする。 */
+function lineKey(line: string): number[] {
+  return line.split('.').map((part) => {
+    const match = part.match(/^(\d+)([a-z]?)$/);
+    if (!match) return Number.NaN;
+    return Number(match[1]) + (match[2] ? (match[2].charCodeAt(0) - 96) / 100 : 0);
+  });
+}
+
+/** 行 a と b の前後。同じ巻でなければ NaN。 */
+function compareLines(a: string, b: string): number {
+  const keyA = lineKey(a);
+  const keyB = lineKey(b);
+  if (keyA.length !== keyB.length || keyA.slice(0, -1).some((part, i) => part !== keyB[i]))
+    return Number.NaN;
+  return (keyA.at(-1) ?? 0) - (keyB.at(-1) ?? 0);
+}
+
+/** 行の範囲 `12.39-46` を始まり `12.39` と終わり `12.46` に分ける。 */
+export function lineRange(lines: string): [start: string, end: string] {
+  const [start, end] = lines.split('-');
+  if (end === undefined) return [start, start];
+  const startParts = start.split('.');
+  const endParts = end.split('.');
+  return [
+    start,
+    [...startParts.slice(0, startParts.length - endParts.length), ...endParts].join('.'),
+  ];
+}
+
+/** 行の範囲 [start, end] に収まる行の範囲か。 */
+export function linesWithin(lines: string, start: string, end: string): boolean {
+  const [from, to] = lineRange(lines);
+  return compareLines(from, start) >= 0 && compareLines(to, end) <= 0;
+}
+
+/** 韻文の参照の、範囲ごとの文。範囲の始まりと終わりが文の切れ目に合わなければ例外を投げる。 */
+function verseBlocks(ref: string, work: VersePassages, spec: string): VerseSentence[][] {
+  return spec.split('+').map((piece) => {
+    const [start, end] = lineRange(piece);
+    const block = work.filter((sentence) => linesWithin(sentence.lines, start, end));
+    if (block.length === 0) throw new Error(`引用レジストリにない行: ${ref} (${piece})`);
+    const first = lineRange(block[0]?.lines ?? '')[0];
+    const last = lineRange(block.at(-1)?.lines ?? '')[1];
+    if (first !== start || last !== end)
+      throw new Error(`行の範囲が文の切れ目に合わない: ${ref} (${piece} の文は ${first}〜${last})`);
+    return block;
+  });
+}
+
+/** 参照を作品 id と、その後ろ (箇所と文の番号、または行の範囲) に分ける。 */
+export function parseRef(ref: string): { workId: WorkId; spec: string; work: WorkPassages } {
   const match = ref.match(/^@([\w-]+)\/(\S+)$/);
   if (!match) throw new Error(`引用の参照の形が正しくない: ${ref}`);
   const [, workId, spec] = match;
   const work = passages[workId as WorkId];
   if (!work) throw new Error(`引用レジストリにない作品: ${ref}`);
+  return { workId: workId as WorkId, spec, work };
+}
+
+/**
+ * `@apollod-lib/1.1.5:1-2`、`@hom-od/12.39-46` を、原文と訳のまとまり、出典表記に解決する。
+ * 見つからなければ例外を投げる。
+ */
+export function resolvePassage(ref: string): ResolvedPassage {
+  const { workId: id, spec, work } = parseRef(ref);
+  if (Array.isArray(work)) {
+    const blocks = verseBlocks(ref, work, spec);
+    const start = lineRange(blocks[0]?.[0]?.lines ?? '')[0];
+    const end = lineRange(blocks.at(-1)?.at(-1)?.lines ?? '')[1];
+    const loc = locRange(start, end);
+    return {
+      url: sourceUrl(id, loc),
+      label: citeLabel(id, loc),
+      original: blocks.map((block) => block.map((sentence) => sentence.original).join(' ')),
+      translation: blocks.map((block) => block.map((sentence) => sentence.translation).join('')),
+    };
+  }
 
   const refs: SentenceRef[] = spec.split('+').flatMap((part) => {
     const [section, selection] = part.split(':');
@@ -130,7 +221,6 @@ export function resolvePassage(ref: string): ResolvedPassage {
 
   const sections = refs.map((sentenceRef) => sentenceRef.section);
   const loc = locRange(sections[0] ?? '', sections.at(-1) ?? '');
-  const id = workId as WorkId;
   return { url: sourceUrl(id, loc), label: citeLabel(id, loc), original, translation };
 }
 

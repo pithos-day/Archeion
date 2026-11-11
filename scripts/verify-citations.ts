@@ -8,16 +8,14 @@
  *   CTS URN のない作品は、出典レジストリの URL を使って `[ラベル](<url>#<箇所>) «原文»` と書く。
  *   DFHG の断片は `[ラベル](<url>.<断片の URN の残り>) «原文»` と書き、URN が原典にあるかも確かめる
  * - 脚注の引用レジストリの参照 (`@作品/箇所:文`): 参照する文がレジストリにあるか
- * - 引用レジストリ (src/data/passages/*.ts): 箇所の文の数と、各文の原文が、原典を文に分けたものと一致するか
+ * - 引用レジストリ (src/data/passages/*.ts): 箇所の文の数と、各文の原文が、原典を文に分けたものと一致するか。
+ *   韻文の作品は、各文の行の範囲と原文が、原典の文と一致するか。脚注の参照の行の範囲に収まる原典の文が、
+ *   すべてレジストリにあるか (途中の文が抜けたまま続けて表示しないため)
  * - 論点表 (src/data/claims/*.ts): 出典の箇所が原典に実在するか
  *
- * 原典の場所は環境変数 MYTH_CORPUS (既定は ~/Documents/greek-mythology)。
- * 原典の txt は、どの入手元のものも同じ形式 (`=====` の行までがヘッダ、`# Book 1` などの見出し)。
- * Perseus と First1KGreek の原典は、ファイル名が `<URN の作品部分>.txt`。
- * そのほかの原典は、出典レジストリ (src/data/sources.ts) にファイルのパスを書く。
+ * 原典の読み方は scripts/corpus.ts。
  */
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { homedir } from 'node:os';
+import { readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { passages } from '../src/data/passages/index.ts';
@@ -30,160 +28,35 @@ import {
   works,
 } from '../src/data/sources.ts';
 import type { ArticleClaims } from '../src/lib/claims.ts';
-import { PASSAGE_REFS, resolvePassage, splitSentences } from '../src/lib/passages.ts';
+import {
+  lineRange,
+  linesWithin,
+  PASSAGE_REFS,
+  parseRef,
+  resolvePassage,
+  type VersePassages,
+} from '../src/lib/passages.ts';
+import {
+  type CorpusVerseSentence,
+  containsQuote,
+  describe,
+  getPassage,
+  linesOf,
+  listFiles,
+  loadPassages,
+  normalize,
+  type Source,
+  sentencesOf,
+  verseSentencesOf,
+} from './corpus.ts';
 
 const ROOT = join(import.meta.dirname, '..');
-const CORPUS = process.env.MYTH_CORPUS ?? join(homedir(), 'Documents/greek-mythology');
 const CONTENT_DIR = join(ROOT, 'src/content/docs');
 const CLAIMS_DIR = join(ROOT, 'src/data/claims');
-
-/**
- * 見出しのうち、箇所の番号として数えるもの (`# Book 1` など)。
- * 原典の TEI XML が CTS の引用単位として宣言している区分に合わせる。
- * 2行目は First1KGreek の断片集と古注、Perseus のエピグラム、
- * Perseus 以外の原典 (原典コレクションの scripts/normalize.py が見出しを付ける) で使う。
- */
-const NUMBERING_HEADINGS = new Set([
-  ...['Book', 'Chapter', 'Section', 'Poem'],
-  ...['Volume', 'Work', 'Fragment', 'Epigram', 'Epigraph', 'Line', 'Part', 'Page'],
-]);
 
 const errors: string[] = [];
 let checkedQuotes = 0;
 let checkedClaims = 0;
-
-function listFiles(dir: string, pattern: RegExp): string[] {
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir, { recursive: true, encoding: 'utf8' })
-    .filter((name) => pattern.test(name))
-    .map((name) => join(dir, name));
-}
-
-// ---------- 原典テキスト ----------
-
-const corpusFiles = new Map(
-  listFiles(CORPUS, /\.txt$/).map((path) => [
-    path
-      .split('/')
-      .at(-1)
-      ?.replace(/\.txt$/, ''),
-    path,
-  ]),
-);
-
-/** 照合する原典。CTS URN、または原典ファイルのパスで指定する。 */
-type Source = { urn: string } | { file: string };
-
-function describe(source: Source): string {
-  return 'urn' in source ? source.urn : source.file;
-}
-
-/** 箇所 (`4.765` など) → 本文 の組を、原典の出てくる順に並べたもの。 */
-type Passages = [key: string, text: string][];
-
-function appendPassage(passages: Passages, key: string, text: string): void {
-  const last = passages.at(-1);
-  if (last && last[0] === key) last[1] += ` ${text}`;
-  else passages.push([key, text]);
-}
-
-/** 原典の txt を箇所ごとに分ける。見出し (`# Book 1`) と韻文の行番号が箇所になる。 */
-function parseTei(lines: string[]): Passages {
-  const headingPath: (string | undefined)[] = [];
-  const passages: Passages = [];
-  for (const line of lines) {
-    const heading = line.match(/^(#+)\s+(\S+)\s+(\S+)/);
-    if (heading) {
-      const [, hashes, word, value] = heading;
-      if (NUMBERING_HEADINGS.has(word)) {
-        headingPath.length = hashes.length - 1;
-        headingPath[hashes.length - 1] = value;
-      }
-      continue;
-    }
-    if (line.startsWith('#') || line.trim() === '') continue;
-    const prefix = headingPath.filter((part) => part !== undefined);
-    const verse = line.match(/^\s*(\d+[a-z]?)\s{2}(.*)$/);
-    if (verse) appendPassage(passages, [...prefix, verse[1]].join('.'), verse[2]);
-    else appendPassage(passages, prefix.join('.'), line.trim());
-  }
-  return passages;
-}
-
-const passageCache = new Map<string, Passages>();
-
-function loadPassages(source: Source): Passages {
-  const cacheKey = describe(source);
-  const cached = passageCache.get(cacheKey);
-  if (cached) return cached;
-
-  let path: string | undefined;
-  if ('urn' in source) {
-    const workPart = source.urn.split(':').at(-1) ?? '';
-    path = corpusFiles.get(workPart);
-    if (!path) throw new Error(`原典ファイルが見つからない: ${workPart}.txt (${CORPUS})`);
-  } else {
-    path = join(CORPUS, source.file);
-    if (!existsSync(path)) throw new Error(`原典ファイルが見つからない: ${path}`);
-  }
-
-  const lines = readFileSync(path, 'utf8').split('\n');
-  const body = lines.slice(lines.findIndex((line) => /^={10,}$/.test(line)) + 1);
-  const passages = parseTei(body);
-  passageCache.set(cacheKey, passages);
-  return passages;
-}
-
-/** `4.765-803` を始点 `4.765` と終点 `4.803` に分ける。終点の省略された上位の番号は始点から補う。 */
-function splitRange(loc: string): [string, string] {
-  const [start, end] = loc.split('-');
-  if (!end) return [start, start];
-  const startParts = start.split('.');
-  const endParts = end.split('.');
-  return [
-    start,
-    [...startParts.slice(0, startParts.length - endParts.length), ...endParts].join('.'),
-  ];
-}
-
-function matchesKey(key: string, ref: string): boolean {
-  return key === ref || key.startsWith(`${ref}.`);
-}
-
-/** 原典の箇所の本文を返す。見つからなければ undefined。 */
-function getPassage(source: Source, loc: string): string | undefined {
-  const passages = loadPassages(source);
-  const [start, end] = splitRange(loc);
-  const from = passages.findIndex(([key]) => matchesKey(key, start));
-  const to = passages.findLastIndex(([key]) => matchesKey(key, end));
-  if (from === -1 || to === -1 || to < from) return undefined;
-  return passages
-    .slice(from, to + 1)
-    .map(([, text]) => text)
-    .join(' ');
-}
-
-/** 照合用の正規化。アポストロフィの字形、校訂記号、空白、行区切りの「/」の違いを無視する。 */
-function normalize(text: string): string {
-  return text
-    .normalize('NFC')
-    .replace(/[ʼ’'᾽΄]/g, 'ʼ')
-    .replace(/[[\]⟨⟩†/]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-/** 引用の各部分 (「…」で区切る) が、本文に順に含まれているか。 */
-function containsQuote(passage: string, quote: string): boolean {
-  const text = normalize(passage);
-  let position = 0;
-  for (const piece of quote.split('…').map(normalize).filter(Boolean)) {
-    const found = text.indexOf(piece, position);
-    if (found === -1) return false;
-    position = found + piece.length;
-  }
-  return true;
-}
 
 // ---------- 脚注 ----------
 
@@ -221,10 +94,40 @@ function locOfAnchor(source: Source, anchor: string): string | undefined {
 
 // ---------- 引用レジストリ ----------
 
-/** 原典の箇所を文に分ける。番号は引用レジストリの文の番号と同じ。 */
-function sentencesOf(source: Source, loc: string): string[] | undefined {
-  const text = getPassage(source, loc);
-  return text === undefined ? undefined : splitSentences(normalize(text));
+function verifyVerseRegistry(file: string, source: Source, work: VersePassages): void {
+  let corpus: CorpusVerseSentence[];
+  try {
+    corpus = verseSentencesOf(source);
+  } catch (error) {
+    errors.push(`${file}: ${(error as Error).message}`);
+    return;
+  }
+  let previous = -1;
+  for (const sentence of work) {
+    const [start, end] = lineRange(sentence.lines);
+    const index = corpus.findIndex(
+      (candidate) =>
+        candidate.start === start &&
+        candidate.end === end &&
+        candidate.text === normalize(sentence.original),
+    );
+    if (index === -1) {
+      const near = corpus
+        .filter((candidate) => candidate.start === start || candidate.end === end)
+        .map((candidate) => `${linesOf(candidate)}: ${candidate.text}`);
+      errors.push(
+        `${file}: ${sentence.lines} の文が原典の文と一致しない\n    原文: ${sentence.original}${near
+          .map((line) => `\n    原典 ${line}`)
+          .join('')}`,
+      );
+    } else if (index <= previous) {
+      errors.push(`${file}: ${sentence.lines} の文が原典の順に並んでいない`);
+    } else {
+      previous = index;
+    }
+    if (sentence.translation.trim() === '') errors.push(`${file}: ${sentence.lines} の訳がない`);
+    checkedQuotes += 1;
+  }
 }
 
 function verifyRegistry(): void {
@@ -235,6 +138,10 @@ function verifyRegistry(): void {
       continue;
     }
     const source: Source = works[workId as WorkId];
+    if (Array.isArray(sections)) {
+      verifyVerseRegistry(file, source, sections);
+      continue;
+    }
     for (const [loc, section] of Object.entries(sections ?? {})) {
       let corpus: string[] | undefined;
       try {
@@ -263,6 +170,37 @@ function verifyRegistry(): void {
   }
 }
 
+/** 韻文の参照の行の範囲に収まる原典の文が、すべてレジストリにあるか。 */
+function verifyVerseRef(where: string, ref: string): void {
+  const { workId, spec, work } = parseRef(ref);
+  if (!Array.isArray(work)) return;
+  const corpus = verseSentencesOf(works[workId]);
+  const pieces = spec.split('+');
+  pieces.forEach((piece, index) => {
+    const next = pieces[index + 1];
+    if (next === undefined) return;
+    const lastIndex = corpus.findLastIndex((sentence) =>
+      linesWithin(linesOf(sentence), ...lineRange(piece)),
+    );
+    const following = corpus[lastIndex + 1];
+    if (following && lineRange(next)[0] === following.start)
+      errors.push(`${where}: ${ref} の ${piece} と ${next} は続いているので、一つの範囲にまとめる`);
+  });
+  for (const piece of pieces) {
+    const [start, end] = lineRange(piece);
+    for (const sentence of corpus) {
+      if (!linesWithin(linesOf(sentence), start, end)) continue;
+      const registered = work.some(
+        (entry) => entry.lines === linesOf(sentence) && normalize(entry.original) === sentence.text,
+      );
+      if (!registered)
+        errors.push(
+          `${where}: ${ref} の範囲の文がレジストリにない (${linesOf(sentence)}: ${sentence.text})`,
+        );
+    }
+  }
+}
+
 /** 脚注が引用レジストリの参照 (`@作品/箇所:文`) だけなら、参照先があるかを確かめて true を返す。 */
 function verifyPassageRefs(where: string, definition: string): boolean {
   const body = definition.replace(/^\[\^[^\]]+\]:\s*/, '').trim();
@@ -270,6 +208,7 @@ function verifyPassageRefs(where: string, definition: string): boolean {
   for (const ref of body.split(/\s+/)) {
     try {
       resolvePassage(ref);
+      verifyVerseRef(where, ref);
     } catch (error) {
       errors.push(`${where}: ${(error as Error).message}`);
     }

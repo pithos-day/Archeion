@@ -1,7 +1,7 @@
-import type { WorkPassages } from '../../lib/passages.ts';
+import type { ProsePassages } from '../../lib/passages.ts';
 
 /** アポロドロス『ビブリオテーケー』の引用。 */
-const passages: WorkPassages = {
+const passages: ProsePassages = {
   '1.1.5': {
     length: 2,
     sentences: {
