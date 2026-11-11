@@ -50,6 +50,9 @@ export const authors = {
   'quintus-smyrnaeus': { name: 'クイントゥス', era: 1, year: 350 },
   strabo: { name: 'ストラボン', era: 1, year: 10 },
   'valerius-flaccus': { name: 'ウァレリウス・フラックス', era: 1, year: 80 },
+  callimachus: { name: 'カリマコス', era: 1, year: -270 },
+  aratus: { name: 'アラトス', era: 1, year: -270 },
+  claudian: { name: 'クラウディアヌス', era: 1, year: 400 },
 } as const satisfies Record<string, Author>;
 
 export type AuthorId = keyof typeof authors;
@@ -435,6 +438,36 @@ export const works = {
     author: 'valerius-flaccus',
     title: 'アルゴナウティカ',
     urn: 'urn:cts:latinLit:phi1035.phi001.perseus-lat2',
+  },
+  'callim-h-1': {
+    author: 'callimachus',
+    title: 'ゼウス讃歌',
+    urn: 'urn:cts:greekLit:tlg0533.tlg015.perseus-grc3',
+  },
+  'arat-phaen': {
+    author: 'aratus',
+    title: 'パイノメナ',
+    urn: 'urn:cts:greekLit:tlg0653.tlg001.perseus-grc2',
+  },
+  'claud-rapt': {
+    author: 'claudian',
+    title: 'プロセルピナの略奪',
+    urn: 'urn:cts:latinLit:stoa0089.stoa005.perseus-lat2',
+  },
+  'eur-hipp': {
+    author: 'euripides',
+    title: 'ヒッポリュトス',
+    urn: 'urn:cts:greekLit:tlg0006.tlg005.perseus-grc2',
+  },
+  'soph-el': {
+    author: 'sophocles',
+    title: 'エレクトラ',
+    urn: 'urn:cts:greekLit:tlg0011.tlg005.perseus-grc2',
+  },
+  'verg-geo': {
+    author: 'virgil',
+    title: '農耕詩',
+    urn: 'urn:cts:latinLit:phi0690.phi002.perseus-lat2',
   },
 } as const satisfies Record<string, Work>;
 
