@@ -11,6 +11,7 @@ import hygFab from './hyg-fab.ts';
 import iliasParva from './ilias-parva.ts';
 import iliouPersis from './iliou-persis.ts';
 import nosti from './nosti.ts';
+import paus from './paus.ts';
 import telegonia from './telegonia.ts';
 
 export const passages: Partial<Record<WorkId, WorkPassages>> = {
@@ -25,4 +26,5 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'hyg-fab': hygFab,
   'hyg-astr': hygAstr,
   'diod-1-5': diod15,
+  paus,
 };
