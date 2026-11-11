@@ -7,6 +7,8 @@
  *   原典の該当箇所に含まれているか (途中を「…」で省いた引用は、各部分が順に含まれているか)。
  *   CTS URN のない作品は、出典レジストリの URL を使って `[ラベル](<url>#<箇所>) «原文»` と書く。
  *   DFHG の断片は `[ラベル](<url>.<断片の URN の残り>) «原文»` と書き、URN が原典にあるかも確かめる
+ * - 脚注の引用レジストリの参照 (`@作品/引用`): レジストリにあるか
+ * - 引用レジストリ (src/data/passages/*.ts): 原文が原典の該当箇所に含まれているか
  * - 論点表 (src/data/claims/*.ts): 出典の箇所が原典に実在するか
  *
  * 原典の場所は環境変数 MYTH_CORPUS (既定は ~/Documents/greek-mythology)。
@@ -18,13 +20,22 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { fullRange, SCAIFE_READER, sourceUrl, type Work, works } from '../src/data/sources.ts';
+import {
+  fullRange,
+  SCAIFE_READER,
+  sourceUrl,
+  type Work,
+  type WorkId,
+  works,
+} from '../src/data/sources.ts';
 import type { ArticleClaims } from '../src/lib/claims.ts';
+import type { WorkPassages } from '../src/lib/passages.ts';
 
 const ROOT = join(import.meta.dirname, '..');
 const CORPUS = process.env.MYTH_CORPUS ?? join(homedir(), 'Documents/greek-mythology');
 const CONTENT_DIR = join(ROOT, 'src/content/docs');
 const CLAIMS_DIR = join(ROOT, 'src/data/claims');
+const PASSAGES_DIR = join(ROOT, 'src/data/passages');
 
 /**
  * 見出しのうち、箇所の番号として数えるもの (`# Book 1` など)。
@@ -208,7 +219,56 @@ function locOfAnchor(source: Source, anchor: string): string | undefined {
   return loadPassages(source).find(([, text]) => text.includes(`[${anchor}]`))?.[0];
 }
 
+// ---------- 引用レジストリ ----------
+
+/** 作品 id → その作品の引用。index.ts は拡張子なしで import しているので、作品のファイルを直接読む。 */
+const registry = new Map<string, WorkPassages>();
+for (const file of listFiles(PASSAGES_DIR, /\.ts$/)) {
+  const workId = file.split('/').at(-1)?.replace(/\.ts$/, '') ?? '';
+  if (workId === 'index') continue;
+  const module = (await import(pathToFileURL(file).href)) as { default: WorkPassages };
+  registry.set(workId, module.default);
+}
+
+function verifyRegistry(): void {
+  for (const [workId, passages] of registry) {
+    if (!(workId in works)) {
+      errors.push(`src/data/passages/${workId}.ts: 出典レジストリにない作品`);
+      continue;
+    }
+    const source: Source = works[workId as WorkId];
+    for (const [id, passage] of Object.entries(passages)) {
+      const where = `src/data/passages/${workId}.ts: ${id}`;
+      let text: string | undefined;
+      try {
+        text = getPassage(source, passage.loc);
+      } catch (error) {
+        errors.push(`${where}: ${(error as Error).message}`);
+        continue;
+      }
+      const quote = passage.original.join(' … ');
+      if (text === undefined) errors.push(`${where}: 箇所 ${passage.loc} が原典にない`);
+      else if (!containsQuote(text, quote))
+        errors.push(`${where}: 引用が ${passage.loc} の本文と一致しない\n    引用: ${quote}`);
+      checkedQuotes += 1;
+    }
+  }
+}
+
+/** 脚注が引用レジストリの参照 (`@作品/引用`) だけなら、参照先があるかを確かめて true を返す。 */
+function verifyPassageRefs(where: string, definition: string): boolean {
+  const body = definition.replace(/^\[\^[^\]]+\]:\s*/, '').trim();
+  if (!body.startsWith('@')) return false;
+  for (const ref of body.split(/\s+/)) {
+    const [, workId, id] = ref.match(/^@([\w-]+)\/(\S+)$/) ?? [];
+    if (!workId || !id) errors.push(`${where}: 引用の参照の形が正しくない: ${ref}`);
+    else if (!registry.get(workId)?.[id]) errors.push(`${where}: 引用レジストリにない: ${ref}`);
+  }
+  return true;
+}
+
 function verifyFootnote(where: string, definition: string): void {
+  if (verifyPassageRefs(where, definition)) return;
   const links = [...definition.matchAll(LINK)].flatMap((match) => {
     const resolved = resolveLink(match[1]);
     return resolved ? [{ ...resolved, index: match.index, length: match[0].length }] : [];
@@ -255,6 +315,8 @@ for (const file of listFiles(CONTENT_DIR, /\.mdx?$/)) {
       }
     });
 }
+
+verifyRegistry();
 
 // ---------- 論点表 ----------
 

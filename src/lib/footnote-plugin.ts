@@ -4,10 +4,13 @@
  * - 本文へ戻るリンクを先頭に置く。参照が 1 か所なら「^」、2 か所以上なら「^ a b」
  * - 脚注の原文 «…» は「原語で表示」で折りたたみ、続く（訳）を本文として出す
  *
- * 脚注の書き方は `[ラベル](URL)。«原文»（訳）`（/policy/ の「出典の示し方」）。
+ * - 引用レジストリの参照 `@作品/引用`（src/lib/passages.ts）を、出典・原文・訳に展開する
+ *
+ * 脚注の書き方は `@作品/引用`、または `[ラベル](URL)。«原文»（訳）`（/policy/ の「出典の示し方」）。
  */
 import type { SatteriProcessorOptions } from '@astrojs/markdown-satteri';
 import type { Element, ElementContent, Text } from 'hast';
+import { PASSAGE_REFS, quoteText, resolvePassage } from './passages';
 
 type HastPlugin = NonNullable<SatteriProcessorOptions['hastPlugins']>[number];
 
@@ -83,16 +86,37 @@ function extractQuotes(value: string): { rest: string; quotes: string[] } {
   return { rest: rest + value.slice(position), quotes };
 }
 
+/** 本文が `@作品/引用` だけの脚注を、`[出典](URL)。«原文»（訳）` の並びに置き換える。 */
+function expandPassageRefs(children: ElementContent[]): ElementContent[] {
+  const content = children.filter((child) => !isBackref(child));
+  if (!content.every((child) => child.type === 'text')) return children;
+  const refs = content
+    .map((child) => (child as Text).value)
+    .join('')
+    .trim();
+  if (!PASSAGE_REFS.test(refs)) return children;
+  const expanded = refs.split(/\s+/).flatMap((ref, index) => {
+    const passage = resolvePassage(ref);
+    return [
+      ...(index > 0 ? [text('；')] : []),
+      element('a', { href: passage.url }, [text(passage.label)]),
+      text(`。${quoteText(passage)}`),
+    ];
+  });
+  return [...expanded, ...children.filter(isBackref)];
+}
+
 function rebuildFootnote(item: Element): Element | undefined {
   const paragraph = item.children.find(
     (child): child is Element => child.type === 'element' && child.tagName === 'p',
   );
   if (!paragraph) return undefined;
+  const paragraphChildren = expandPassageRefs(paragraph.children);
 
-  const backrefs = paragraph.children.filter(isBackref);
+  const backrefs = paragraphChildren.filter(isBackref);
   const quotes: string[] = [];
   const body: ElementContent[] = [];
-  for (const child of paragraph.children) {
+  for (const child of paragraphChildren) {
     if (isBackref(child)) continue;
     if (child.type === 'text') {
       const extracted = extractQuotes(child.value);
