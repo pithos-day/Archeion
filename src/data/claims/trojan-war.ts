@@ -210,6 +210,10 @@ const claims: ArticleClaims = [
         label: 'パリスの姿をとったアポロン',
         sources: [{ work: 'hyg-fab', loc: '107.1', kind: 'narrative' }],
       },
+      {
+        label: 'パリスとデイポボスが、話し合いに来たところを討った',
+        sources: [{ work: 'hyg-fab', loc: '110.1', kind: 'mention' }],
+      },
     ],
   },
   {
