@@ -30,6 +30,7 @@ import {
   PART_MIN_LINES,
   PASSAGE_REFS,
   type Part,
+  type ProsePassages,
   parseRef,
   resolvePassage,
   type VersePassages,
@@ -186,6 +187,43 @@ function verifyVerseRegistry(file: string, source: Source, registry: VersePassag
   }
 }
 
+function verifyProseRegistry(file: string, source: Source, registry: ProsePassages): void {
+  for (const [loc, section] of Object.entries(registry)) {
+    let corpus: string[] | undefined;
+    try {
+      corpus = sentencesOf(source, loc);
+    } catch (error) {
+      errors.push(`${file}: ${loc}: ${(error as Error).message}`);
+      continue;
+    }
+    if (corpus === undefined) {
+      errors.push(`${file}: 箇所 ${loc} が原典にない`);
+      continue;
+    }
+    if (section.length !== corpus.length)
+      errors.push(`${file}: ${loc} の文の数は ${corpus.length} (length: ${section.length})`);
+    for (const [number, sentence] of Object.entries(section.sentences)) {
+      const expected = corpus[Number(number) - 1];
+      if (expected === undefined) errors.push(`${file}: ${loc}:${number} は原典にない文の番号`);
+      else if (normalize(originalOf(sentence)) !== expected)
+        errors.push(
+          `${file}: ${loc}:${number} の原文が原典の文と一致しない\n    原典: ${expected}\n    原文: ${originalOf(sentence)}`,
+        );
+      if ('parts' in sentence) {
+        if (expected !== undefined && expected.length < PART_MIN_CHARS)
+          errors.push(
+            `${file}: ${loc}:${number} の文は ${expected.length} 字で、部分に分けるには短い (${PART_MIN_CHARS} 字から)`,
+          );
+        if (sentence.parts.length < 2)
+          errors.push(`${file}: ${loc}:${number} の部分が 1 つしかない`);
+      } else if (sentence.translation.trim() === '') {
+        errors.push(`${file}: ${loc}:${number} の訳がない`);
+      }
+      checkedQuotes += 1;
+    }
+  }
+}
+
 function verifyRegistry(): void {
   for (const [workId, registry] of Object.entries(passages)) {
     const file = `src/data/passages/${workId}.ts`;
@@ -194,45 +232,8 @@ function verifyRegistry(): void {
       continue;
     }
     const source: Source = works[workId as WorkId];
-    if (Array.isArray(registry)) {
-      verifyVerseRegistry(file, source, registry);
-      continue;
-    }
-    for (const [loc, section] of Object.entries(registry ?? {})) {
-      let corpus: string[] | undefined;
-      try {
-        corpus = sentencesOf(source, loc);
-      } catch (error) {
-        errors.push(`${file}: ${loc}: ${(error as Error).message}`);
-        continue;
-      }
-      if (corpus === undefined) {
-        errors.push(`${file}: 箇所 ${loc} が原典にない`);
-        continue;
-      }
-      if (section.length !== corpus.length)
-        errors.push(`${file}: ${loc} の文の数は ${corpus.length} (length: ${section.length})`);
-      for (const [number, sentence] of Object.entries(section.sentences)) {
-        const expected = corpus[Number(number) - 1];
-        if (expected === undefined) errors.push(`${file}: ${loc}:${number} は原典にない文の番号`);
-        else if (normalize(originalOf(sentence)) !== expected)
-          errors.push(
-            `${file}: ${loc}:${number} の原文が原典の文と一致しない\n    原典: ${expected}\n    原文: ${originalOf(sentence)}`,
-          );
-        if (!('parts' in sentence)) {
-          if (sentence.translation.trim() === '')
-            errors.push(`${file}: ${loc}:${number} の訳がない`);
-        } else {
-          if (expected !== undefined && expected.length < PART_MIN_CHARS)
-            errors.push(
-              `${file}: ${loc}:${number} の文は ${expected.length} 字で、部分に分けるには短い (${PART_MIN_CHARS} 字から)`,
-            );
-          if (sentence.parts.length < 2)
-            errors.push(`${file}: ${loc}:${number} の部分が 1 つしかない`);
-        }
-        checkedQuotes += 1;
-      }
-    }
+    if (Array.isArray(registry)) verifyVerseRegistry(file, source, registry);
+    else if (registry) verifyProseRegistry(file, source, registry);
   }
 }
 
@@ -275,47 +276,43 @@ function verifyVerseRef(where: string, ref: string): void {
   }
 }
 
-/** 脚注が引用レジストリの参照 (`@作品/箇所:文`) だけなら、参照先があるかを確かめて true を返す。 */
-function verifyPassageRefs(where: string, definition: string): boolean {
-  const body = definition.replace(/^\[\^[^\]]+\]:\s*/, '').trim();
-  if (!PASSAGE_REFS.test(body)) return false;
-  for (const ref of body.split(/\s+/)) {
+/**
+ * 脚注の参照 (`@作品/箇所:文`) の参照先を確かめ、展開した原文を返す。同じ引用の脚注を見つけるのに使う。
+ * 解決できない参照があれば undefined。
+ */
+function verifyFootnoteRefs(where: string, body: string): string | undefined {
+  const refs = body.split(/\s+/);
+  const originals: string[] = [];
+  for (const ref of refs) {
     try {
-      verifyAnchor(where, parseRef(ref).workId, resolvePassage(ref).url);
+      const passage = resolvePassage(ref);
+      originals.push(passage.original.join(' '));
+      verifyAnchor(where, parseRef(ref).workId, passage.url);
       verifyVerseRef(where, ref);
     } catch (error) {
       errors.push(`${where}: ${(error as Error).message}`);
     }
   }
-  return true;
+  return originals.length === refs.length ? originals.join(' | ') : undefined;
 }
 
-function verifyFootnote(where: string, definition: string): void {
-  if (!verifyPassageRefs(where, definition))
-    errors.push(`${where}: 脚注の引用は引用レジストリの参照 (\`@作品/箇所:文\`) で書く`);
-}
-
-for (const file of listFiles(CONTENT_DIR, /\.mdx?$/)) {
-  /** 引用レジストリの参照だけの脚注の、展開した原文 → 最初の脚注の id。同じ引用を 2 つの脚注に書かないため。 */
+/** 記事の脚注を確かめる。同じ記事で同じ引用を 2 つの脚注に書いていないかも見る。 */
+function verifyArticle(file: string): void {
+  /** 展開した原文 → その引用を最初に書いた脚注の id。 */
   const quoted = new Map<string, string>();
   readFileSync(file, 'utf8')
     .split('\n')
     .forEach((line, index) => {
       const footnote = line.match(/^\[\^([^\]]+)\]:\s*(.*)$/);
       if (!footnote) return;
-      const where = `${relative(ROOT, file)}:${index + 1}`;
-      verifyFootnote(where, line);
       const [, id, body] = footnote;
-      if (!PASSAGE_REFS.test(body)) return;
-      let text: string;
-      try {
-        text = body
-          .split(/\s+/)
-          .map((ref) => resolvePassage(ref).original.join(' '))
-          .join(' | ');
-      } catch {
+      const where = `${relative(ROOT, file)}:${index + 1}`;
+      if (!PASSAGE_REFS.test(body.trim())) {
+        errors.push(`${where}: 脚注の引用は引用レジストリの参照 (\`@作品/箇所:文\`) で書く`);
         return;
       }
+      const text = verifyFootnoteRefs(where, body.trim());
+      if (text === undefined) return;
       const first = quoted.get(text);
       if (first)
         errors.push(
@@ -324,6 +321,8 @@ for (const file of listFiles(CONTENT_DIR, /\.mdx?$/)) {
       else quoted.set(text, id);
     });
 }
+
+for (const file of listFiles(CONTENT_DIR, /\.mdx?$/)) verifyArticle(file);
 
 verifyRegistry();
 
