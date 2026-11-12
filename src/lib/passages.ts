@@ -253,27 +253,43 @@ export function parseRef(ref: string): { workId: WorkId; spec: string; registry:
   return { workId: workId as WorkId, spec, registry };
 }
 
-/**
- * `@apollod-lib/1.1.5:1-2`、`@hom-od/12.39-46` を、原文と訳のまとまり、出典表記に解決する。
- * 見つからなければ例外を投げる。
- */
-export function resolvePassage(ref: string): ResolvedPassage {
-  const { workId: id, spec, registry } = parseRef(ref);
-  if (Array.isArray(registry)) {
-    const blocks = verseBlocks(ref, registry, spec);
-    const start = rangeEnds(blocks[0]?.[0]?.lines ?? '')[0];
-    const end = rangeEnds(blocks.at(-1)?.at(-1)?.lines ?? '')[1];
-    const loc = compactRange(start, end);
-    return {
-      url: sourceUrl(id, loc),
-      label: citeLabel(id, loc),
-      original: blocks.map((block) => block.map((sentence) => sentence.original).join(' ')),
-      translation: blocks.map((block) =>
-        block.map((unit) => translationOf(ref, unit, unit.lines)).join(''),
-      ),
-    };
-  }
+/** 韻文の参照を解決する。 */
+function resolveVerse(
+  ref: string,
+  id: WorkId,
+  registry: VersePassages,
+  spec: string,
+): ResolvedPassage {
+  const blocks = verseBlocks(ref, registry, spec);
+  const start = rangeEnds(blocks[0]?.[0]?.lines ?? '')[0];
+  const end = rangeEnds(blocks.at(-1)?.at(-1)?.lines ?? '')[1];
+  const loc = compactRange(start, end);
+  return {
+    url: sourceUrl(id, loc),
+    label: citeLabel(id, loc),
+    original: blocks.map((block) => block.map((sentence) => sentence.original).join(' ')),
+    translation: blocks.map((block) =>
+      block.map((unit) => translationOf(ref, unit, unit.lines)).join(''),
+    ),
+  };
+}
 
+/** 引用する単位 current が、直前の単位 previous から原典で続いているか。 */
+function continuesFrom(previous: SentenceRef | undefined, current: SentenceRef): boolean {
+  if (previous === undefined) return false;
+  if (previous.section === current.section) return previous.index + 1 === current.index;
+  const previousEndsSection = previous.index === previous.count - 1;
+  const currentStartsSection = current.index === 0;
+  return previousEndsSection && currentStartsSection;
+}
+
+/** 散文の参照を解決する。 */
+function resolveProse(
+  ref: string,
+  id: WorkId,
+  registry: ProsePassages,
+  spec: string,
+): ResolvedPassage {
   const refs: SentenceRef[] = spec.split('+').flatMap((piece) => {
     const [section, selection] = piece.split(':');
     const entry = registry[section];
@@ -293,14 +309,7 @@ export function resolvePassage(ref: string): ResolvedPassage {
     const { part } = current.unit;
     const where = `${current.section}:${current.unit.key}`;
     if (!part) throw new Error(`引用レジストリにない文: ${ref} (${where})`);
-    const previous = refs[index - 1];
-    const continues =
-      previous !== undefined &&
-      ((previous.section === current.section && previous.index + 1 === current.index) ||
-        (previous.section !== current.section &&
-          current.index === 0 &&
-          previous.index === previous.count - 1));
-    if (continues) {
+    if (continuesFrom(refs[index - 1], current)) {
       original[original.length - 1] += ` ${part.original}`;
       translation[translation.length - 1] += translationOf(ref, part, where);
     } else {
@@ -314,6 +323,17 @@ export function resolvePassage(ref: string): ResolvedPassage {
     throw new Error(`DFHG の典拠をまたいで「+」でつながない (典拠ごとに参照を分ける): ${ref}`);
   const loc = compactRange(sections[0] ?? '', sections.at(-1) ?? '');
   return { url: sourceUrl(id, loc), label: citeLabel(id, loc), original, translation };
+}
+
+/**
+ * `@apollod-lib/1.1.5:1-2`、`@hom-od/12.39-46` を、原文と訳のまとまり、出典表記に解決する。
+ * 見つからなければ例外を投げる。
+ */
+export function resolvePassage(ref: string): ResolvedPassage {
+  const { workId, spec, registry } = parseRef(ref);
+  return Array.isArray(registry)
+    ? resolveVerse(ref, workId, registry, spec)
+    : resolveProse(ref, workId, registry, spec);
 }
 
 /**
