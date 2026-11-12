@@ -308,7 +308,7 @@ export const works = {
     author: 'pherecydes',
     title: '歴史',
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20primum#urn:lofts:fhg.1.pherecydes',
-    file: 'DFHG/pherecydes-of-athens/PHERECYDES.txt',
+    file: 'DFHG/pherecydes-of-athens/PHERECYDES.text.txt',
     unit: '断片',
     dfhg: {
       'pherecydis_fragmenta.historiai.liber_secundus': ['26', '28'],
@@ -415,7 +415,7 @@ export const works = {
     author: 'asclepiades-tragilensis',
     title: '悲劇の題材',
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20tertium#urn:lofts:fhg.3.asclepiades_tragilensis',
-    file: 'DFHG/asclepiades-of-tragilos/ASCLEPIADES_TRAGILENSIS.txt',
+    file: 'DFHG/asclepiades-of-tragilos/ASCLEPIADES_TRAGILENSIS.text.txt',
     unit: '断片',
     dfhg: { 'asclepiadis_tragilensis_fragmenta.tragodumena.e_libris_incertis': ['21'] },
     witnesses: { '21.2': 'アテナイオス『食卓の賢人たち』10.456b' },
@@ -424,7 +424,7 @@ export const works = {
     author: 'herodorus',
     title: '断片集',
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20secundum#urn:lofts:fhg.2.herodorus_heracleensis',
-    file: 'DFHG/herodorus/HERODORUS_HERACLEENSIS.txt',
+    file: 'DFHG/herodorus/HERODORUS_HERACLEENSIS.text.txt',
     dfhg: { 'herodori_heracleensis_fragmenta.argonautica': ['39'] },
   },
   'verg-aen': {

@@ -8,6 +8,7 @@ import apRh from './ap-rh.ts';
 import apollodEp from './apollod-ep.ts';
 import apollodLib from './apollod-lib.ts';
 import aratPhaen from './arat-phaen.ts';
+import asclep from './asclep.ts';
 import callimH1 from './callim-h-1.ts';
 import cypria from './cypria.ts';
 import diod15 from './diod-1-5.ts';
@@ -27,6 +28,7 @@ import hHymn3 from './h-hymn-3.ts';
 import hHymn15 from './h-hymn-15.ts';
 import hHymn22 from './h-hymn-22.ts';
 import hdt from './hdt.ts';
+import herodor from './herodor.ts';
 import hesSc from './hes-sc.ts';
 import hesTh from './hes-th.ts';
 import hesWd from './hes-wd.ts';
@@ -41,6 +43,7 @@ import nosti from './nosti.ts';
 import ovFast from './ov-fast.ts';
 import ovMet from './ov-met.ts';
 import paus from './paus.ts';
+import pherecyd from './pherecyd.ts';
 import pindI from './pind-i.ts';
 import pindN from './pind-n.ts';
 import pindO from './pind-o.ts';
@@ -119,4 +122,7 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'verg-geo': vergGeo,
   'val-flac': valFlac,
   'ov-fast': ovFast,
+  pherecyd,
+  asclep,
+  herodor,
 };
