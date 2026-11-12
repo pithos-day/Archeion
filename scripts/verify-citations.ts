@@ -46,12 +46,12 @@ import {
 import {
   type CorpusVerseSentence,
   containsQuote,
+  corpusText,
   describe,
   dfhgUrnsOf,
-  getPassage,
   linesOf,
   listFiles,
-  loadPassages,
+  loadCorpus,
   normalize,
   pageIdsOf,
   type Source,
@@ -113,14 +113,14 @@ function verifyAnchor(where: string, workId: WorkId, url: string): void {
 
 /** 原典に `[アンカー]` と書いてある箇所。なければ undefined。 */
 function locOfAnchor(source: Source, anchor: string): string | undefined {
-  return loadPassages(source).find(([, text]) => text.includes(`[${anchor}]`))?.[0];
+  return loadCorpus(source).find(([, text]) => text.includes(`[${anchor}]`))?.[0];
 }
 
 // ---------- 引用レジストリ ----------
 
 /** 韻文の原典の行 (行の番号と、照合用に正規化した本文)。 */
 function verseLinesOf(source: Source): [key: string, text: string][] {
-  return loadPassages(source).flatMap(([key, text, verse]) =>
+  return loadCorpus(source).flatMap(([key, text, verse]) =>
     verse ? [[key, normalize(text)]] : [],
   );
 }
@@ -358,7 +358,7 @@ function verifyFootnote(where: string, definition: string): void {
     let passage: string | undefined;
     try {
       const at = anchored ? locOfAnchor(source, loc) : loc;
-      passage = at === undefined ? undefined : getPassage(source, at);
+      passage = at === undefined ? undefined : corpusText(source, at);
     } catch (error) {
       errors.push(`${where}: ${(error as Error).message}`);
       return;
@@ -414,7 +414,7 @@ for (const file of listFiles(CLAIMS_DIR, /\.ts$/)) {
         const where = `${relative(ROOT, file)}: ${topic.label} / ${variant.label}`;
         try {
           verifyAnchor(where, source.work, sourceUrl(source.work, source.loc));
-          if (getPassage(works[source.work], source.loc) === undefined) {
+          if (corpusText(works[source.work], source.loc) === undefined) {
             errors.push(`${where}: 箇所 ${sourceUrl(source.work, source.loc)} が原典にない`);
           }
         } catch (error) {

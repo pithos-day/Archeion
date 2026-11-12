@@ -88,18 +88,18 @@ export function describe(source: Source): string {
 }
 
 /** 箇所 (`4.765` など) → 本文 の組を、原典の出てくる順に並べたもの。verse は韻文の行。 */
-export type Passages = [key: string, text: string, verse: boolean][];
+export type CorpusLocs = [key: string, text: string, verse: boolean][];
 
-function appendPassage(passages: Passages, key: string, text: string, verse: boolean): void {
-  const last = passages.at(-1);
+function appendLoc(locs: CorpusLocs, key: string, text: string, verse: boolean): void {
+  const last = locs.at(-1);
   if (last && last[0] === key) last[1] += ` ${text}`;
-  else passages.push([key, text, verse]);
+  else locs.push([key, text, verse]);
 }
 
 /** 原典の txt を箇所ごとに分ける。見出し (`# Book 1`) と韻文の行番号が箇所になる。 */
-function parseTei(lines: string[]): Passages {
+function parseTei(lines: string[]): CorpusLocs {
   const headingPath: (string | undefined)[] = [];
-  const passages: Passages = [];
+  const locs: CorpusLocs = [];
   for (const line of lines) {
     const heading = line.match(/^(#+)\s+(\S+)\s+(\S+)/);
     if (heading) {
@@ -113,17 +113,18 @@ function parseTei(lines: string[]): Passages {
     if (line.startsWith('#') || line.trim() === '') continue;
     const prefix = headingPath.filter((part) => part !== undefined);
     const verse = line.match(/^\s*(\d+[a-z]?)\s{2}(.*)$/);
-    if (verse) appendPassage(passages, [...prefix, verse[1]].join('.'), verse[2], true);
-    else appendPassage(passages, prefix.join('.'), line.trim(), false);
+    if (verse) appendLoc(locs, [...prefix, verse[1]].join('.'), verse[2], true);
+    else appendLoc(locs, prefix.join('.'), line.trim(), false);
   }
-  return passages;
+  return locs;
 }
 
-const passageCache = new Map<string, Passages>();
+const corpusCache = new Map<string, CorpusLocs>();
 
-export function loadPassages(source: Source): Passages {
+/** 原典を読み、箇所ごとの本文に分ける。 */
+export function loadCorpus(source: Source): CorpusLocs {
   const cacheKey = describe(source);
-  const cached = passageCache.get(cacheKey);
+  const cached = corpusCache.get(cacheKey);
   if (cached) return cached;
 
   let path: string | undefined;
@@ -138,9 +139,9 @@ export function loadPassages(source: Source): Passages {
 
   const lines = readFileSync(path, 'utf8').split('\n');
   const body = lines.slice(lines.findIndex((line) => /^={10,}$/.test(line)) + 1);
-  const passages = parseTei(body);
-  passageCache.set(cacheKey, passages);
-  return passages;
+  const locs = parseTei(body);
+  corpusCache.set(cacheKey, locs);
+  return locs;
 }
 
 function matchesKey(key: string, ref: string): boolean {
@@ -148,13 +149,13 @@ function matchesKey(key: string, ref: string): boolean {
 }
 
 /** 原典の箇所の本文を返す。見つからなければ undefined。 */
-export function getPassage(source: Source, loc: string): string | undefined {
-  const passages = loadPassages(source);
+export function corpusText(source: Source, loc: string): string | undefined {
+  const locs = loadCorpus(source);
   const [start, end] = rangeEnds(loc);
-  const from = passages.findIndex(([key]) => matchesKey(key, start));
-  const to = passages.findLastIndex(([key]) => matchesKey(key, end));
+  const from = locs.findIndex(([key]) => matchesKey(key, start));
+  const to = locs.findLastIndex(([key]) => matchesKey(key, end));
   if (from === -1 || to === -1 || to < from) return undefined;
-  return passages
+  return locs
     .slice(from, to + 1)
     .map(([, text]) => text)
     .join(' ');
@@ -184,7 +185,7 @@ export function containsQuote(passage: string, quote: string): boolean {
 
 /** 原典の箇所を文に分ける。番号は引用レジストリの文の番号と同じ。 */
 export function sentencesOf(source: Source, loc: string): string[] | undefined {
-  const text = getPassage(source, loc);
+  const text = corpusText(source, loc);
   return text === undefined ? undefined : splitSentences(normalize(text));
 }
 
@@ -213,7 +214,7 @@ export function verseSentencesOf(source: Source): CorpusVerseSentence[] {
       sentences.push({ ...current, text: current.text.trim() });
     current = undefined;
   };
-  for (const [key, text, verse] of loadPassages(source)) {
+  for (const [key, text, verse] of loadCorpus(source)) {
     if (!verse) continue;
     const keyBook = key.split('.').slice(0, -1).join('.');
     if (keyBook !== book) {
