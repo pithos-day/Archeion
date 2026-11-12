@@ -24,6 +24,19 @@ const claims: ArticleClaims = [
     ],
   },
   {
+    label: '兄弟を吐き出させた手段',
+    variants: [
+      {
+        label: 'ガイアの計略にかかって吐き出した',
+        sources: [{ work: 'hes-th', loc: '492-497', kind: 'narrative' }],
+      },
+      {
+        label: 'メティスが飲ませた薬で吐き出した',
+        sources: [{ work: 'apollod-lib', loc: '1.2.1', kind: 'narrative' }],
+      },
+    ],
+  },
+  {
     label: 'ゼウスとの長幼',
     variants: [
       {
