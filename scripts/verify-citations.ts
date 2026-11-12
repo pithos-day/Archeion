@@ -54,7 +54,8 @@ const CONTENT_DIR = join(ROOT, 'src/content/docs');
 const CLAIMS_DIR = join(ROOT, 'src/data/claims');
 
 const errors: string[] = [];
-let checkedQuotes = 0;
+let checkedFootnotes = 0;
+let checkedSentences = 0;
 let checkedClaims = 0;
 
 // ---------- 脚注 ----------
@@ -183,7 +184,7 @@ function verifyVerseRegistry(file: string, source: Source, registry: VersePassag
     if ('parts' in sentence) verifyVerseParts(file, source, sentence);
     else if (sentence.translation.trim() === '')
       errors.push(`${file}: ${sentence.lines} の訳がない`);
-    checkedQuotes += 1;
+    checkedSentences += 1;
   }
 }
 
@@ -219,7 +220,7 @@ function verifyProseRegistry(file: string, source: Source, registry: ProsePassag
       } else if (sentence.translation.trim() === '') {
         errors.push(`${file}: ${loc}:${number} の訳がない`);
       }
-      checkedQuotes += 1;
+      checkedSentences += 1;
     }
   }
 }
@@ -307,6 +308,7 @@ function verifyArticle(file: string): void {
       if (!footnote) return;
       const [, id, body] = footnote;
       const where = `${relative(ROOT, file)}:${index + 1}`;
+      checkedFootnotes += 1;
       if (!PASSAGE_REFS.test(body.trim())) {
         errors.push(`${where}: 脚注の引用は引用レジストリの参照 (\`@作品/箇所:文\`) で書く`);
         return;
@@ -349,7 +351,9 @@ for (const file of listFiles(CLAIMS_DIR, /\.ts$/)) {
 }
 
 for (const error of errors) console.error(`✗ ${error}`);
-console.log(`脚注の引用 ${checkedQuotes} 件、論点表の出典 ${checkedClaims} 件を照合した。`);
+console.log(
+  `脚注 ${checkedFootnotes} 件、引用レジストリの文 ${checkedSentences} 件、論点表の出典 ${checkedClaims} 件を照合した。`,
+);
 if (errors.length > 0) {
   console.error(`${errors.length} 件の問題がある。`);
   process.exit(1);
