@@ -24,7 +24,14 @@
  * 行の範囲を持ち、参照の行の範囲は部分の切れ目に合わせてよい。
  */
 import { passages } from '../data/passages/index.ts';
-import { citeLabel, sourceUrl, type WorkId, works } from '../data/sources.ts';
+import {
+  citeLabel,
+  compactRange,
+  rangeEnds,
+  sourceUrl,
+  type WorkId,
+  works,
+} from '../data/sources.ts';
 
 /** 一文をそのまま持つ。 */
 interface WholeSentence {
@@ -189,21 +196,6 @@ function translationOf(ref: string, unit: Part, where: string): string {
   return unit.translation;
 }
 
-/** 箇所の範囲の出典表記用の形 (`1.9.16` と `1.9.17` → `1.9.16-17`)。 */
-function locRange(first: string, last: string): string {
-  if (first === last) return first;
-  const firstParts = first.split('.');
-  const lastParts = last.split('.');
-  let shared = 0;
-  while (
-    shared < firstParts.length - 1 &&
-    shared < lastParts.length - 1 &&
-    firstParts[shared] === lastParts[shared]
-  )
-    shared += 1;
-  return `${first}-${lastParts.slice(shared).join('.')}`;
-}
-
 /** 行の番号 (`12.39`、`123a`) を、比べられる数の並びにする。 */
 function lineKey(line: string): number[] {
   return line.split('.').map((part) => {
@@ -222,21 +214,9 @@ function compareLines(a: string, b: string): number {
   return (keyA.at(-1) ?? 0) - (keyB.at(-1) ?? 0);
 }
 
-/** 行の範囲 `12.39-46` を始まり `12.39` と終わり `12.46` に分ける。 */
-export function lineRange(lines: string): [start: string, end: string] {
-  const [start, end] = lines.split('-');
-  if (end === undefined) return [start, start];
-  const startParts = start.split('.');
-  const endParts = end.split('.');
-  return [
-    start,
-    [...startParts.slice(0, startParts.length - endParts.length), ...endParts].join('.'),
-  ];
-}
-
 /** 行の範囲 [start, end] に収まる行の範囲か。 */
 export function linesWithin(lines: string, start: string, end: string): boolean {
-  const [from, to] = lineRange(lines);
+  const [from, to] = rangeEnds(lines);
   const inside = (line: string) => compareLines(line, start) >= 0 && compareLines(line, end) <= 0;
   return inside(from) && inside(to);
 }
@@ -250,11 +230,11 @@ function verseUnits(work: VersePassages): (Part & { lines: string })[] {
 function verseBlocks(ref: string, work: VersePassages, spec: string): VersePart[][] {
   const units = verseUnits(work);
   return spec.split('+').map((piece) => {
-    const [start, end] = lineRange(piece);
+    const [start, end] = rangeEnds(piece);
     const block = units.filter((unit) => linesWithin(unit.lines, start, end));
     if (block.length === 0) throw new Error(`引用レジストリにない行: ${ref} (${piece})`);
-    const first = lineRange(block[0]?.lines ?? '')[0];
-    const last = lineRange(block.at(-1)?.lines ?? '')[1];
+    const first = rangeEnds(block[0]?.lines ?? '')[0];
+    const last = rangeEnds(block.at(-1)?.lines ?? '')[1];
     if (first !== start || last !== end)
       throw new Error(
         `行の範囲が文 (部分) の切れ目に合わない: ${ref} (${piece} の文は ${first}〜${last})`,
@@ -281,9 +261,9 @@ export function resolvePassage(ref: string): ResolvedPassage {
   const { workId: id, spec, work } = parseRef(ref);
   if (Array.isArray(work)) {
     const blocks = verseBlocks(ref, work, spec);
-    const start = lineRange(blocks[0]?.[0]?.lines ?? '')[0];
-    const end = lineRange(blocks.at(-1)?.at(-1)?.lines ?? '')[1];
-    const loc = locRange(start, end);
+    const start = rangeEnds(blocks[0]?.[0]?.lines ?? '')[0];
+    const end = rangeEnds(blocks.at(-1)?.at(-1)?.lines ?? '')[1];
+    const loc = compactRange(start, end);
     return {
       url: sourceUrl(id, loc),
       label: citeLabel(id, loc),
@@ -332,7 +312,7 @@ export function resolvePassage(ref: string): ResolvedPassage {
   const sections = refs.map((sentenceRef) => sentenceRef.section);
   if ('dfhg' in works[id] && new Set(sections).size > 1)
     throw new Error(`DFHG の典拠をまたいで「+」でつながない (典拠ごとに参照を分ける): ${ref}`);
-  const loc = locRange(sections[0] ?? '', sections.at(-1) ?? '');
+  const loc = compactRange(sections[0] ?? '', sections.at(-1) ?? '');
   return { url: sourceUrl(id, loc), label: citeLabel(id, loc), original, translation };
 }
 

@@ -24,6 +24,7 @@ import { pathToFileURL } from 'node:url';
 import { passages } from '../src/data/passages/index.ts';
 import {
   fullRange,
+  rangeEnds,
   SCAIFE_READER,
   sourceUrl,
   type Work,
@@ -32,7 +33,6 @@ import {
 } from '../src/data/sources.ts';
 import type { ArticleClaims } from '../src/lib/claims.ts';
 import {
-  lineRange,
   linesWithin,
   originalOf,
   PART_MIN_CHARS,
@@ -143,7 +143,7 @@ function verifyVerseParts(
   sentence: { lines: string; parts: (Part & { lines: string })[] },
 ): void {
   const lines = verseLinesOf(source);
-  const [start, end] = lineRange(sentence.lines);
+  const [start, end] = rangeEnds(sentence.lines);
   const count =
     lines.findIndex(([key]) => key === end) - lines.findIndex(([key]) => key === start) + 1;
   if (count < PART_MIN_LINES)
@@ -153,12 +153,12 @@ function verifyVerseParts(
   if (sentence.parts.length < 2) errors.push(`${file}: ${sentence.lines} の部分が 1 つしかない`);
   const first = sentence.parts[0];
   const last = sentence.parts.at(-1);
-  if (first && lineRange(first.lines)[0] !== start)
+  if (first && rangeEnds(first.lines)[0] !== start)
     errors.push(`${file}: ${sentence.lines} の最初の部分が文の始まりの行から始まっていない`);
-  if (last && lineRange(last.lines)[1] !== end)
+  if (last && rangeEnds(last.lines)[1] !== end)
     errors.push(`${file}: ${sentence.lines} の最後の部分が文の終わりの行で終わっていない`);
   sentence.parts.forEach((part, index) => {
-    const [partStart, partEnd] = lineRange(part.lines);
+    const [partStart, partEnd] = rangeEnds(part.lines);
     const original = normalize(part.original);
     const text = textOfLines(lines, partStart, partEnd);
     const inner = (from: number, to: number) => {
@@ -183,8 +183,8 @@ function verifyVerseParts(
       partStart === partEnd &&
       previous &&
       next &&
-      lineRange(previous.lines)[1] === partStart &&
-      lineRange(next.lines)[0] === partStart
+      rangeEnds(previous.lines)[1] === partStart &&
+      rangeEnds(next.lines)[0] === partStart
     )
       errors.push(`${file}: ${part.lines} の部分は前後の部分と同じ行にあり、行の範囲で引けない`);
   });
@@ -200,7 +200,7 @@ function verifyVerseRegistry(file: string, source: Source, work: VersePassages):
   }
   let previous = -1;
   for (const sentence of work) {
-    const [start, end] = lineRange(sentence.lines);
+    const [start, end] = rangeEnds(sentence.lines);
     const original = originalOf(sentence);
     const index = corpus.findIndex(
       (candidate) =>
@@ -304,13 +304,13 @@ function verifyVerseRef(where: string, ref: string): void {
   pieces.forEach((piece, index) => {
     const next = pieces[index + 1];
     if (next === undefined) return;
-    const lastIndex = units.findLastIndex((unit) => linesWithin(unit.lines, ...lineRange(piece)));
+    const lastIndex = units.findLastIndex((unit) => linesWithin(unit.lines, ...rangeEnds(piece)));
     const following = units[lastIndex + 1];
-    if (following && lineRange(next)[0] === lineRange(following.lines)[0])
+    if (following && rangeEnds(next)[0] === rangeEnds(following.lines)[0])
       errors.push(`${where}: ${ref} の ${piece} と ${next} は続いているので、一つの範囲にまとめる`);
   });
   for (const piece of pieces) {
-    const [start, end] = lineRange(piece);
+    const [start, end] = rangeEnds(piece);
     for (const unit of units) {
       if (unit.registered || !linesWithin(unit.lines, start, end)) continue;
       errors.push(`${where}: ${ref} の範囲の文がレジストリにない (${unit.lines}: ${unit.text})`);

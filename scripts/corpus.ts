@@ -9,6 +9,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { compactRange, rangeEnds } from '../src/data/sources.ts';
 import { SENTENCE_END, splitSentences } from '../src/lib/passages.ts';
 
 const CORPUS = process.env.MYTH_CORPUS ?? join(homedir(), 'Documents/greek-mythology');
@@ -142,18 +143,6 @@ export function loadPassages(source: Source): Passages {
   return passages;
 }
 
-/** `4.765-803` を始点 `4.765` と終点 `4.803` に分ける。終点の省略された上位の番号は始点から補う。 */
-function splitRange(loc: string): [string, string] {
-  const [start, end] = loc.split('-');
-  if (!end) return [start, start];
-  const startParts = start.split('.');
-  const endParts = end.split('.');
-  return [
-    start,
-    [...startParts.slice(0, startParts.length - endParts.length), ...endParts].join('.'),
-  ];
-}
-
 function matchesKey(key: string, ref: string): boolean {
   return key === ref || key.startsWith(`${ref}.`);
 }
@@ -161,7 +150,7 @@ function matchesKey(key: string, ref: string): boolean {
 /** 原典の箇所の本文を返す。見つからなければ undefined。 */
 export function getPassage(source: Source, loc: string): string | undefined {
   const passages = loadPassages(source);
-  const [start, end] = splitRange(loc);
+  const [start, end] = rangeEnds(loc);
   const from = passages.findIndex(([key]) => matchesKey(key, start));
   const to = passages.findLastIndex(([key]) => matchesKey(key, end));
   if (from === -1 || to === -1 || to < from) return undefined;
@@ -248,8 +237,5 @@ export function verseSentencesOf(source: Source): CorpusVerseSentence[] {
 
 /** 行の範囲の書き方 (`12.39-40`)。 */
 export function linesOf(sentence: CorpusVerseSentence): string {
-  if (sentence.start === sentence.end) return sentence.start;
-  const startParts = sentence.start.split('.');
-  const endParts = sentence.end.split('.');
-  return `${sentence.start}-${endParts.slice(startParts.length - 1).join('.')}`;
+  return compactRange(sentence.start, sentence.end);
 }

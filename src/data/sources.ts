@@ -524,14 +524,42 @@ export type WorkId = keyof typeof works;
 export const SCAIFE_READER = 'https://scaife.perseus.org/reader/';
 
 /**
+ * 箇所の範囲 `4.765-803` を、始まり `4.765` と終わり `4.803` に分ける。終わりの省いた上位の番号は
+ * 始まりから補う。範囲でなければ始まりと終わりは同じ。
+ */
+export function rangeEnds(loc: string): [start: string, end: string] {
+  const [start, end] = loc.split('-');
+  if (!end) return [start, start];
+  const startParts = start.split('.');
+  const endParts = end.split('.');
+  return [
+    start,
+    [...startParts.slice(0, startParts.length - endParts.length), ...endParts].join('.'),
+  ];
+}
+
+/** 始まりと終わりの箇所を、範囲の短い書き方にする (`1.9.16` と `1.9.17` → `1.9.16-17`)。 */
+export function compactRange(first: string, last: string): string {
+  if (first === last) return first;
+  const firstParts = first.split('.');
+  const lastParts = last.split('.');
+  let shared = 0;
+  while (
+    shared < firstParts.length - 1 &&
+    shared < lastParts.length - 1 &&
+    firstParts[shared] === lastParts[shared]
+  )
+    shared += 1;
+  return `${first}-${lastParts.slice(shared).join('.')}`;
+}
+
+/**
  * 範囲の終わりを、始まりと同じ形に補う。Scaife Viewer は `10.343-347` を読めないので `10.343-10.347` にする。
  */
 export function fullRange(loc: string): string {
-  const [start, end] = loc.split('-');
-  if (end === undefined) return loc;
-  const startParts = start.split('.');
-  const endParts = end.split('.');
-  return `${start}-${[...startParts.slice(0, startParts.length - endParts.length), ...endParts].join('.')}`;
+  if (!loc.includes('-')) return loc;
+  const [start, end] = rangeEnds(loc);
+  return `${start}-${end}`;
 }
 
 /** 1〜3999 をローマ数字にする。 */
