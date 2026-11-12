@@ -9,6 +9,7 @@
  *   DFHG の断片は `[ラベル](<url>.<断片の URN の残り>) «原文»` と書き、URN が原典にあるかも確かめる
  * - 脚注の引用レジストリの参照 (`@作品/箇所:文`): 参照する文がレジストリにあるか
  * - 引用レジストリ (src/data/passages/*.ts): 箇所の文の数と、各文の原文が、原典を文に分けたものと一致するか。
+ *   部分 (parts) に分けた文は、文が十分に長いか、部分をつなぐと文になるか、韻文なら部分の行の範囲が正しいか。
  *   韻文の作品は、各文の行の範囲と原文が、原典の文と一致するか。脚注の参照の行の範囲に収まる原典の文が、
  *   すべてレジストリにあるか (途中の文が抜けたまま続けて表示しないため)
  * - 論点表 (src/data/claims/*.ts): 出典の箇所が原典に実在するか
@@ -32,7 +33,11 @@ import type { ArticleClaims } from '../src/lib/claims.ts';
 import {
   lineRange,
   linesWithin,
+  originalOf,
+  PART_MIN_CHARS,
+  PART_MIN_LINES,
   PASSAGE_REFS,
+  type Part,
   parseRef,
   resolvePassage,
   type VersePassages,
@@ -105,6 +110,78 @@ function locOfAnchor(source: Source, anchor: string): string | undefined {
 
 // ---------- 引用レジストリ ----------
 
+/** 韻文の原典の行 (行の番号と、照合用に正規化した本文)。 */
+function verseLinesOf(source: Source): [key: string, text: string][] {
+  return loadPassages(source).flatMap(([key, text, verse]) =>
+    verse ? [[key, normalize(text)]] : [],
+  );
+}
+
+/** 行の範囲の行の本文を、空白一つでつなぐ。範囲が原典になければ undefined。 */
+function textOfLines(lines: [string, string][], start: string, end: string): string | undefined {
+  const from = lines.findIndex(([key]) => key === start);
+  const to = lines.findIndex(([key]) => key === end);
+  if (from === -1 || to < from) return undefined;
+  return lines
+    .slice(from, to + 1)
+    .map(([, text]) => text)
+    .join(' ');
+}
+
+/** 部分に分けた韻文の文の、長さと部分の行の範囲。 */
+function verifyVerseParts(
+  file: string,
+  source: Source,
+  sentence: { lines: string; parts: (Part & { lines: string })[] },
+): void {
+  const lines = verseLinesOf(source);
+  const [start, end] = lineRange(sentence.lines);
+  const count =
+    lines.findIndex(([key]) => key === end) - lines.findIndex(([key]) => key === start) + 1;
+  if (count < PART_MIN_LINES)
+    errors.push(
+      `${file}: ${sentence.lines} の文は ${count} 行で、部分に分けるには短い (${PART_MIN_LINES} 行から)`,
+    );
+  if (sentence.parts.length < 2) errors.push(`${file}: ${sentence.lines} の部分が 1 つしかない`);
+  const first = sentence.parts[0];
+  const last = sentence.parts.at(-1);
+  if (first && lineRange(first.lines)[0] !== start)
+    errors.push(`${file}: ${sentence.lines} の最初の部分が文の始まりの行から始まっていない`);
+  if (last && lineRange(last.lines)[1] !== end)
+    errors.push(`${file}: ${sentence.lines} の最後の部分が文の終わりの行で終わっていない`);
+  sentence.parts.forEach((part, index) => {
+    const [partStart, partEnd] = lineRange(part.lines);
+    const original = normalize(part.original);
+    const text = textOfLines(lines, partStart, partEnd);
+    const inner = (from: number, to: number) => {
+      const slice = lines.slice(
+        lines.findIndex(([key]) => key === partStart) + from,
+        lines.findIndex(([key]) => key === partEnd) + 1 - to,
+      );
+      return slice.map(([, line]) => line).join(' ');
+    };
+    if (text === undefined || !text.includes(original))
+      errors.push(
+        `${file}: ${part.lines} の部分が、その行の本文にない\n    原文: ${part.original}`,
+      );
+    else if (
+      partStart !== partEnd &&
+      (inner(1, 0).includes(original) || inner(0, 1).includes(original))
+    )
+      errors.push(`${file}: ${part.lines} の部分の行の範囲が広すぎる`);
+    const previous = sentence.parts[index - 1];
+    const next = sentence.parts[index + 1];
+    if (
+      partStart === partEnd &&
+      previous &&
+      next &&
+      lineRange(previous.lines)[1] === partStart &&
+      lineRange(next.lines)[0] === partStart
+    )
+      errors.push(`${file}: ${part.lines} の部分は前後の部分と同じ行にあり、行の範囲で引けない`);
+  });
+}
+
 function verifyVerseRegistry(file: string, source: Source, work: VersePassages): void {
   let corpus: CorpusVerseSentence[];
   try {
@@ -116,18 +193,19 @@ function verifyVerseRegistry(file: string, source: Source, work: VersePassages):
   let previous = -1;
   for (const sentence of work) {
     const [start, end] = lineRange(sentence.lines);
+    const original = originalOf(sentence);
     const index = corpus.findIndex(
       (candidate) =>
         candidate.start === start &&
         candidate.end === end &&
-        candidate.text === normalize(sentence.original),
+        candidate.text === normalize(original),
     );
     if (index === -1) {
       const near = corpus
         .filter((candidate) => candidate.start === start || candidate.end === end)
         .map((candidate) => `${linesOf(candidate)}: ${candidate.text}`);
       errors.push(
-        `${file}: ${sentence.lines} の文が原典の文と一致しない\n    原文: ${sentence.original}${near
+        `${file}: ${sentence.lines} の文が原典の文と一致しない\n    原文: ${original}${near
           .map((line) => `\n    原典 ${line}`)
           .join('')}`,
       );
@@ -136,7 +214,9 @@ function verifyVerseRegistry(file: string, source: Source, work: VersePassages):
     } else {
       previous = index;
     }
-    if (sentence.translation.trim() === '') errors.push(`${file}: ${sentence.lines} の訳がない`);
+    if ('parts' in sentence) verifyVerseParts(file, source, sentence);
+    else if (sentence.translation.trim() === '')
+      errors.push(`${file}: ${sentence.lines} の訳がない`);
     checkedQuotes += 1;
   }
 }
@@ -170,44 +250,62 @@ function verifyRegistry(): void {
       for (const [number, sentence] of Object.entries(section.sentences)) {
         const expected = corpus[Number(number) - 1];
         if (expected === undefined) errors.push(`${file}: ${loc}:${number} は原典にない文の番号`);
-        else if (normalize(sentence.original) !== expected)
+        else if (normalize(originalOf(sentence)) !== expected)
           errors.push(
-            `${file}: ${loc}:${number} の原文が原典の文と一致しない\n    原典: ${expected}\n    原文: ${sentence.original}`,
+            `${file}: ${loc}:${number} の原文が原典の文と一致しない\n    原典: ${expected}\n    原文: ${originalOf(sentence)}`,
           );
-        if (sentence.translation.trim() === '') errors.push(`${file}: ${loc}:${number} の訳がない`);
+        if (!('parts' in sentence)) {
+          if (sentence.translation.trim() === '')
+            errors.push(`${file}: ${loc}:${number} の訳がない`);
+        } else {
+          if (expected !== undefined && expected.length < PART_MIN_CHARS)
+            errors.push(
+              `${file}: ${loc}:${number} の文は ${expected.length} 字で、部分に分けるには短い (${PART_MIN_CHARS} 字から)`,
+            );
+          if (sentence.parts.length < 2)
+            errors.push(`${file}: ${loc}:${number} の部分が 1 つしかない`);
+        }
         checkedQuotes += 1;
       }
     }
   }
 }
 
-/** 韻文の参照の行の範囲に収まる原典の文が、すべてレジストリにあるか。 */
+/**
+ * 韻文の参照の行の範囲に収まる原典の文 (部分に分けた文は部分) が、すべてレジストリにあるか。
+ * 続いている範囲を「+」で分けていないか。
+ */
 function verifyVerseRef(where: string, ref: string): void {
   const { workId, spec, work } = parseRef(ref);
   if (!Array.isArray(work)) return;
-  const corpus = verseSentencesOf(works[workId]);
+  const units = verseSentencesOf(works[workId]).flatMap((sentence) => {
+    const lines = linesOf(sentence);
+    const entry = work.find(
+      (candidate) =>
+        candidate.lines === lines && normalize(originalOf(candidate)) === sentence.text,
+    );
+    if (entry && 'parts' in entry)
+      return entry.parts.map((part) => ({
+        lines: part.lines,
+        text: part.original,
+        registered: true,
+      }));
+    return [{ lines, text: sentence.text, registered: entry !== undefined }];
+  });
   const pieces = spec.split('+');
   pieces.forEach((piece, index) => {
     const next = pieces[index + 1];
     if (next === undefined) return;
-    const lastIndex = corpus.findLastIndex((sentence) =>
-      linesWithin(linesOf(sentence), ...lineRange(piece)),
-    );
-    const following = corpus[lastIndex + 1];
-    if (following && lineRange(next)[0] === following.start)
+    const lastIndex = units.findLastIndex((unit) => linesWithin(unit.lines, ...lineRange(piece)));
+    const following = units[lastIndex + 1];
+    if (following && lineRange(next)[0] === lineRange(following.lines)[0])
       errors.push(`${where}: ${ref} の ${piece} と ${next} は続いているので、一つの範囲にまとめる`);
   });
   for (const piece of pieces) {
     const [start, end] = lineRange(piece);
-    for (const sentence of corpus) {
-      if (!linesWithin(linesOf(sentence), start, end)) continue;
-      const registered = work.some(
-        (entry) => entry.lines === linesOf(sentence) && normalize(entry.original) === sentence.text,
-      );
-      if (!registered)
-        errors.push(
-          `${where}: ${ref} の範囲の文がレジストリにない (${linesOf(sentence)}: ${sentence.text})`,
-        );
+    for (const unit of units) {
+      if (unit.registered || !linesWithin(unit.lines, start, end)) continue;
+      errors.push(`${where}: ${ref} の範囲の文がレジストリにない (${unit.lines}: ${unit.text})`);
     }
   }
 }

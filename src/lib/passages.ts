@@ -11,16 +11,23 @@
  * - `@apollod-lib/1.1.5:2`       1.1.5 の 2 文目
  * - `@apollod-lib/1.1.5:1-2,4`   1.1.5 の 1〜2 文目と 4 文目 (間は «…» … «…» と「……」でつなぐ)
  * - `@apollod-lib/1.9.16:3-4+1.9.17:1`  箇所をまたぐ引用。出典表記は 1.9.16–17 になる
+ * - `@hyg-fab/pr:3b`              部分 (parts) に分けた長い文の 2 つ目の部分。`3a-3b`、`2-3a` とも書ける。
+ *                                 部分に分けた文を `3` と書くと、すべての部分を引く
  *
  * 韻文の作品 (VersePassages) は、文が行をまたぎ、行の途中で始まることもあるので、文ごとに
  * 行の範囲を持たせる。参照には行の範囲を書き、その範囲に収まる文を引く:
  * - `@hom-od/12.39-46`           12.39〜46 行にある文 (範囲の始まりと終わりは文の切れ目に合わせる)
  * - `@hom-od/12.173-175+12.178`  続いていない範囲を «…» … «…» と「……」でつなぐ。出典表記は 12.173–178
+ *
+ * 長い文 (韻文は PART_MIN_LINES 行以上、散文は PART_MIN_CHARS 字以上) は、部分 (parts) に分けて、
+ * 部分ごとに訳を持たせてよい。引用の範囲を、引きたいところより広げないため。韻文の部分は文と同じく
+ * 行の範囲を持ち、参照の行の範囲は部分の切れ目に合わせてよい。
  */
 import { passages } from '../data/passages/index.ts';
 import { citeLabel, sourceUrl, type WorkId } from '../data/sources.ts';
 
-interface Sentence {
+/** 一文をそのまま持つ。 */
+interface WholeSentence {
   /** 原文の一文。原典テキストの文を、照合用の正規化 (verify-citations) をした形で書く。 */
   original: string;
   /** 日本語訳 (Archeion による)。文末の句読点まで書く。 */
@@ -32,14 +39,41 @@ interface Sentence {
   note?: string;
 }
 
+/** 長い文の一部。 */
+export interface Part {
+  /** 部分の原文。文の部分をすべて空白一つでつなぐと、文の原文になる。 */
+  original: string;
+  /**
+   * 部分の訳。文の部分の訳をつなぐと、文の訳として読めるように書く。
+   * どの脚注も引いていない部分は省いてよい (引くと例外を投げる)。
+   */
+  translation?: string;
+}
+
+/** 長い文を部分に分けて持つ。 */
+interface SplitSentence<P extends Part> {
+  /** 文の部分。原文の順に並べる。 */
+  parts: P[];
+  /** WholeSentence の note と同じ。 */
+  note?: string;
+}
+
+type Sentence = WholeSentence | SplitSentence<Part>;
+
+/** 韻文の文の部分。 */
+interface VersePart extends Part {
+  /** 部分のある行の範囲。書き方は VerseSentence の lines と同じ。 */
+  lines: string;
+}
+
 /** 韻文の一文。 */
-interface VerseSentence extends Sentence {
+type VerseSentence = (WholeSentence | SplitSentence<VersePart>) & {
   /**
    * 文のある行の範囲 (`12.39-40`、巻のない作品は `278-279`、1 行に収まる文は `41`)。
    * 前の文が終わった行の途中で始まる文は、その行から数える。
    */
   lines: string;
-}
+};
 
 interface Section {
   /** 原典のこの箇所にある文の数。 */
@@ -47,6 +81,17 @@ interface Section {
   /** 文の番号 (1 始まり) → 文。引用している文だけを書く。 */
   sentences: Record<number, Sentence>;
 }
+
+/** 文の原文。部分に分けた文は、部分の原文を空白一つでつなぐ。 */
+export function originalOf(sentence: WholeSentence | SplitSentence<Part>): string {
+  return 'parts' in sentence
+    ? sentence.parts.map((part) => part.original).join(' ')
+    : sentence.original;
+}
+
+/** 部分に分けてよい文の長さ。韻文は行の数、散文は原文の字数。 */
+export const PART_MIN_LINES = 5;
+export const PART_MIN_CHARS = 400;
 
 /** 散文の作品の引用。キーは原典の箇所 (`1.1.5` など)。 */
 export type ProsePassages = Record<string, Section>;
@@ -77,7 +122,11 @@ export const PASSAGE_REFS = /^@[\w-]+\/\S+(?:\s+@[\w-]+\/\S+)*$/;
 
 interface SentenceRef {
   section: string;
-  number: number;
+  /** 箇所の単位の並び (proseUnits) での位置。 */
+  index: number;
+  /** 箇所の単位の数。 */
+  count: number;
+  unit: ProseUnit;
 }
 
 export interface ResolvedPassage {
@@ -89,15 +138,55 @@ export interface ResolvedPassage {
   translation: string[];
 }
 
-/** `1-2,4` を [1, 2, 4] にする。省略なら 1〜length。 */
-function parseSelection(selection: string | undefined, length: number): number[] {
-  if (selection === undefined) return Array.from({ length }, (_, index) => index + 1);
-  return selection.split(',').flatMap((part) => {
-    const [from, to = from] = part.split('-').map(Number);
-    if (!Number.isInteger(from) || !Number.isInteger(to) || to < from)
-      throw new Error(`文の番号の指定が正しくない: ${selection}`);
-    return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+/** 散文の箇所の、引用の単位 (文、部分に分けた文はその部分)。 */
+interface ProseUnit {
+  /** 文の番号。 */
+  number: number;
+  /** 参照での書き方 (`3`、部分は `3a`)。 */
+  key: string;
+  /** レジストリにない文は undefined。 */
+  unit: Part | undefined;
+}
+
+/** 箇所の文を、引用の単位に並べる。 */
+function proseUnits(entry: Section): ProseUnit[] {
+  return Array.from({ length: entry.length }, (_, index) => index + 1).flatMap((number) => {
+    const sentence = entry.sentences[number];
+    if (sentence && 'parts' in sentence)
+      return sentence.parts.map((part, index) => ({
+        number,
+        key: `${number}${String.fromCharCode(97 + index)}`,
+        unit: part,
+      }));
+    return [{ number, key: `${number}`, unit: sentence }];
   });
+}
+
+/** `1-2,4`、`2-3a` を、単位の位置の並びにする。省略ならすべての単位。 */
+function parseSelection(selection: string | undefined, units: ProseUnit[]): number[] {
+  if (selection === undefined) return units.map((_, index) => index);
+  const find = (token: string, last: boolean): number => {
+    const match = token.match(/^(\d+)([a-z]?)$/);
+    if (!match) return -1;
+    const matches = (unit: ProseUnit) =>
+      match[2] ? unit.key === token : unit.number === Number(match[1]);
+    return last ? units.findLastIndex(matches) : units.findIndex(matches);
+  };
+  return selection.split(',').flatMap((piece) => {
+    const [from, to = from] = piece.split('-');
+    const start = find(from ?? '', false);
+    const end = find(to, true);
+    if (start === -1 || end === -1 || end < start)
+      throw new Error(`文の番号の指定が正しくない: ${selection}`);
+    return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+  });
+}
+
+/** 引用する単位の訳。訳を省いた部分なら例外を投げる。 */
+function translationOf(ref: string, unit: Part, where: string): string {
+  if (unit.translation === undefined)
+    throw new Error(`訳のない部分を引いている: ${ref} (${where})`);
+  return unit.translation;
 }
 
 /** 箇所の範囲の出典表記用の形 (`1.9.16` と `1.9.17` → `1.9.16-17`)。 */
@@ -152,16 +241,24 @@ export function linesWithin(lines: string, start: string, end: string): boolean 
   return inside(from) && inside(to);
 }
 
-/** 韻文の参照の、範囲ごとの文。範囲の始まりと終わりが文の切れ目に合わなければ例外を投げる。 */
-function verseBlocks(ref: string, work: VersePassages, spec: string): VerseSentence[][] {
+/** 韻文の引用の単位 (文、部分に分けた文はその部分) を、原典の順に並べる。 */
+export function verseUnits(work: VersePassages): (Part & { lines: string })[] {
+  return work.flatMap((sentence) => ('parts' in sentence ? sentence.parts : [sentence]));
+}
+
+/** 韻文の参照の、範囲ごとの単位。範囲の始まりと終わりが単位の切れ目に合わなければ例外を投げる。 */
+function verseBlocks(ref: string, work: VersePassages, spec: string): VersePart[][] {
+  const units = verseUnits(work);
   return spec.split('+').map((piece) => {
     const [start, end] = lineRange(piece);
-    const block = work.filter((sentence) => linesWithin(sentence.lines, start, end));
+    const block = units.filter((unit) => linesWithin(unit.lines, start, end));
     if (block.length === 0) throw new Error(`引用レジストリにない行: ${ref} (${piece})`);
     const first = lineRange(block[0]?.lines ?? '')[0];
     const last = lineRange(block.at(-1)?.lines ?? '')[1];
     if (first !== start || last !== end)
-      throw new Error(`行の範囲が文の切れ目に合わない: ${ref} (${piece} の文は ${first}〜${last})`);
+      throw new Error(
+        `行の範囲が文 (部分) の切れ目に合わない: ${ref} (${piece} の文は ${first}〜${last})`,
+      );
     return block;
   });
 }
@@ -191,36 +288,44 @@ export function resolvePassage(ref: string): ResolvedPassage {
       url: sourceUrl(id, loc),
       label: citeLabel(id, loc),
       original: blocks.map((block) => block.map((sentence) => sentence.original).join(' ')),
-      translation: blocks.map((block) => block.map((sentence) => sentence.translation).join('')),
+      translation: blocks.map((block) =>
+        block.map((unit) => translationOf(ref, unit, unit.lines)).join(''),
+      ),
     };
   }
 
-  const refs: SentenceRef[] = spec.split('+').flatMap((part) => {
-    const [section, selection] = part.split(':');
+  const refs: SentenceRef[] = spec.split('+').flatMap((piece) => {
+    const [section, selection] = piece.split(':');
     const entry = work[section];
     if (!entry) throw new Error(`引用レジストリにない箇所: ${ref}`);
-    return parseSelection(selection, entry.length).map((number) => ({ section, number }));
+    const units = proseUnits(entry);
+    return parseSelection(selection, units).map((index) => ({
+      section,
+      index,
+      count: units.length,
+      unit: units[index] as ProseUnit,
+    }));
   });
 
   const original: string[] = [];
   const translation: string[] = [];
   refs.forEach((current, index) => {
-    const sentence = work[current.section]?.sentences[current.number];
-    if (!sentence)
-      throw new Error(`引用レジストリにない文: ${ref} (${current.section}:${current.number})`);
+    const { unit } = current.unit;
+    const where = `${current.section}:${current.unit.key}`;
+    if (!unit) throw new Error(`引用レジストリにない文: ${ref} (${where})`);
     const previous = refs[index - 1];
     const continues =
       previous !== undefined &&
-      ((previous.section === current.section && previous.number + 1 === current.number) ||
+      ((previous.section === current.section && previous.index + 1 === current.index) ||
         (previous.section !== current.section &&
-          current.number === 1 &&
-          previous.number === work[previous.section]?.length));
+          current.index === 0 &&
+          previous.index === previous.count - 1));
     if (continues) {
-      original[original.length - 1] += ` ${sentence.original}`;
-      translation[translation.length - 1] += sentence.translation;
+      original[original.length - 1] += ` ${unit.original}`;
+      translation[translation.length - 1] += translationOf(ref, unit, where);
     } else {
-      original.push(sentence.original);
-      translation.push(sentence.translation);
+      original.push(unit.original);
+      translation.push(translationOf(ref, unit, where));
     }
   });
 
