@@ -4,10 +4,18 @@ import type { VersePassages } from '../../lib/passages.ts';
 const passages: VersePassages = [
   {
     lines: '4.171-175',
-    original:
-      '( nam Steropen Marti concubuisse ferunt, Neptuno Alcyonen et te, formosa Celaeno, Maian et Electram Taygetemque Iovi), septima mortali Merope tibi, Sisyphe, nupsit;',
-    translation:
-      '（ステロペはアレスと、アルキュオネと、美しいケライノよ、あなたはポセイドンと交わり、マイアとエレクトラとタユゲテはゼウスと交わったと言われるのだから）七番目のメロペは、死すべき身のあなた、シーシュポスに嫁いだ。',
+    parts: [
+      {
+        lines: '4.171-174',
+        original:
+          '( nam Steropen Marti concubuisse ferunt, Neptuno Alcyonen et te, formosa Celaeno, Maian et Electram Taygetemque Iovi),',
+      },
+      {
+        lines: '4.175',
+        original: 'septima mortali Merope tibi, Sisyphe, nupsit;',
+        translation: '七番目のメロペは、死すべき身のあなた、シーシュポスに嫁いだ。',
+      },
+    ],
   },
   {
     lines: '4.204-206',

@@ -42,10 +42,24 @@ const passages: VersePassages = [
   },
   {
     lines: '1.253-258',
-    original:
-      'Iamque erat in totas sparsurus fulmina terras: sed timuit, ne forte sacer tot ab ignibus aether conciperet flammas longusque ardesceret axis: esse quoque in fatis reminiscitur, adfore tempus, quo mare, quo tellus correptaque regia caeli ardeat et mundi moles obsessa laboret.',
-    translation:
-      'すでに〔ゼウスは〕全地に雷を撒き散らそうとしていた。しかし恐れた。神聖な天がそれほど多くの火から炎を宿し、長い天軸が燃え上がるかもしれないと。また、海も大地も天の宮殿もとらえられて燃え、世界の巨大な構造が包囲されて苦しむ時が来ることが、運命に定められているのを思い出した。',
+    parts: [
+      {
+        lines: '1.253',
+        original: 'Iamque erat in totas sparsurus fulmina terras:',
+      },
+      {
+        lines: '1.254-255',
+        original:
+          'sed timuit, ne forte sacer tot ab ignibus aether conciperet flammas longusque ardesceret axis:',
+        translation:
+          'しかし〔ゼウスは〕恐れた。神聖な天がそれほど多くの火から炎を宿し、長い天軸が燃え上がるかもしれないと。',
+      },
+      {
+        lines: '1.256-258',
+        original:
+          'esse quoque in fatis reminiscitur, adfore tempus, quo mare, quo tellus correptaque regia caeli ardeat et mundi moles obsessa laboret.',
+      },
+    ],
   },
   {
     lines: '1.259-261',
@@ -151,10 +165,20 @@ const passages: VersePassages = [
   },
   {
     lines: '4.776-781',
-    original:
-      'Id se sollerti furtim, dum traditur, astu supposita cepisse manu perque abdita longe deviaque et silvis horrentia saxa fragosis Gorgoneas tetigisse domos, passimque per agros perque vias vidisse hominum simulacra ferarumque in silicem ex ipsis visa conversa Medusa.',
-    translation:
-      'そして、その目が手渡されるあいだに、巧みにこっそりと手を差し入れて奪い、遠く人里離れた道なき、荒れた森に覆われた岩場を通ってゴルゴンの住まいに着き、野にも道にも、メドゥーサを見て生身から石に変えられた人や獣の像をいたるところで見たと。',
+    parts: [
+      {
+        lines: '4.776-777',
+        original: 'Id se sollerti furtim, dum traditur, astu supposita cepisse manu',
+        translation: 'そして、その目が手渡されるあいだに、巧みにこっそりと手を差し入れて奪ったと。',
+      },
+      {
+        lines: '4.777-781',
+        original:
+          'perque abdita longe deviaque et silvis horrentia saxa fragosis Gorgoneas tetigisse domos, passimque per agros perque vias vidisse hominum simulacra ferarumque in silicem ex ipsis visa conversa Medusa.',
+        translation:
+          '遠く人里離れた道なき、荒れた森に覆われた岩場を通ってゴルゴンの住まいに着き、野にも道にも、メドゥーサを見て生身から石に変えられた人や獣の像をいたるところで見たと。',
+      },
+    ],
   },
   {
     lines: '4.782-785',
@@ -165,10 +189,19 @@ const passages: VersePassages = [
   },
   {
     lines: '4.785-789',
-    original:
-      'pennisque fugacem Pegason et fratrem matris de sanguine natos addidit et longi non falsa pericula cursus, quae freta, quas terras sub se vidisset ab alto et quae iactatis tetigisset sidera pennis.',
-    translation:
-      'そして翼で速く駆けるペガソスとその兄弟が、母の血から生まれたことを付け加え、長い旅の偽りのない危難を語った。高みから下にどんな海、どんな陸を見たか、羽ばたいてどんな星に触れたかを。',
+    parts: [
+      {
+        lines: '4.785-786',
+        original: 'pennisque fugacem Pegason et fratrem matris de sanguine natos',
+        translation:
+          'そして翼で速く駆けるペガソスとその兄弟が、母の血から生まれたことを付け加えた。',
+      },
+      {
+        lines: '4.787-789',
+        original:
+          'addidit et longi non falsa pericula cursus, quae freta, quas terras sub se vidisset ab alto et quae iactatis tetigisset sidera pennis.',
+      },
+    ],
   },
   {
     lines: '4.794-797',
@@ -399,10 +432,18 @@ const passages: VersePassages = [
   },
   {
     lines: '14.40-50',
-    original:
-      'Indignata dea est, et laedere quatenus ipsum non poterat (nec vellet amans), irascitur illi, quae sibi praelata est, venerisque offensa repulsa protinus horrendis infamia pabula sucis conterit et tritis Hecateia carmina miscet caerulaque induitur velamina perque ferarum agmen adulantum media procedit ab aula, oppositumque petens contra Zancleia saxa Rhegion ingreditur ferventes aestibus undas, in quibus ut solida ponit vestigia terra summaque decurrit pedibus super aequora siccis.',
-    translation:
-      '女神は憤った。だが彼自身を傷つけることはできず（恋する身では望みもしなかった）、自分より選ばれた娘に怒りを向けた。愛を拒まれたことに傷ついて、ただちに恐ろしい汁の悪名高い草をすりつぶし、すりつぶしたものにヘカテの呪文を混ぜた。そして青い衣をまとい、媚びる獣たちの群れのあいだを通って館の中から進み出ると、ザンクレの岩の向かいにあるレギオンを目指し、潮の沸き立つ波に入っていった。その波の上に、固い大地の上のように足を置き、乾いた足で水面を走っていった。',
+    parts: [
+      {
+        lines: '14.40',
+        original: 'Indignata dea est,',
+        translation: '女神は憤った。',
+      },
+      {
+        lines: '14.40-50',
+        original:
+          'et laedere quatenus ipsum non poterat (nec vellet amans), irascitur illi, quae sibi praelata est, venerisque offensa repulsa protinus horrendis infamia pabula sucis conterit et tritis Hecateia carmina miscet caerulaque induitur velamina perque ferarum agmen adulantum media procedit ab aula, oppositumque petens contra Zancleia saxa Rhegion ingreditur ferventes aestibus undas, in quibus ut solida ponit vestigia terra summaque decurrit pedibus super aequora siccis.',
+      },
+    ],
   },
   {
     lines: '14.55-58',
@@ -413,10 +454,20 @@ const passages: VersePassages = [
   },
   {
     lines: '14.59-67',
-    original:
-      'Scylla venit mediaque tenus descenderat alvo, cum sua foedari latrantibus inguina monstris adspicit ac primo credens non corporis illas esse sui partes refugitque abigitque timetque ora proterva canum, sed quos fugit, attrahit una et corpus quaerens femorum crurumque pedumque, Cerbereos rictus pro partibus invenit illis: statque canum rabie subiectaque terga ferarum inguinibus truncis uteroque exstante coercet.',
-    translation:
-      'スキュラがやって来て腹まで水に浸かったとき、自分の下半身が吠える怪物どもに汚されているのを見た。はじめはそれが自分の体の一部だとは信じられず、犬どもの荒々しい顔から逃げ、追い払い、恐れた。だが、逃げるものを自分で一緒に引き連れていた。腿と脛と足を探しても、その代わりにケルベロスのような開いた口を見いだした。彼女は犬どもの狂暴さの上に立ち、切り取られた下腹と突き出た胴で、その下の獣の背を押さえつけている。',
+    parts: [
+      {
+        lines: '14.59-61',
+        original:
+          'Scylla venit mediaque tenus descenderat alvo, cum sua foedari latrantibus inguina monstris adspicit',
+        translation:
+          'スキュラがやって来て腹まで水に浸かったとき、自分の下半身が吠える怪物どもに汚されているのを見た。',
+      },
+      {
+        lines: '14.61-67',
+        original:
+          'ac primo credens non corporis illas esse sui partes refugitque abigitque timetque ora proterva canum, sed quos fugit, attrahit una et corpus quaerens femorum crurumque pedumque, Cerbereos rictus pro partibus invenit illis: statque canum rabie subiectaque terga ferarum inguinibus truncis uteroque exstante coercet.',
+      },
+    ],
   },
 ];
 

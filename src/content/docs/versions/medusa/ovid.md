@@ -56,9 +56,9 @@ versionReason:
 [^met-beauty]: @ov-met/4.794-797
 [^met-temple]: @ov-met/4.798-801
 [^met-neptune]: @ov-met/6.118-120
-[^met-graiai]: @ov-met/4.772-781
-[^met-statues]: @ov-met/4.776-781
-[^met-behead]: @ov-met/4.782-789
+[^met-graiai]: @ov-met/4.772-777
+[^met-statues]: @ov-met/4.777-781
+[^met-behead]: @ov-met/4.782-786
 [^met-libya]: @ov-met/4.617-620
 [^met-atlas]: @ov-met/4.655-662
 [^met-coral]: @ov-met/4.740-746

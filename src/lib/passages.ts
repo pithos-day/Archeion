@@ -334,9 +334,15 @@ export function resolvePassage(ref: string): ResolvedPassage {
   return { url: sourceUrl(id, loc), label: citeLabel(id, loc), original, translation };
 }
 
-/** 脚注に出す「«原文» … «原文»（訳……訳）」。訳の末尾の「。」は、これまでの脚注に合わせて落とす。 */
+/**
+ * 脚注に出す「«原文» … «原文»（訳……訳）」。訳の末尾の「。」は、これまでの脚注に合わせて落とす。
+ * 文の途中で終わる部分の訳の末尾の「、」も落とす。
+ */
 export function quoteText(passage: ResolvedPassage): string {
   const original = passage.original.map((piece) => `«${piece}»`).join(' … ');
-  const translation = passage.translation.join('……').replace(/。$/, '');
+  const translation = passage.translation
+    .map((piece) => piece.replace(/、$/, ''))
+    .join('……')
+    .replace(/。$/, '');
   return `${original}（${translation}）`;
 }

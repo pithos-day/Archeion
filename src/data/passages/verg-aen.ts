@@ -104,10 +104,24 @@ const passages: VersePassages = [
   },
   {
     lines: '3.1-8',
-    original:
-      'Postquam res Asiae Priamique evertere gentem immeritam visum Superis, ceciditque superbum Ilium, et omnis humo fumat Neptunia Troia, diversa exsilia et desertas quaerere terras auguriis agimur divom, classemque sub ipsa Antandro et Phrygiae molimur montibus Idae, incerti, quo fata ferant, ubi sistere detur, contrahimusque viros.',
-    translation:
-      'アジアの国とプリアモスの罪なき民を滅ぼすことが天上の神々の意にかなうと見え、傲慢なイリウムが倒れ、ポセイドンの築いたトロイアがすべて地から煙を上げたのち、われわれは、遠い亡命の地と無人の地を求めて、神々の兆しに駆り立てられ、アンタンドロスのすぐそば、プリュギアのイデの山の下で船団を造り、運命がどこへ運ぶのか、どこに落ち着くことが許されるのかもわからぬまま、人々を集める。',
+    parts: [
+      {
+        lines: '3.1-2',
+        original: 'Postquam res Asiae Priamique evertere gentem immeritam visum Superis,',
+      },
+      {
+        lines: '3.2-5',
+        original:
+          'ceciditque superbum Ilium, et omnis humo fumat Neptunia Troia, diversa exsilia et desertas quaerere terras auguriis agimur divom,',
+        translation:
+          '傲慢なイリウムが倒れ、ポセイドンの築いたトロイアがすべて地から煙を上げたのち、われわれは、遠い亡命の地と無人の地を求めて、神々の兆しに駆り立てられる。',
+      },
+      {
+        lines: '3.5-8',
+        original:
+          'classemque sub ipsa Antandro et Phrygiae molimur montibus Idae, incerti, quo fata ferant, ubi sistere detur, contrahimusque viros.',
+      },
+    ],
   },
 ];
 
