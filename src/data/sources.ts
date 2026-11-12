@@ -521,7 +521,7 @@ export const works = {
 
 export type WorkId = keyof typeof works;
 
-export const SCAIFE_READER = 'https://scaife.perseus.org/reader/';
+const SCAIFE_READER = 'https://scaife.perseus.org/reader/';
 
 /**
  * 箇所の範囲 `4.765-803` を、始まり `4.765` と終わり `4.803` に分ける。終わりの省いた上位の番号は
@@ -556,7 +556,7 @@ export function compactRange(first: string, last: string): string {
 /**
  * 範囲の終わりを、始まりと同じ形に補う。Scaife Viewer は `10.343-347` を読めないので `10.343-10.347` にする。
  */
-export function fullRange(loc: string): string {
+function fullRange(loc: string): string {
   if (!loc.includes('-')) return loc;
   const [start, end] = rangeEnds(loc);
   return `${start}-${end}`;

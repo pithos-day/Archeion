@@ -3,9 +3,8 @@
  *
  *   pnpm verify:citations
  *
- * - 脚注に直接書いた引用 (引用レジストリに移す前の形): `[ラベル](https://scaife.perseus.org/reader/<URN>:<箇所>/) «原文»`
- *   の原文が、原典の該当箇所に含まれているか (途中を「…」で省いた引用は、各部分が順に含まれているか)。
- *   いまの脚注はすべて引用レジストリの参照で、この形は使っていない
+ * - 脚注が引用レジストリの参照 (`@作品/箇所:文`) だけで書かれているか。`[ラベル](URL)。«原文»（訳）` と
+ *   脚注に直接書く形は使わない (編集方針の「出典の示し方」)
  * - 脚注の引用レジストリの参照 (`@作品/箇所:文`): 参照する文がレジストリにあるか。
  *   同じ記事で同じ引用を 2 つの脚注に書いていないか
  * - 引用レジストリ (src/data/passages/*.ts): 箇所の文の数と、各文の原文が、原典を文に分けたものと一致するか。
@@ -22,15 +21,7 @@ import { readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { passages } from '../src/data/passages/index.ts';
-import {
-  fullRange,
-  rangeEnds,
-  SCAIFE_READER,
-  sourceUrl,
-  type Work,
-  type WorkId,
-  works,
-} from '../src/data/sources.ts';
+import { rangeEnds, sourceUrl, type Work, type WorkId, works } from '../src/data/sources.ts';
 import type { ArticleClaims } from '../src/lib/claims.ts';
 import {
   linesWithin,
@@ -45,9 +36,7 @@ import {
 } from '../src/lib/passages.ts';
 import {
   type CorpusVerseSentence,
-  containsQuote,
   corpusText,
-  describe,
   dfhgUrnsOf,
   linesOf,
   listFiles,
@@ -69,33 +58,6 @@ let checkedClaims = 0;
 
 // ---------- 脚注 ----------
 
-const LINK = /\]\(([^)\s]+)\)/g;
-const SCAIFE_REF = /^(urn:cts:[^:]+:[^:]+):([^/]+)\/?$/;
-
-const localWorks = Object.values<Work>(works).flatMap((work) => ('urn' in work ? [] : [work]));
-
-/**
- * 脚注のリンク先から、原典と箇所を求める。出典へのリンクでなければ undefined。
- * `anchored` は、箇所の代わりに原典のアンカー (DFHG の断片の URN) を指しているとき。
- */
-function resolveLink(url: string): { source: Source; loc: string; anchored: boolean } | undefined {
-  if (url.startsWith(SCAIFE_READER)) {
-    const ref = url.slice(SCAIFE_READER.length).match(SCAIFE_REF);
-    return ref ? { source: { urn: ref[1] }, loc: ref[2], anchored: false } : undefined;
-  }
-  for (const work of localWorks) {
-    const anchorStart = work.url.indexOf('#');
-    if (anchorStart !== -1) {
-      if (url.startsWith(work.url))
-        return { source: work, loc: url.slice(anchorStart + 1), anchored: true };
-      continue;
-    }
-    const head = Object.entries(work.pages ?? {}).find(([, page]) => page === url)?.[0];
-    if (head !== undefined) return { source: work, loc: head, anchored: false };
-  }
-  return undefined;
-}
-
 /** 出典のリンクのアンカーが、入手元のページにあるか。なければ errors に足す。 */
 function verifyAnchor(where: string, workId: WorkId, url: string): void {
   const work: Work = works[workId];
@@ -109,11 +71,6 @@ function verifyAnchor(where: string, workId: WorkId, url: string): void {
   if (work.url.includes('#')) return;
   if (!pageIdsOf(work.file).has(decodeURIComponent(anchor)))
     errors.push(`${where}: リンクのアンカー #${anchor} が入手元のページにない (${url})`);
-}
-
-/** 原典に `[アンカー]` と書いてある箇所。なければ undefined。 */
-function locOfAnchor(source: Source, anchor: string): string | undefined {
-  return loadCorpus(source).find(([, text]) => text.includes(`[${anchor}]`))?.[0];
 }
 
 // ---------- 引用レジストリ ----------
@@ -334,42 +291,8 @@ function verifyPassageRefs(where: string, definition: string): boolean {
 }
 
 function verifyFootnote(where: string, definition: string): void {
-  if (verifyPassageRefs(where, definition)) return;
-  const links = [...definition.matchAll(LINK)].flatMap((match) => {
-    const resolved = resolveLink(match[1]);
-    return resolved ? [{ ...resolved, index: match.index, length: match[0].length }] : [];
-  });
-  if (links.length === 0) {
-    errors.push(`${where}: 脚注に出典 (Scaife Viewer か出典レジストリの URL) へのリンクがない`);
-    return;
-  }
-  links.forEach((link, index) => {
-    const { source, loc, anchored } = link;
-    const ref = `${describe(source)}:${loc}`;
-    if ('urn' in source && fullRange(loc) !== loc)
-      errors.push(`${where}: 範囲の終わりを始まりと同じ形で書く (${loc} → ${fullRange(loc)})`);
-    const segmentEnd = links[index + 1]?.index ?? definition.length;
-    const segment = definition.slice(link.index + link.length, segmentEnd);
-    const quote = segment.match(/«([^»]+)»/)?.[1];
-    if (!quote) {
-      errors.push(`${where}: ${loc} の原文 «…» がない`);
-      return;
-    }
-    let passage: string | undefined;
-    try {
-      const at = anchored ? locOfAnchor(source, loc) : loc;
-      passage = at === undefined ? undefined : corpusText(source, at);
-    } catch (error) {
-      errors.push(`${where}: ${(error as Error).message}`);
-      return;
-    }
-    if (passage === undefined) {
-      errors.push(`${where}: 箇所 ${ref} が原典にない`);
-    } else if (!containsQuote(passage, quote)) {
-      errors.push(`${where}: 引用が ${ref} の本文と一致しない\n    引用: ${quote}`);
-    }
-    checkedQuotes += 1;
-  });
+  if (!verifyPassageRefs(where, definition))
+    errors.push(`${where}: 脚注の引用は引用レジストリの参照 (\`@作品/箇所:文\`) で書く`);
 }
 
 for (const file of listFiles(CONTENT_DIR, /\.mdx?$/)) {

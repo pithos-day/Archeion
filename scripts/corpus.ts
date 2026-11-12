@@ -83,7 +83,7 @@ const corpusFiles = new Map(
 /** 照合する原典。CTS URN、または原典ファイルのパスで指定する。 */
 export type Source = { urn: string } | { file: string };
 
-export function describe(source: Source): string {
+function describe(source: Source): string {
   return 'urn' in source ? source.urn : source.file;
 }
 
@@ -169,18 +169,6 @@ export function normalize(text: string): string {
     .replace(/[[\]⟨⟩†/]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
-}
-
-/** 引用の各部分 (「…」で区切る) が、本文に順に含まれているか。 */
-export function containsQuote(passage: string, quote: string): boolean {
-  const text = normalize(passage);
-  let position = 0;
-  for (const piece of quote.split('…').map(normalize).filter(Boolean)) {
-    const found = text.indexOf(piece, position);
-    if (found === -1) return false;
-    position = found + piece.length;
-  }
-  return true;
 }
 
 /** 原典の箇所を文に分ける。番号は引用レジストリの文の番号と同じ。 */
