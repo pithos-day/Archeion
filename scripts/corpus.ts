@@ -177,6 +177,11 @@ export function sentencesOf(source: Source, loc: string): string[] | undefined {
   return text === undefined ? undefined : splitSentences(normalize(text));
 }
 
+/** 行の番号 (`12.39`) の巻 (`12`)。巻のない作品 (`278`) は空文字列。 */
+export function bookOf(line: string): string {
+  return line.split('.').slice(0, -1).join('.');
+}
+
 /** 原典の韻文の一文と、その行の範囲。 */
 export interface CorpusVerseSentence {
   start: string;
@@ -204,7 +209,7 @@ export function verseSentencesOf(source: Source): CorpusVerseSentence[] {
   };
   for (const [key, text, verse] of loadCorpus(source)) {
     if (!verse) continue;
-    const keyBook = key.split('.').slice(0, -1).join('.');
+    const keyBook = bookOf(key);
     if (keyBook !== book) {
       flush();
       book = keyBook;

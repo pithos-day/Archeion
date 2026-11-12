@@ -213,7 +213,7 @@ function lineKey(line: string): number[] {
 }
 
 /** 行 a と b の前後。同じ巻でなければ NaN。 */
-function compareLines(a: string, b: string): number {
+export function compareLines(a: string, b: string): number {
   const keyA = lineKey(a);
   const keyB = lineKey(b);
   if (keyA.length !== keyB.length || keyA.slice(0, -1).some((part, i) => part !== keyB[i]))

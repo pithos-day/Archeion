@@ -7,7 +7,8 @@
  * かかる文を、レジストリに書く行の範囲 (lines) 付きで出す。
  */
 import { rangeEnds, type WorkId, works } from '../src/data/sources.ts';
-import { linesOf, sentencesOf, verseSentencesOf } from './corpus.ts';
+import { compareLines } from '../src/lib/passages.ts';
+import { bookOf, linesOf, sentencesOf, verseSentencesOf } from './corpus.ts';
 
 const [workId, loc] = process.argv.slice(2);
 if (!workId || !loc || !(workId in works)) {
@@ -18,16 +19,11 @@ const source = works[workId as WorkId];
 const verse = verseSentencesOf(source);
 if (verse.length > 0) {
   const [start, end] = rangeEnds(loc);
-  const book = start.split('.').slice(0, -1).join('.');
-  const lineNumber = (line: string) => Number.parseFloat(line.split('.').at(-1) ?? '');
   for (const sentence of verse) {
-    const sentenceBook = sentence.start.split('.').slice(0, -1).join('.');
-    if (sentenceBook !== book) continue;
-    if (
-      lineNumber(sentence.end) < lineNumber(start) ||
-      lineNumber(sentence.start) > lineNumber(end)
-    )
-      continue;
+    if (bookOf(sentence.start) !== bookOf(start)) continue;
+    const endsBefore = compareLines(sentence.end, start) < 0;
+    const startsAfter = compareLines(sentence.start, end) > 0;
+    if (endsBefore || startsAfter) continue;
     console.log(`${linesOf(sentence)}\t${sentence.text}`);
   }
 } else {
