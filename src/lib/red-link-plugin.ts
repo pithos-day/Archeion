@@ -6,10 +6,8 @@
  */
 
 import { existsSync } from 'node:fs';
-import type { SatteriProcessorOptions } from '@astrojs/markdown-satteri';
 import type { Element } from 'hast';
-
-type HastPlugin = NonNullable<SatteriProcessorOptions['hastPlugins']>[number];
+import type { HastPlugin } from './hast-plugin';
 
 const ARTICLE_HREF = /^\/articles\/([a-z0-9-]+)\/$/;
 

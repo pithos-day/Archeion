@@ -8,11 +8,10 @@
  *
  * 脚注の書き方は `@作品/引用`、または `[ラベル](URL)。«原文»（訳）`（/policy/ の「出典の示し方」）。
  */
-import type { SatteriProcessorOptions } from '@astrojs/markdown-satteri';
-import type { Element, ElementContent, Text } from 'hast';
-import { letterAt, PASSAGE_REFS, quoteText, resolvePassage } from './passages';
 
-type HastPlugin = NonNullable<SatteriProcessorOptions['hastPlugins']>[number];
+import type { Element, ElementContent, Text } from 'hast';
+import type { HastPlugin } from './hast-plugin';
+import { letterAt, PASSAGE_REFS, quoteText, resolvePassage } from './passages';
 
 const GREEK = /[Ͱ-Ͽἀ-῿]/;
 
