@@ -10,7 +10,7 @@
  */
 import type { SatteriProcessorOptions } from '@astrojs/markdown-satteri';
 import type { Element, ElementContent, Text } from 'hast';
-import { PASSAGE_REFS, quoteText, resolvePassage } from './passages';
+import { letterAt, PASSAGE_REFS, quoteText, resolvePassage } from './passages';
 
 type HastPlugin = NonNullable<SatteriProcessorOptions['hastPlugins']>[number];
 
@@ -48,7 +48,7 @@ function backrefLinks(backrefs: Element[]): Element {
   }
   const letters = backrefs.flatMap((backref, index) => [
     text(' '),
-    element('sup', {}, [link(backref, [text(String.fromCharCode(97 + index))])]),
+    element('sup', {}, [link(backref, [text(letterAt(index))])]),
   ]);
   return element('span', { className: ['fn-backrefs'] }, [text('^'), ...letters]);
 }

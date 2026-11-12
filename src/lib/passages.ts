@@ -96,6 +96,13 @@ export function originalOf(sentence: WholeSentence | SplitSentence<Part>): strin
     : sentence.original;
 }
 
+const LETTER_A = 'a'.charCodeAt(0);
+
+/** 0 → `a`、1 → `b` … の記号。部分に分けた文の部分 (`3a`) と、脚注の戻りリンク (「^ a b」) に使う。 */
+export function letterAt(index: number): string {
+  return String.fromCharCode(LETTER_A + index);
+}
+
 /** 部分に分けてよい文の長さ。韻文は行の数、散文は原文の字数。 */
 export const PART_MIN_LINES = 5;
 export const PART_MIN_CHARS = 400;
@@ -162,7 +169,7 @@ function proseUnits(entry: Section): ProseUnit[] {
     if (sentence && 'parts' in sentence)
       return sentence.parts.map((part, index) => ({
         number,
-        key: `${number}${String.fromCharCode(97 + index)}`,
+        key: `${number}${letterAt(index)}`,
         part: part,
       }));
     return [{ number, key: `${number}`, part: sentence }];
@@ -196,12 +203,12 @@ function translationOf(ref: string, unit: Part, where: string): string {
   return unit.translation;
 }
 
-/** 行の番号 (`12.39`、`123a`) を、比べられる数の並びにする。 */
+/** 行の番号 (`12.39`、`123a`) を、比べられる数の並びにする。`123a` は 123.01、`123b` は 123.02。 */
 function lineKey(line: string): number[] {
   return line.split('.').map((part) => {
     const match = part.match(/^(\d+)([a-z]?)$/);
     if (!match) return Number.NaN;
-    return Number(match[1]) + (match[2] ? (match[2].charCodeAt(0) - 96) / 100 : 0);
+    return Number(match[1]) + (match[2] ? (match[2].charCodeAt(0) - LETTER_A + 1) / 100 : 0);
   });
 }
 
