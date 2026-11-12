@@ -616,16 +616,16 @@ export function sourceUrl(workId: WorkId, loc: string): string {
 /** 「ヘシオドス『神統記』270–283」「ペレキュデス『歴史』断片 22」のような出典表記。 */
 export function citeLabel(workId: WorkId, loc: string): string {
   const work: Work = works[workId];
-  if ('part' in work && work.part?.loc === loc)
-    return `${authors[work.author].name}『${work.title}』（${work.part.label}）`;
+  const cited = `${authors[work.author].name}『${work.title}』`;
+  if ('part' in work && work.part?.loc === loc) return `${cited}（${work.part.label}）`;
   const label = 'urn' in work ? undefined : work.locLabels?.[loc];
-  if (label) return `${authors[work.author].name}『${work.title}』${label}`;
+  if (label) return `${cited}${label}`;
   const unit = 'unit' in work && work.unit ? `${work.unit} ` : '';
   if ('dfhg' in work && work.dfhg) {
     const [fragment, witness] = loc.split('.');
     const name =
       witness && witness !== '1' ? (work.witnesses?.[loc] ?? `典拠 ${witness}`) : undefined;
-    return `${authors[work.author].name}『${work.title}』${unit}${fragment}${name ? `（${name}）` : ''}`;
+    return `${cited}${unit}${fragment}${name ? `（${name}）` : ''}`;
   }
-  return `${authors[work.author].name}『${work.title}』${unit}${loc.replace('-', '–')}`;
+  return `${cited}${unit}${loc.replace('-', '–')}`;
 }
