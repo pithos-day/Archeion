@@ -5,13 +5,14 @@
  *
  * - 脚注: `[ラベル](https://scaife.perseus.org/reader/<URN>:<箇所>/) «原文»` の原文が、
  *   原典の該当箇所に含まれているか (途中を「…」で省いた引用は、各部分が順に含まれているか)。
- *   CTS URN のない作品は、出典レジストリの URL を使って `[ラベル](<url>#<箇所>) «原文»` と書く。
+ *   CTS URN のない作品は、出典レジストリの pages の URL を使って `[ラベル](<ページ>) «原文»` と書く。
  *   DFHG の断片は `[ラベル](<url>.<断片の URN の残り>) «原文»` と書き、URN が原典にあるかも確かめる
  * - 脚注の引用レジストリの参照 (`@作品/箇所:文`): 参照する文がレジストリにあるか
  * - 引用レジストリ (src/data/passages/*.ts): 箇所の文の数と、各文の原文が、原典を文に分けたものと一致するか。
  *   韻文の作品は、各文の行の範囲と原文が、原典の文と一致するか。脚注の参照の行の範囲に収まる原典の文が、
  *   すべてレジストリにあるか (途中の文が抜けたまま続けて表示しないため)
  * - 論点表 (src/data/claims/*.ts): 出典の箇所が原典に実在するか
+ * - 脚注と論点表の出典のリンクのアンカー (ラテン語版ウィキソースの `#CVIII` など) が、入手元のページにあるか
  *
  * 原典の読み方は scripts/corpus.ts。
  */
@@ -45,6 +46,7 @@ import {
   listFiles,
   loadPassages,
   normalize,
+  pageIdsOf,
   type Source,
   sentencesOf,
   verseSentencesOf,
@@ -75,16 +77,25 @@ function resolveLink(url: string): { source: Source; loc: string; anchored: bool
     return ref ? { source: { urn: ref[1] }, loc: ref[2], anchored: false } : undefined;
   }
   for (const work of localWorks) {
-    if (!url.startsWith(work.url)) continue;
     const anchorStart = work.url.indexOf('#');
-    if (anchorStart !== -1)
-      return { source: work, loc: url.slice(anchorStart + 1), anchored: true };
-    if (url[work.url.length] === '#') {
-      const loc = decodeURIComponent(url.slice(work.url.length + 1));
-      return { source: work, loc, anchored: false };
+    if (anchorStart !== -1) {
+      if (url.startsWith(work.url))
+        return { source: work, loc: url.slice(anchorStart + 1), anchored: true };
+      continue;
     }
+    const head = Object.entries(work.pages ?? {}).find(([, page]) => page === url)?.[0];
+    if (head !== undefined) return { source: work, loc: head, anchored: false };
   }
   return undefined;
+}
+
+/** 出典のリンクのアンカーが、入手元のページにあるか。なければ errors に足す。 */
+function verifyAnchor(where: string, workId: WorkId, url: string): void {
+  const work: Work = works[workId];
+  const anchor = url.split('#')[1];
+  if ('urn' in work || work.url.includes('#') || anchor === undefined) return;
+  if (!pageIdsOf(work.file).has(decodeURIComponent(anchor)))
+    errors.push(`${where}: リンクのアンカー #${anchor} が入手元のページにない (${url})`);
 }
 
 /** 原典に `[アンカー]` と書いてある箇所。なければ undefined。 */
@@ -207,7 +218,7 @@ function verifyPassageRefs(where: string, definition: string): boolean {
   if (!PASSAGE_REFS.test(body)) return false;
   for (const ref of body.split(/\s+/)) {
     try {
-      resolvePassage(ref);
+      verifyAnchor(where, parseRef(ref).workId, resolvePassage(ref).url);
       verifyVerseRef(where, ref);
     } catch (error) {
       errors.push(`${where}: ${(error as Error).message}`);
@@ -276,6 +287,7 @@ for (const file of listFiles(CLAIMS_DIR, /\.ts$/)) {
       for (const source of variant.sources) {
         const where = `${relative(ROOT, file)}: ${topic.label} / ${variant.label}`;
         try {
+          verifyAnchor(where, source.work, sourceUrl(source.work, source.loc));
           if (getPassage(works[source.work], source.loc) === undefined) {
             errors.push(`${where}: 箇所 ${sourceUrl(source.work, source.loc)} が原典にない`);
           }

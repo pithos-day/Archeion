@@ -72,7 +72,7 @@ interface CtsWork extends WorkBase {
 /** CTS URN のない作品。リンク先と原典ファイルを個別に指定する。 */
 interface LocalWork extends WorkBase {
   /**
-   * 出典のリンク先。脚注では `<url>#<箇所>` と書く。
+   * 出典のリンク先 (原典のページ)。箇所ごとのリンクは sourceUrl が pages と anchor から作る。
    * DFHG の断片集は、著者のアンカー (`#urn:lofts:fhg.1.<著者>`) まで含めて書く。脚注では
    * その続きに断片の URN の残りを書く (`<url>.pherecydis_fragmenta.historiai.liber_secundus:27`)。
    * 断片の URN は、原典ファイルの断片の見出しの下にある。
@@ -90,6 +90,16 @@ interface LocalWork extends WorkBase {
    * 出典表記で箇所の代わりに書く語 (`label`)。論点表と脚注の箇所は `loc` と同じにする。
    */
   part?: { loc: string; label: string };
+  /**
+   * 原典がいくつかのページに分かれているとき、箇所の最初の番号 (`2.37` の `2`、序の `pr`) ごとのページ。
+   * ここにない箇所は url のページを開く。
+   */
+  pages?: Record<string, string>;
+  /**
+   * ページの中の箇所のアンカーの付け方。省略すると、ページの先頭を開く (箇所のアンカーがないサイト)。
+   * - `roman`: 箇所の最初の番号をローマ数字にする (ラテン語版ウィキソースの『神話集』の `#CVIII`)
+   */
+  anchor?: 'roman';
 }
 
 export type Work = CtsWork | LocalWork;
@@ -300,12 +310,22 @@ export const works = {
     author: 'hyginus',
     title: '神話集',
     url: 'https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Fabulae&oldid=248081',
+    pages: {
+      pr: 'https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Praefatio&oldid=239523',
+    },
+    anchor: 'roman',
     file: 'Wikisource/hyginus/fabulae/txt/fabulae.txt',
   },
   'hyg-astr': {
     author: 'hyginus',
     title: '天文詩',
     url: 'https://www.thelatinlibrary.com/hyginus.html',
+    pages: {
+      1: 'https://www.thelatinlibrary.com/hyginus/hyginus1.shtml',
+      2: 'https://www.thelatinlibrary.com/hyginus/hyginus2.shtml',
+      3: 'https://www.thelatinlibrary.com/hyginus/hyginus3.shtml',
+      4: 'https://www.thelatinlibrary.com/hyginus/hyginus4.shtml',
+    },
     file: 'TheLatinLibrary/hyginus/de-astronomia/txt/de-astronomia.txt',
   },
   'ant-lib': {
@@ -486,15 +506,47 @@ export function fullRange(loc: string): string {
   return `${start}-${[...startParts.slice(0, startParts.length - endParts.length), ...endParts].join('.')}`;
 }
 
+/** 1〜3999 をローマ数字にする。 */
+export function romanNumeral(value: number): string {
+  const digits: [number, string][] = [
+    [1000, 'M'],
+    [900, 'CM'],
+    [500, 'D'],
+    [400, 'CD'],
+    [100, 'C'],
+    [90, 'XC'],
+    [50, 'L'],
+    [40, 'XL'],
+    [10, 'X'],
+    [9, 'IX'],
+    [5, 'V'],
+    [4, 'IV'],
+    [1, 'I'],
+  ];
+  let rest = value;
+  let result = '';
+  for (const [unit, symbol] of digits) {
+    while (rest >= unit) {
+      result += symbol;
+      rest -= unit;
+    }
+  }
+  return result;
+}
+
 /**
  * 原文の該当箇所を開く URL。`loc` は `4.765-803` のような箇所。
- * CTS URN のある作品は Scaife Viewer、ない作品は `<url>#<箇所>`。
+ * CTS URN のある作品は Scaife Viewer。ない作品は、箇所のあるページ (pages、なければ url) を開き、
+ * anchor の決まりがあれば箇所のアンカーを付ける。
  * url にアンカーを含む作品 (DFHG) は、箇所から断片の URN を作れないので、著者の位置を開く。
  */
 export function sourceUrl(workId: WorkId, loc: string): string {
   const work: Work = works[workId];
   if ('urn' in work) return `${SCAIFE_READER}${work.urn}:${fullRange(loc)}/`;
-  return work.url.includes('#') ? work.url : `${work.url}#${loc}`;
+  const head = loc.split(/[.-]/)[0] ?? loc;
+  const page = work.pages?.[head] ?? work.url;
+  if (work.anchor === 'roman' && /^\d+$/.test(head)) return `${page}#${romanNumeral(Number(head))}`;
+  return page;
 }
 
 /** 「ヘシオドス『神統記』270–283」「ペレキュデス『歴史』断片 22」のような出典表記。 */

@@ -96,7 +96,7 @@ description: Archeion のギリシャ神話の記事で、どの説を採るか�
 本文の記述には [1] の形の脚注を付ける。脚注には次を載せる。
 
 - 著者名・作品名・箇所（行番号、または巻・章・節）。[Scaife Viewer](https://scaife.perseus.org/) の該当箇所へリンクする
-  - Scaife Viewer にない作品（断片集など）は、出典レジストリ（`src/data/sources.ts`）に登録したリンク先を使い、`<URL>#<箇所>` の形でリンクする。箇所は、原典テキストの見出しの番号を「.」でつないだもの（章と節に分かれた作品なら `30.2`）
+  - Scaife Viewer にない作品（断片集など）は、出典レジストリ（`src/data/sources.ts`）に登録したリンク先を使う。原典が巻ごとなどのページに分かれていればそのページへ、ページに箇所のアンカーがあれば（ラテン語版ウィキソースの『神話集』の `#CVIII` など）そのアンカーへリンクする。アンカーのないサイトは、ページの先頭へリンクする
   - [DFHG](http://www.dfhg-project.org/) の断片は、その断片の URN をアンカーにしてリンクする（`…index.php?volume=Volumen%20primum#urn:lofts:fhg.1.pherecydes.pherecydis_fragmenta.historiai.liber_secundus:27`）。URN は原典テキストの断片の見出しの下にある
 - 引用の日本語訳（Archeion による）
 - 原典の原文（ギリシャ語、またはラテン語）。脚注の「［原語で表示］」で開く。途中を省いたところは「…」と書く

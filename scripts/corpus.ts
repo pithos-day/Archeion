@@ -8,7 +8,7 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { SENTENCE_END, splitSentences } from '../src/lib/passages.ts';
 
 const CORPUS = process.env.MYTH_CORPUS ?? join(homedir(), 'Documents/greek-mythology');
@@ -23,6 +23,28 @@ const NUMBERING_HEADINGS = new Set([
   ...['Book', 'Chapter', 'Section', 'Poem'],
   ...['Volume', 'Work', 'Fragment', 'Epigram', 'Epigraph', 'Line', 'Part', 'Page'],
 ]);
+
+const pageIdCache = new Map<string, Set<string>>();
+
+/**
+ * 原典の入手元のページ (保存した wikitext や HTML) にある id 属性の値。出典のリンクのアンカーが
+ * 実在するかを確かめるのに使う。原典ファイル (`<作品>/txt/<名前>.txt`) の作品のディレクトリから探す。
+ */
+export function pageIdsOf(file: string): Set<string> {
+  const dir = join(CORPUS, dirname(dirname(file)));
+  let ids = pageIdCache.get(dir);
+  if (!ids) {
+    ids = new Set(
+      listFiles(dir, /\.(wiki|html)$/).flatMap((path) =>
+        [...readFileSync(path, 'utf8').matchAll(/\bid=["']([^"']+)["']/g)].map(
+          (match) => match[1] ?? '',
+        ),
+      ),
+    );
+    pageIdCache.set(dir, ids);
+  }
+  return ids;
+}
 
 export function listFiles(dir: string, pattern: RegExp): string[] {
   if (!existsSync(dir)) return [];
