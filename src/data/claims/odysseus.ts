@@ -53,6 +53,29 @@ const claims: ArticleClaims = [
     ],
   },
   {
+    label: 'アキレウスの武具の判定を下した者',
+    variants: [
+      {
+        label: 'ギリシャ軍の将たち',
+        sources: [
+          { work: 'pind-n', loc: '8.26-27', kind: 'mention' },
+          { work: 'soph-aj', loc: '1135-1136', kind: 'mention' },
+          { work: 'ov-met', loc: '13.1-383', kind: 'narrative' },
+          { work: 'hyg-fab', loc: '107.2', kind: 'narrative' },
+        ],
+      },
+      {
+        label: 'トロイア人',
+        sources: [
+          { work: 'hom-od', loc: '11.543-547', kind: 'mention' },
+          { work: 'ilias-parva', loc: 'ilias_parva', kind: 'mention' },
+          { work: 'apollod-ep', loc: '5.6', kind: 'narrative' },
+          { work: 'quint-smyrn', loc: '5.157-320', kind: 'narrative' },
+        ],
+      },
+    ],
+  },
+  {
     label: 'ピロクテテスを迎えに行った仲間',
     variants: [
       {
