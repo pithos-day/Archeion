@@ -6,7 +6,8 @@
  * - 脚注に直接書いた引用 (引用レジストリに移す前の形): `[ラベル](https://scaife.perseus.org/reader/<URN>:<箇所>/) «原文»`
  *   の原文が、原典の該当箇所に含まれているか (途中を「…」で省いた引用は、各部分が順に含まれているか)。
  *   いまの脚注はすべて引用レジストリの参照で、この形は使っていない
- * - 脚注の引用レジストリの参照 (`@作品/箇所:文`): 参照する文がレジストリにあるか
+ * - 脚注の引用レジストリの参照 (`@作品/箇所:文`): 参照する文がレジストリにあるか。
+ *   同じ記事で同じ引用を 2 つの脚注に書いていないか
  * - 引用レジストリ (src/data/passages/*.ts): 箇所の文の数と、各文の原文が、原典を文に分けたものと一致するか。
  *   部分 (parts) に分けた文は、文が十分に長いか、部分をつなぐと文になるか、韻文なら部分の行の範囲が正しいか。
  *   韻文の作品は、各文の行の範囲と原文が、原典の文と一致するか。脚注の参照の行の範囲に収まる原典の文が、
@@ -372,12 +373,32 @@ function verifyFootnote(where: string, definition: string): void {
 }
 
 for (const file of listFiles(CONTENT_DIR, /\.mdx?$/)) {
+  /** 引用レジストリの参照だけの脚注の、展開した原文 → 最初の脚注の id。同じ引用を 2 つの脚注に書かないため。 */
+  const quoted = new Map<string, string>();
   readFileSync(file, 'utf8')
     .split('\n')
     .forEach((line, index) => {
-      if (/^\[\^[^\]]+\]:/.test(line)) {
-        verifyFootnote(`${relative(ROOT, file)}:${index + 1}`, line);
+      const footnote = line.match(/^\[\^([^\]]+)\]:\s*(.*)$/);
+      if (!footnote) return;
+      const where = `${relative(ROOT, file)}:${index + 1}`;
+      verifyFootnote(where, line);
+      const [, id, body] = footnote;
+      if (!PASSAGE_REFS.test(body)) return;
+      let text: string;
+      try {
+        text = body
+          .split(/\s+/)
+          .map((ref) => resolvePassage(ref).original.join(' '))
+          .join(' | ');
+      } catch {
+        return;
       }
+      const first = quoted.get(text);
+      if (first)
+        errors.push(
+          `${where}: 脚注 ${id} は ${first} と同じ引用なので、本文から ${first} を参照する`,
+        );
+      else quoted.set(text, id);
     });
 }
 
