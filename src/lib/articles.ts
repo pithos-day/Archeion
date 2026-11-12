@@ -4,6 +4,16 @@ import { statSync } from 'node:fs';
 
 export type Article = CollectionEntry<'docs'>;
 
+/** 日本語の読みの順で比べる。 */
+function compareJa(a: string, b: string): number {
+  return a.localeCompare(b, 'ja');
+}
+
+/** 記事をタイトル順に並べる比較関数。 */
+function byTitle(a: Article, b: Article): number {
+  return compareJa(a.data.title, b.data.title);
+}
+
 /** 記事エントリーからページの URL を作る。 */
 export function articleHref(article: Article): string {
   return article.id === 'index' ? '/' : `/${article.id}/`;
@@ -22,7 +32,7 @@ function getAllPages(): Promise<Article[]> {
 /** 著者別の版を除いた記事 (総合版) を、タイトル順で返す。 */
 export async function getArticles(): Promise<Article[]> {
   const entries = (await getAllPages()).filter((entry) => !entry.data.versionOf);
-  return entries.sort((a, b) => a.data.title.localeCompare(b.data.title, 'ja'));
+  return entries.sort(byTitle);
 }
 
 /** 総合版の id から、その記事の著者別の版をタブの並び順で返す。 */
@@ -39,7 +49,7 @@ export async function getCategoryMap(): Promise<Map<string, Article[]>> {
       map.set(category, [...(map.get(category) ?? []), article]);
     }
   }
-  return new Map([...map].sort(([a], [b]) => a.localeCompare(b, 'ja')));
+  return new Map([...map].sort(([a], [b]) => compareJa(a, b)));
 }
 
 /**
@@ -131,9 +141,7 @@ export async function getWantedArticles(): Promise<WantedArticle[]> {
     .map(([slug, { names, linkedFrom }]) => ({
       slug,
       name: [...names].sort(([, a], [, b]) => b - a)[0]?.[0] ?? slug,
-      linkedFrom: [...linkedFrom].sort((a, b) => a.data.title.localeCompare(b.data.title, 'ja')),
+      linkedFrom: [...linkedFrom].sort(byTitle),
     }))
-    .sort(
-      (a, b) => b.linkedFrom.length - a.linkedFrom.length || a.name.localeCompare(b.name, 'ja'),
-    );
+    .sort((a, b) => b.linkedFrom.length - a.linkedFrom.length || compareJa(a.name, b.name));
 }
