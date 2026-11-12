@@ -83,7 +83,7 @@ const claims: ArticleClaims = [
     ],
   },
   {
-    label: 'アルゴ船の通過',
+    label: 'アルゴー船の通過',
     variants: [
       {
         label: 'オルペウスの竪琴の歌に打ち消された',

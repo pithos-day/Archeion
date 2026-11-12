@@ -69,7 +69,7 @@ const claims: ArticleClaims = [
         sources: [{ work: 'hes-th', loc: '517-520', kind: 'narrative' }],
       },
       {
-        label: 'ティタノマキアでティターンの将だったため、ゼウスに課された',
+        label: 'ティタノマキアでティタンの将だったため、ゼウスに課された',
         sources: [
           { work: 'hyg-fab', loc: '150.2', kind: 'narrative' },
           { work: 'aesch-pv', loc: '425-430', kind: 'mention' },
@@ -101,7 +101,7 @@ const claims: ArticleClaims = [
     label: '神か人か',
     variants: [
       {
-        label: 'ティターン神族の神',
+        label: 'ティタン神族の神',
         sources: [
           { work: 'hes-th', loc: '507-520', kind: 'narrative' },
           { work: 'aesch-pv', loc: '425-430', kind: 'narrative' },
