@@ -218,7 +218,7 @@ const claims: ArticleClaims = [
         ],
       },
       {
-        label: 'ハデス（プルトン）',
+        label: 'ハデス',
         sources: [{ work: 'apollod-lib', loc: '1.3.2', kind: 'narrative' }],
       },
       {
