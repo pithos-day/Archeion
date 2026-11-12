@@ -161,7 +161,7 @@ const claims: ArticleClaims = [
     ],
   },
   {
-    label: 'リビュアでの船',
+    label: 'リビアでの船',
     variants: [
       {
         label: '船を担いで十二日間、陸を運んだ',

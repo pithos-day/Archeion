@@ -78,7 +78,7 @@ const claims: ArticleClaims = [
     ],
   },
   {
-    label: 'リビュアでの船の運搬',
+    label: 'リビアでの船の運搬',
     variants: [
       {
         label: '船と積み荷を担いで十二日間、砂漠を越えた',

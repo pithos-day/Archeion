@@ -90,7 +90,7 @@ const passages: ProsePassages = {
     sentences: {
       2: {
         original: 'Antaeum terrae filium in Libya occidit.',
-        translation: 'ヘラクレスはリビュアで、大地の子アンタイオスを殺した。',
+        translation: 'ヘラクレスはリビアで、大地の子アンタイオスを殺した。',
       },
       3: {
         original: 'hic cogebat hospites secum luctari et delassatos interficiebat;',

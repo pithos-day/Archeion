@@ -69,7 +69,7 @@ const claims: ArticleClaims = [
         sources: [{ work: 'hes-th', loc: '517-520', kind: 'narrative' }],
       },
       {
-        label: 'ティタノマキアでティタンの将だったため、ゼウスに課された',
+        label: 'ティタノマキアでティターンの将だったため、ゼウスに課された',
         sources: [
           { work: 'hyg-fab', loc: '150.2', kind: 'narrative' },
           { work: 'aesch-pv', loc: '425-430', kind: 'mention' },
@@ -101,7 +101,7 @@ const claims: ArticleClaims = [
     label: '神か人か',
     variants: [
       {
-        label: 'ティタン神族の神',
+        label: 'ティターン神族の神',
         sources: [
           { work: 'hes-th', loc: '507-520', kind: 'narrative' },
           { work: 'aesch-pv', loc: '425-430', kind: 'narrative' },
@@ -173,7 +173,7 @@ const claims: ArticleClaims = [
     label: 'アトラス山との関係',
     variants: [
       {
-        label: 'リビュアに「アトラス」という山があり、土地の人はそれを天の柱と呼ぶ',
+        label: 'リビアに「アトラス」という山があり、土地の人はそれを天の柱と呼ぶ',
         sources: [{ work: 'hdt', loc: '4.184.3', kind: 'narrative' }],
       },
       {
@@ -186,7 +186,7 @@ const claims: ArticleClaims = [
     label: 'アトラス山の所在',
     variants: [
       {
-        label: 'リビュア（北アフリカ）の西部にある山',
+        label: 'リビア（北アフリカ）の西部にある山',
         sources: [
           { work: 'hdt', loc: '4.184.3', kind: 'narrative' },
           { work: 'strab', loc: '17.3.2', kind: 'narrative' },

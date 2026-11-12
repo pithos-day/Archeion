@@ -26,7 +26,7 @@ const claims: ArticleClaims = [
     label: '住まいと立場',
     variants: [
       {
-        label: 'リビュアに住む（王であった）',
+        label: 'リビアに住む（王であった）',
         sources: [
           { work: 'pherecyd', loc: '33d', kind: 'mention' },
           { work: 'pind-i', loc: '4.52-55', kind: 'narrative' },
@@ -35,7 +35,7 @@ const claims: ArticleClaims = [
         ],
       },
       {
-        label: 'オシリスが、エチオピアとリビュアの統治者に任じた',
+        label: 'オシリスが、エチオピアとリビアの統治者に任じた',
         sources: [{ work: 'diod-1-5', loc: '1.17.3', kind: 'narrative' }],
       },
     ],

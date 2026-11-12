@@ -55,7 +55,7 @@ const claims: ArticleClaims = [
         sources: [{ work: 'ov-met', loc: '4.794-801', kind: 'narrative' }],
       },
       {
-        label: '怪物ではなく、リビュアの女王',
+        label: '怪物ではなく、リビアの女王',
         sources: [
           { work: 'diod-1-5', loc: '3.55.3', kind: 'narrative' },
           { work: 'paus', loc: '2.21.5', kind: 'narrative' },
