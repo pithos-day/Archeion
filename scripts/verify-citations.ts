@@ -190,7 +190,7 @@ function verifyVerseParts(
   });
 }
 
-function verifyVerseRegistry(file: string, source: Source, work: VersePassages): void {
+function verifyVerseRegistry(file: string, source: Source, registry: VersePassages): void {
   let corpus: CorpusVerseSentence[];
   try {
     corpus = verseSentencesOf(source);
@@ -199,7 +199,7 @@ function verifyVerseRegistry(file: string, source: Source, work: VersePassages):
     return;
   }
   let previous = -1;
-  for (const sentence of work) {
+  for (const sentence of registry) {
     const [start, end] = rangeEnds(sentence.lines);
     const original = originalOf(sentence);
     const index = corpus.findIndex(
@@ -230,18 +230,18 @@ function verifyVerseRegistry(file: string, source: Source, work: VersePassages):
 }
 
 function verifyRegistry(): void {
-  for (const [workId, sections] of Object.entries(passages)) {
+  for (const [workId, registry] of Object.entries(passages)) {
     const file = `src/data/passages/${workId}.ts`;
     if (!(workId in works)) {
       errors.push(`${file}: 出典レジストリにない作品`);
       continue;
     }
     const source: Source = works[workId as WorkId];
-    if (Array.isArray(sections)) {
-      verifyVerseRegistry(file, source, sections);
+    if (Array.isArray(registry)) {
+      verifyVerseRegistry(file, source, registry);
       continue;
     }
-    for (const [loc, section] of Object.entries(sections ?? {})) {
+    for (const [loc, section] of Object.entries(registry ?? {})) {
       let corpus: string[] | undefined;
       try {
         corpus = sentencesOf(source, loc);
@@ -284,11 +284,11 @@ function verifyRegistry(): void {
  * 続いている範囲を「+」で分けていないか。
  */
 function verifyVerseRef(where: string, ref: string): void {
-  const { workId, spec, work } = parseRef(ref);
-  if (!Array.isArray(work)) return;
+  const { workId, spec, registry } = parseRef(ref);
+  if (!Array.isArray(registry)) return;
   const units = verseSentencesOf(works[workId]).flatMap((sentence) => {
     const lines = linesOf(sentence);
-    const entry = work.find(
+    const entry = registry.find(
       (candidate) =>
         candidate.lines === lines && normalize(originalOf(candidate)) === sentence.text,
     );

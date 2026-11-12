@@ -151,8 +151,8 @@ interface ProseUnit {
   number: number;
   /** 参照での書き方 (`3`、部分は `3a`)。 */
   key: string;
-  /** レジストリにない文は undefined。 */
-  unit: Part | undefined;
+  /** 引用する部分 (部分に分けていない文は文そのもの)。レジストリにない文は undefined。 */
+  part: Part | undefined;
 }
 
 /** 箇所の文を、引用の単位に並べる。 */
@@ -163,9 +163,9 @@ function proseUnits(entry: Section): ProseUnit[] {
       return sentence.parts.map((part, index) => ({
         number,
         key: `${number}${String.fromCharCode(97 + index)}`,
-        unit: part,
+        part: part,
       }));
-    return [{ number, key: `${number}`, unit: sentence }];
+    return [{ number, key: `${number}`, part: sentence }];
   });
 }
 
@@ -222,13 +222,13 @@ export function linesWithin(lines: string, start: string, end: string): boolean 
 }
 
 /** 韻文の引用の単位 (文、部分に分けた文はその部分) を、原典の順に並べる。 */
-function verseUnits(work: VersePassages): (Part & { lines: string })[] {
-  return work.flatMap((sentence) => ('parts' in sentence ? sentence.parts : [sentence]));
+function verseUnits(registry: VersePassages): (Part & { lines: string })[] {
+  return registry.flatMap((sentence) => ('parts' in sentence ? sentence.parts : [sentence]));
 }
 
 /** 韻文の参照の、範囲ごとの単位。範囲の始まりと終わりが単位の切れ目に合わなければ例外を投げる。 */
-function verseBlocks(ref: string, work: VersePassages, spec: string): VersePart[][] {
-  const units = verseUnits(work);
+function verseBlocks(ref: string, registry: VersePassages, spec: string): VersePart[][] {
+  const units = verseUnits(registry);
   return spec.split('+').map((piece) => {
     const [start, end] = rangeEnds(piece);
     const block = units.filter((unit) => linesWithin(unit.lines, start, end));
@@ -244,13 +244,13 @@ function verseBlocks(ref: string, work: VersePassages, spec: string): VersePart[
 }
 
 /** 参照を作品 id と、その後ろ (箇所と文の番号、または行の範囲) に分ける。 */
-export function parseRef(ref: string): { workId: WorkId; spec: string; work: WorkPassages } {
+export function parseRef(ref: string): { workId: WorkId; spec: string; registry: WorkPassages } {
   const match = ref.match(/^@([\w-]+)\/(\S+)$/);
   if (!match) throw new Error(`引用の参照の形が正しくない: ${ref}`);
   const [, workId, spec] = match;
-  const work = passages[workId as WorkId];
-  if (!work) throw new Error(`引用レジストリにない作品: ${ref}`);
-  return { workId: workId as WorkId, spec, work };
+  const registry = passages[workId as WorkId];
+  if (!registry) throw new Error(`引用レジストリにない作品: ${ref}`);
+  return { workId: workId as WorkId, spec, registry };
 }
 
 /**
@@ -258,9 +258,9 @@ export function parseRef(ref: string): { workId: WorkId; spec: string; work: Wor
  * 見つからなければ例外を投げる。
  */
 export function resolvePassage(ref: string): ResolvedPassage {
-  const { workId: id, spec, work } = parseRef(ref);
-  if (Array.isArray(work)) {
-    const blocks = verseBlocks(ref, work, spec);
+  const { workId: id, spec, registry } = parseRef(ref);
+  if (Array.isArray(registry)) {
+    const blocks = verseBlocks(ref, registry, spec);
     const start = rangeEnds(blocks[0]?.[0]?.lines ?? '')[0];
     const end = rangeEnds(blocks.at(-1)?.at(-1)?.lines ?? '')[1];
     const loc = compactRange(start, end);
@@ -276,7 +276,7 @@ export function resolvePassage(ref: string): ResolvedPassage {
 
   const refs: SentenceRef[] = spec.split('+').flatMap((piece) => {
     const [section, selection] = piece.split(':');
-    const entry = work[section];
+    const entry = registry[section];
     if (!entry) throw new Error(`引用レジストリにない箇所: ${ref}`);
     const units = proseUnits(entry);
     return parseSelection(selection, units).map((index) => ({
@@ -290,9 +290,9 @@ export function resolvePassage(ref: string): ResolvedPassage {
   const original: string[] = [];
   const translation: string[] = [];
   refs.forEach((current, index) => {
-    const { unit } = current.unit;
+    const { part } = current.unit;
     const where = `${current.section}:${current.unit.key}`;
-    if (!unit) throw new Error(`引用レジストリにない文: ${ref} (${where})`);
+    if (!part) throw new Error(`引用レジストリにない文: ${ref} (${where})`);
     const previous = refs[index - 1];
     const continues =
       previous !== undefined &&
@@ -301,11 +301,11 @@ export function resolvePassage(ref: string): ResolvedPassage {
           current.index === 0 &&
           previous.index === previous.count - 1));
     if (continues) {
-      original[original.length - 1] += ` ${unit.original}`;
-      translation[translation.length - 1] += translationOf(ref, unit, where);
+      original[original.length - 1] += ` ${part.original}`;
+      translation[translation.length - 1] += translationOf(ref, part, where);
     } else {
-      original.push(unit.original);
-      translation.push(translationOf(ref, unit, where));
+      original.push(part.original);
+      translation.push(translationOf(ref, part, where));
     }
   });
 
