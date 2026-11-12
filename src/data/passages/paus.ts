@@ -1,6 +1,6 @@
 import type { ProsePassages } from '../../lib/passages.ts';
 
-/** パウサニアス『ギリシャ案内記』の引用。 */
+/** パウサニアス『ギリシア案内記』の引用。 */
 const passages: ProsePassages = {
   '1.23.8': {
     length: 4,
