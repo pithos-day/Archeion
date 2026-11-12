@@ -1,1 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><title>Archeion</title><path fill-rule="evenodd" d="M81 36 64 0 47 36l-1 2-9-10a6 6 0 0 0-9 9l10 10h-2L0 64l36 17h2L28 91a6 6 0 1 0 9 9l9-10 1 2 17 36 17-36v-2l9 10a6 6 0 1 0 9-9l-9-9 2-1 36-17-36-17-2-1 9-9a6 6 0 1 0-9-9l-9 10v-2Zm-17 2-2 5c-4 8-11 15-19 19l-5 2 5 2c8 4 15 11 19 19l2 5 2-5c4-8 11-15 19-19l5-2-5-2c-8-4-15-11-19-19l-2-5Z" clip-rule="evenodd"/><path d="M118 19a6 6 0 0 0-9-9l-3 3a6 6 0 1 0 9 9l3-3Zm-96 4c-2 2-6 2-9 0l-3-3a6 6 0 1 1 9-9l3 3c3 2 3 6 0 9Zm0 82c-2-2-6-2-9 0l-3 3a6 6 0 1 0 9 9l3-3c3-2 3-6 0-9Zm96 4a6 6 0 0 1-9 9l-3-3a6 6 0 1 1 9-9l3 3Z"/><style>path{fill:#000}@media (prefers-color-scheme:dark){path{fill:#fff}}</style></svg>
+<!--?xml version="1.0" encoding="utf-8"?-->
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" style="width: 512px; height: 512px; opacity: 1;" xml:space="preserve">
+<style type="text/css">
+
+	.st0{fill:#4B4B4B;}
+
+</style>
+<g>
+	<polygon class="st0" points="256,0 24,69.344 24,109.344 40,109.344 40,129.344 472,129.344 472,109.344 488,109.344 488,69.344 	
+		" style="fill: rgb(240, 238, 233);"></polygon>
+	<polygon class="st0" points="472,432 40,432 40,464 24,464 24,512 488,512 488,464 472,464 	" style="fill: rgb(240, 238, 233);"></polygon>
+	<polygon class="st0" points="384,397.344 384,413.344 448,413.344 448,397.344 440,397.344 440,169.344 448,169.344 448,153.344 
+		384,153.344 384,169.344 392,169.344 392,397.344 	" style="fill: rgb(240, 238, 233);"></polygon>
+	<polygon class="st0" points="277.344,397.344 277.344,413.344 341.344,413.344 341.344,397.344 333.344,397.344 333.344,169.344 
+		341.344,169.344 341.344,153.344 277.344,153.344 277.344,169.344 285.344,169.344 285.344,397.344 	" style="fill: rgb(240, 238, 233);"></polygon>
+	<polygon class="st0" points="170.656,397.344 170.656,413.344 234.656,413.344 234.656,397.344 226.656,397.344 226.656,169.344 
+		234.656,169.344 234.656,153.344 170.656,153.344 170.656,169.344 178.656,169.344 178.656,397.344 	" style="fill: rgb(240, 238, 233);"></polygon>
+	<polygon class="st0" points="64,397.344 64,413.344 128,413.344 128,397.344 120,397.344 120,169.344 128,169.344 128,153.344 
+		64,153.344 64,169.344 72,169.344 72,397.344 	" style="fill: rgb(240, 238, 233);"></polygon>
+</g>
+</svg>
