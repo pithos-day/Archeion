@@ -21,7 +21,7 @@ const CORPUS = process.env.MYTH_CORPUS ?? join(homedir(), 'Documents/greek-mytho
  */
 const NUMBERING_HEADINGS = new Set([
   ...['Book', 'Chapter', 'Section', 'Poem'],
-  ...['Volume', 'Work', 'Fragment', 'Epigram', 'Epigraph', 'Line', 'Part', 'Page'],
+  ...['Volume', 'Work', 'Fragment', 'Witness', 'Epigram', 'Epigraph', 'Line', 'Part', 'Page'],
 ]);
 
 const pageIdCache = new Map<string, Set<string>>();
@@ -44,6 +44,20 @@ export function pageIdsOf(file: string): Set<string> {
     pageIdCache.set(dir, ids);
   }
   return ids;
+}
+
+const dfhgUrnCache = new Map<string, Set<string>>();
+
+/** DFHG の断片集の、断片の URN (原典ファイルの元の JSON の `urn`)。`<ID>.text.txt` の `<ID>.json` から読む。 */
+export function dfhgUrnsOf(file: string): Set<string> {
+  let urns = dfhgUrnCache.get(file);
+  if (!urns) {
+    const path = join(CORPUS, file.replace(/(\.text)?\.txt$/, '.json'));
+    const entries = JSON.parse(readFileSync(path, 'utf8')) as { urn: string }[];
+    urns = new Set(entries.map((entry) => entry.urn));
+    dfhgUrnCache.set(file, urns);
+  }
+  return urns;
 }
 
 export function listFiles(dir: string, pattern: RegExp): string[] {

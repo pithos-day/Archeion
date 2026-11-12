@@ -13,7 +13,8 @@
  *   韻文の作品は、各文の行の範囲と原文が、原典の文と一致するか。脚注の参照の行の範囲に収まる原典の文が、
  *   すべてレジストリにあるか (途中の文が抜けたまま続けて表示しないため)
  * - 論点表 (src/data/claims/*.ts): 出典の箇所が原典に実在するか
- * - 脚注と論点表の出典のリンクのアンカー (ラテン語版ウィキソースの `#CVIII` など) が、入手元のページにあるか
+ * - 脚注と論点表の出典のリンクのアンカー (ラテン語版ウィキソースの `#CVIII` など) が、入手元のページにあるか。
+ *   DFHG の断片のリンクは、断片の URN が原典 (元の JSON) にあるか
  *
  * 原典の読み方は scripts/corpus.ts。
  */
@@ -46,6 +47,7 @@ import {
   type CorpusVerseSentence,
   containsQuote,
   describe,
+  dfhgUrnsOf,
   getPassage,
   linesOf,
   listFiles,
@@ -98,7 +100,13 @@ function resolveLink(url: string): { source: Source; loc: string; anchored: bool
 function verifyAnchor(where: string, workId: WorkId, url: string): void {
   const work: Work = works[workId];
   const anchor = url.split('#')[1];
-  if ('urn' in work || work.url.includes('#') || anchor === undefined) return;
+  if ('urn' in work || anchor === undefined) return;
+  if (work.dfhg) {
+    if (!dfhgUrnsOf(work.file).has(anchor))
+      errors.push(`${where}: リンクの断片の URN #${anchor} が原典にない (${url})`);
+    return;
+  }
+  if (work.url.includes('#')) return;
   if (!pageIdsOf(work.file).has(decodeURIComponent(anchor)))
     errors.push(`${where}: リンクのアンカー #${anchor} が入手元のページにない (${url})`);
 }

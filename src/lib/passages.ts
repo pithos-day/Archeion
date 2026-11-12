@@ -24,7 +24,7 @@
  * 行の範囲を持ち、参照の行の範囲は部分の切れ目に合わせてよい。
  */
 import { passages } from '../data/passages/index.ts';
-import { citeLabel, sourceUrl, type WorkId } from '../data/sources.ts';
+import { citeLabel, sourceUrl, type WorkId, works } from '../data/sources.ts';
 
 /** 一文をそのまま持つ。 */
 interface WholeSentence {
@@ -330,6 +330,8 @@ export function resolvePassage(ref: string): ResolvedPassage {
   });
 
   const sections = refs.map((sentenceRef) => sentenceRef.section);
+  if ('dfhg' in works[id] && new Set(sections).size > 1)
+    throw new Error(`DFHG の典拠をまたいで「+」でつながない (典拠ごとに参照を分ける): ${ref}`);
   const loc = locRange(sections[0] ?? '', sections.at(-1) ?? '');
   return { url: sourceUrl(id, loc), label: citeLabel(id, loc), original, translation };
 }

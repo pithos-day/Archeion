@@ -97,7 +97,8 @@ description: Archeion のギリシャ神話の記事で、どの説を採るか�
 
 - 著者名・作品名・箇所（行番号、または巻・章・節）。[Scaife Viewer](https://scaife.perseus.org/) の該当箇所へリンクする
   - Scaife Viewer にない作品（断片集など）は、出典レジストリ（`src/data/sources.ts`）に登録したリンク先を使う。原典が巻ごとなどのページに分かれていればそのページへ、ページに箇所のアンカーがあれば（ラテン語版ウィキソースの『神話集』の `#CVIII` など）そのアンカーへリンクする。アンカーのないサイトは、ページの先頭へリンクする
-  - [DFHG](http://www.dfhg-project.org/) の断片は、その断片の URN をアンカーにしてリンクする（`…index.php?volume=Volumen%20primum#urn:lofts:fhg.1.pherecydes.pherecydis_fragmenta.historiai.liber_secundus:27`）。URN は原典テキストの断片の見出しの下にある
+  - [DFHG](http://www.dfhg-project.org/) の断片は、その断片の URN をアンカーにしてリンクする（`…index.php?volume=Volumen%20primum#urn:lofts:fhg.1.pherecydes.pherecydis_fragmenta.historiai.liber_secundus:27`）。断片の URN の巻は、出典レジストリの `dfhg` に断片ごとに書く
+  - DFHG の断片は、断片を伝える典拠（古注や辞典）ごとに引く。箇所は `<断片>.<典拠の番号>`（`46.4` は断片 46 の 4 つ目の典拠）。1 つ目の典拠は「断片 46」、2 つ目以降は「断片 46（ホメロス『イリアス』古注 18.486）」のように典拠の名前を添えて表記する。典拠の名前は出典レジストリの `witnesses` に書く。別の典拠の文は「+」でつながず、参照を分けて並べる
 - 引用の日本語訳（Archeion による）
 - 原典の原文（ギリシャ語、またはラテン語）。脚注の「［原語で表示］」で開く。途中を省いたところは「…」と書く
 

@@ -73,9 +73,8 @@ interface CtsWork extends WorkBase {
 interface LocalWork extends WorkBase {
   /**
    * 出典のリンク先 (原典のページ)。箇所ごとのリンクは sourceUrl が pages と anchor から作る。
-   * DFHG の断片集は、著者のアンカー (`#urn:lofts:fhg.1.<著者>`) まで含めて書く。脚注では
-   * その続きに断片の URN の残りを書く (`<url>.pherecydis_fragmenta.historiai.liber_secundus:27`)。
-   * 断片の URN は、原典ファイルの断片の見出しの下にある。
+   * DFHG の断片集は、著者のアンカー (`#urn:lofts:fhg.1.<著者>`) まで含めて書く。断片へのリンクは
+   * sourceUrl が dfhg の表から作る。
    */
   url: string;
   /**
@@ -102,6 +101,17 @@ interface LocalWork extends WorkBase {
   anchor?: 'roman';
   /** 出典表記で箇所の代わりに書く語 (『神話集』の序 `pr` の「序」など)。 */
   locLabels?: Record<string, string>;
+  /**
+   * DFHG の断片集の、巻 (断片の URN の著者より後ろ、`pherecydis_fragmenta.historiai.liber_tertius`) →
+   * 引いている断片 (`33e`)。断片の URN は `<url のアンカー>.<巻>:<断片>` (`33e` は `33.e`) になる。
+   * 箇所は `<断片>.<典拠の番号>` (原典ファイルの `## Witness N`、`46.4`)。断片だけ (`46`) なら断片全体。
+   */
+  dfhg?: Record<string, string[]>;
+  /**
+   * DFHG の断片の 2 つ目以降の典拠の、出典表記に添える名前 (`46.4` → 「ホメロス『イリアス』古注 18.486」)。
+   * 1 つ目の典拠は「断片 46」とだけ書く。
+   */
+  witnesses?: Record<string, string>;
 }
 
 export type Work = CtsWork | LocalWork;
@@ -300,6 +310,18 @@ export const works = {
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20primum#urn:lofts:fhg.1.pherecydes',
     file: 'DFHG/pherecydes-of-athens/PHERECYDES.txt',
     unit: '断片',
+    dfhg: {
+      'pherecydis_fragmenta.historiai.liber_secundus': ['26', '28'],
+      'pherecydis_fragmenta.historiai.liber_tertius': ['33', '33a', '33b', '33d', '33e'],
+      'pherecydis_fragmenta.historiai.liber_quintus': ['46'],
+      'pherecydis_fragmenta.historiai.liber_septimus': ['78'],
+    },
+    witnesses: {
+      '26.2': 'アポロニオス『アルゴナウティカ』古注 4.1515',
+      '28.2': 'ピンダロス『ネメア祝勝歌』古注 1.65',
+      '33e.2': 'ツェツェス『リュコプロン注解』663',
+      '46.4': 'ホメロス『イリアス』古注 18.486',
+    },
   },
   // 箇所は章 (`5`)。本文系統が 2 つある章は `5.R` (Marcianus 444) と `5.D` (写本 L・M・O・S)。
   'eratosth-cat': {
@@ -395,12 +417,15 @@ export const works = {
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20tertium#urn:lofts:fhg.3.asclepiades_tragilensis',
     file: 'DFHG/asclepiades-of-tragilos/ASCLEPIADES_TRAGILENSIS.txt',
     unit: '断片',
+    dfhg: { 'asclepiadis_tragilensis_fragmenta.tragodumena.e_libris_incertis': ['21'] },
+    witnesses: { '21.2': 'アテナイオス『食卓の賢人たち』10.456b' },
   },
   herodor: {
     author: 'herodorus',
     title: '断片集',
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20secundum#urn:lofts:fhg.2.herodorus_heracleensis',
     file: 'DFHG/herodorus/HERODORUS_HERACLEENSIS.txt',
+    dfhg: { 'herodori_heracleensis_fragmenta.argonautica': ['39'] },
   },
   'verg-aen': {
     author: 'virgil',
@@ -539,13 +564,21 @@ export function romanNumeral(value: number): string {
 
 /**
  * 原文の該当箇所を開く URL。`loc` は `4.765-803` のような箇所。
- * CTS URN のある作品は Scaife Viewer。ない作品は、箇所のあるページ (pages、なければ url) を開き、
- * anchor の決まりがあれば箇所のアンカーを付ける。
- * url にアンカーを含む作品 (DFHG) は、箇所から断片の URN を作れないので、著者の位置を開く。
+ * CTS URN のある作品は Scaife Viewer。DFHG の断片集は、断片の URN のアンカー (dfhg を参照)。
+ * そのほかの作品は、箇所のあるページ (pages、なければ url) を開き、anchor の決まりがあれば箇所の
+ * アンカーを付ける。
  */
 export function sourceUrl(workId: WorkId, loc: string): string {
   const work: Work = works[workId];
   if ('urn' in work) return `${SCAIFE_READER}${work.urn}:${fullRange(loc)}/`;
+  if (work.dfhg) {
+    const fragment = loc.split('.')[0] ?? loc;
+    const book = Object.entries(work.dfhg).find(([, fragments]) => fragments.includes(fragment));
+    const number = fragment.match(/^(\d+)([a-z]?)$/);
+    if (!book || !number)
+      throw new Error(`DFHG の断片の巻が出典レジストリにない: ${workId} ${fragment}`);
+    return `${work.url}.${book[0]}:${number[1]}${number[2] ? `.${number[2]}` : ''}`;
+  }
   const head = loc.split(/[.-]/)[0] ?? loc;
   const page = work.pages?.[head] ?? work.url;
   if (work.anchor === 'roman' && /^\d+$/.test(head)) return `${page}#${romanNumeral(Number(head))}`;
@@ -560,5 +593,11 @@ export function citeLabel(workId: WorkId, loc: string): string {
   const label = 'urn' in work ? undefined : work.locLabels?.[loc];
   if (label) return `${authors[work.author].name}『${work.title}』${label}`;
   const unit = 'unit' in work && work.unit ? `${work.unit} ` : '';
+  if ('dfhg' in work && work.dfhg) {
+    const [fragment, witness] = loc.split('.');
+    const name =
+      witness && witness !== '1' ? (work.witnesses?.[loc] ?? `典拠 ${witness}`) : undefined;
+    return `${authors[work.author].name}『${work.title}』${unit}${fragment}${name ? `（${name}）` : ''}`;
+  }
   return `${authors[work.author].name}『${work.title}』${unit}${loc.replace('-', '–')}`;
 }
