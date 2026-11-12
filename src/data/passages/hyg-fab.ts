@@ -2,6 +2,28 @@ import type { ProsePassages } from '../../lib/passages.ts';
 
 /** ヒュギーヌス『神話集』の引用。 */
 const passages: ProsePassages = {
+  pr: {
+    length: 13,
+    sentences: {
+      12: {
+        parts: [
+          {
+            original:
+              'Perses Pallas Ex Iapeto et Clymene: Atlas Epimetheus Prometheus Ex Hyperione et Thia: Sol Luna Aurora Ex Saturno et Ope: Vesta Ceres Iuno Pluto Neptunus Iupiter Ex Saturno et Philyra: Chiron Dolops Ex Astraeo et Aurora: Zephyrus Boreas Notus Favonius Ex Atlante et Pleione: Maia Calypso Alcyone Merope Electra Celaeno Ex Pallante Gigante Scylla |et| Styge: Vis Invidia Potestas Victoria fontes lacus ex Neptuno et Amphitrite Triton Ex Dione et Iove Venus ex Iove et Iunone Mars Ex Iovis capite Minerva ex Iunone sine patre Vulcanus Ex Iove et Eurynome Gratiae ex Iove rursus et Iunone Iuventus Libertas Ex Iove et Themide Horae ex Iove et Cerere Proserpina Ex Iove et Moneta Musae ex Iove et Latona Apollo et Diana Ex Iove et Clymene Mnemosyne ex Iove et Maia Mercurius Ex Iove et Luna Pandia ex Venere et Marte Harmonia et Formido',
+          },
+          {
+            original: 'Ex Acheloo et Melpomene Sirenes: Thelxiope Molpe Pisinoe',
+            translation:
+              'アケロオスとメルポメネから、セイレーンたち、テルクシオペ、モルペ、ピシノエ。',
+          },
+          {
+            original:
+              'Ex Sole et Perse: Circe Pasiphae Aeeta Perses ex Aeeta et Idyia Medea Ex Sole et Clymene: Phaethon et Phaethontides Merope Helie * Aetherie Dioxippe Ex Typhone et Echidna Gorgon, Cerberus, draco qui pellem auream arietis Colchis servabat, Scylla quae superiorem partem foeminae inferiorem canis habuit quam Hercules interemit, Chim|a|era, Sphinx quae fuit in Boeotia, Hydra serpens quae novem capita habuit, quam Hercules interemit, et draco Hesperidum.',
+          },
+        ],
+      },
+    },
+  },
   '12.1': {
     length: 2,
     sentences: {

@@ -100,6 +100,8 @@ interface LocalWork extends WorkBase {
    * - `roman`: 箇所の最初の番号をローマ数字にする (ラテン語版ウィキソースの『神話集』の `#CVIII`)
    */
   anchor?: 'roman';
+  /** 出典表記で箇所の代わりに書く語 (『神話集』の序 `pr` の「序」など)。 */
+  locLabels?: Record<string, string>;
 }
 
 export type Work = CtsWork | LocalWork;
@@ -314,6 +316,7 @@ export const works = {
       pr: 'https://la.wikisource.org/w/index.php?title=Genealogiarum_liber/Praefatio&oldid=239523',
     },
     anchor: 'roman',
+    locLabels: { pr: '序' },
     file: 'Wikisource/hyginus/fabulae/txt/fabulae.txt',
   },
   'hyg-astr': {
@@ -554,6 +557,8 @@ export function citeLabel(workId: WorkId, loc: string): string {
   const work: Work = works[workId];
   if ('part' in work && work.part?.loc === loc)
     return `${authors[work.author].name}『${work.title}』（${work.part.label}）`;
+  const label = 'urn' in work ? undefined : work.locLabels?.[loc];
+  if (label) return `${authors[work.author].name}『${work.title}』${label}`;
   const unit = 'unit' in work && work.unit ? `${work.unit} ` : '';
   return `${authors[work.author].name}『${work.title}』${unit}${loc.replace('-', '–')}`;
 }
