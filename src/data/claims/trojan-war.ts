@@ -6,7 +6,7 @@ const claims: ArticleClaims = [
     label: 'ゼウスが戦争を起こした目的',
     variants: [
       {
-        label: '地上の人間の多さを減らし、ギリシアで最も強い者を名高くするため',
+        label: '地上の人間の多さを減らし、ギリシャで最も強い者を名高くするため',
         sources: [{ work: 'eur-hel', loc: '36-41', kind: 'narrative' }],
       },
       {
@@ -34,7 +34,7 @@ const claims: ArticleClaims = [
         ],
       },
       {
-        label: 'メデイアなどの略奪が罰せられなかったのを聞き、ギリシアから妻を奪おうとした',
+        label: 'メデイアなどの略奪が罰せられなかったのを聞き、ギリシャから妻を奪おうとした',
         sources: [{ work: 'hdt', loc: '1.3.1', kind: 'narrative' }],
       },
     ],
@@ -220,7 +220,7 @@ const claims: ArticleClaims = [
     label: 'アキレウスの武具の判定を下した者',
     variants: [
       {
-        label: 'ギリシア軍の将たち',
+        label: 'ギリシャ軍の将たち',
         sources: [
           { work: 'pind-n', loc: '8.26-27', kind: 'mention' },
           { work: 'soph-aj', loc: '1135-1136', kind: 'mention' },

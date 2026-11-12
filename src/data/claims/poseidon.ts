@@ -182,7 +182,7 @@ const claims: ArticleClaims = [
     variants: [
       {
         label:
-          'ヘラ、アテナとともにゼウスを縛ろうとし、トロイア戦争ではゼウスに背いてギリシア方を助けた',
+          'ヘラ、アテナとともにゼウスを縛ろうとし、トロイア戦争ではゼウスに背いてギリシャ方を助けた',
         sources: [
           { work: 'hom-il', loc: '1.396-406', kind: 'narrative' },
           { work: 'hom-il', loc: '13.10-16', kind: 'narrative' },

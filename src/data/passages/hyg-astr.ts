@@ -8,7 +8,7 @@ const passages: ProsePassages = {
       2: {
         original: 'Hanc nonnulli propter celeritatem Graece dixerunt Argo appellatam;',
         translation:
-          'この船は、速さのためにギリシア語でアルゴーと呼ばれたのだと言う者が少なくない。',
+          'この船は、速さのためにギリシャ語でアルゴーと呼ばれたのだと言う者が少なくない。',
       },
       3: {
         original: 'alii quod Argus eius fuerit inventor.',

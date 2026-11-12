@@ -55,7 +55,7 @@ const passages: ProsePassages = {
       },
       21: {
         original: 'ἔπειτα τοὺς ἡγεμόνας ἀθροίζουσιν ἐπελθόντες τὴν Ἑλλάδα.',
-        translation: 'それから彼らはギリシアを回って将たちを集めた。',
+        translation: 'それから彼らはギリシャを回って将たちを集めた。',
       },
       22: {
         original:

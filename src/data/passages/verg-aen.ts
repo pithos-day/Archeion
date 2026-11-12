@@ -27,7 +27,7 @@ const passages: VersePassages = [
   {
     lines: '2.49',
     original: 'Quicquid id est, timeo Danaos et dona ferentis.',
-    translation: '何であれ、私はギリシア人を恐れる。贈り物を携えていても。',
+    translation: '何であれ、私はギリシャ人を恐れる。贈り物を携えていても。',
   },
   {
     lines: '2.50-53',
