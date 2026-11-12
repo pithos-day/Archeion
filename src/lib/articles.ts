@@ -14,9 +14,14 @@ function byTitle(a: Article, b: Article): number {
   return compareJa(a.data.title, b.data.title);
 }
 
+/** エントリーの id からページの URL を作る。 */
+export function pageHref(id: string): string {
+  return id === 'index' ? '/' : `/${id}/`;
+}
+
 /** 記事エントリーからページの URL を作る。 */
 export function articleHref(article: Article): string {
-  return article.id === 'index' ? '/' : `/${article.id}/`;
+  return pageHref(article.id);
 }
 
 /** カテゴリページの URL を作る。 */

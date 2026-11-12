@@ -1,5 +1,5 @@
 ---
-import { articleHref, getVersions } from '../lib/articles';
+import { articleHref, getVersions, pageHref } from '../lib/articles';
 
 interface Props {
   /** 総合版の id。 */
@@ -11,7 +11,7 @@ interface Props {
 const { rootId, currentId } = Astro.props;
 const versions = await getVersions(rootId);
 const tabs = [
-  { id: rootId, label: '総合版', href: `/${rootId}/` },
+  { id: rootId, label: '総合版', href: pageHref(rootId) },
   ...versions.map((version) => ({
     id: version.id,
     label: version.data.versionLabel ?? version.data.title,
