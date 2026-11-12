@@ -4,7 +4,7 @@ import { statSync } from 'node:fs';
 
 export type Article = CollectionEntry<'docs'>;
 
-/** 日本語の読みの順で比べる。 */
+/** 日本語の照合順 (localeCompare の ja) で比べる。 */
 function compareJa(a: string, b: string): number {
   return a.localeCompare(b, 'ja');
 }
