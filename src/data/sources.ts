@@ -535,7 +535,7 @@ export function fullRange(loc: string): string {
 }
 
 /** 1〜3999 をローマ数字にする。 */
-export function romanNumeral(value: number): string {
+function romanNumeral(value: number): string {
   const digits: [number, string][] = [
     [1000, 'M'],
     [900, 'CM'],

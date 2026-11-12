@@ -242,7 +242,7 @@ export function linesWithin(lines: string, start: string, end: string): boolean 
 }
 
 /** 韻文の引用の単位 (文、部分に分けた文はその部分) を、原典の順に並べる。 */
-export function verseUnits(work: VersePassages): (Part & { lines: string })[] {
+function verseUnits(work: VersePassages): (Part & { lines: string })[] {
   return work.flatMap((sentence) => ('parts' in sentence ? sentence.parts : [sentence]));
 }
 
