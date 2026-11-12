@@ -57,7 +57,10 @@ function closingParen(value: string, start: number): number {
   let depth = 0;
   for (let i = start; i < value.length; i++) {
     if (value[i] === '（') depth += 1;
-    else if (value[i] === '）' && --depth === 0) return i;
+    else if (value[i] === '）') {
+      depth -= 1;
+      if (depth === 0) return i;
+    }
   }
   return -1;
 }
