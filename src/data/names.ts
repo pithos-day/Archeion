@@ -3,7 +3,8 @@
  *
  * 記事の本文で初めて出てくる固有名詞にリンクを付けるのに使う (`pnpm link:names`)。
  * 記事がまだない名前もここに登録する。そのリンクは赤リンクになり、執筆待ちの記事として一覧に載る。
- * 同じ人物・場所の別の表記 (ローマ名など) は、同じ slug に向ける。
+ * 一人の人物や一つの場所につき、表記は一つだけ登録する。これがその固有名詞の表記になる。
+ * 別の表記 (ローマ名など) は aliases に登録する。
  * 出典の著者はここに書かない。src/data/sources.ts の authors から、著者の一覧 (`/authors/`) へリンクする。
  */
 export const names: Record<string, string> = {
@@ -12,11 +13,8 @@ export const names: Record<string, string> = {
   ヘラ: 'hera',
   ポセイドン: 'poseidon',
   アムピトリテ: 'amphitrite',
-  ネプトゥヌス: 'poseidon',
   ハデス: 'hades',
-  プルトン: 'hades',
   アテナ: 'athena',
-  ミネルウァ: 'athena',
   アポロン: 'apollo',
   アルテミス: 'artemis',
   アプロディテ: 'aphrodite',
@@ -41,7 +39,6 @@ export const names: Record<string, string> = {
   エイレイテュイア: 'eileithyia',
   タナトス: 'thanatos',
   ペルセ: 'perse',
-  ペルセイス: 'perse',
   アケロオス: 'achelous',
   アソポス: 'asopus',
   グラウコス: 'glaucus',
@@ -52,7 +49,6 @@ export const names: Record<string, string> = {
   ロデ: 'rhode',
   テティス: 'thetis',
   ブリアレオス: 'briareus',
-  ユノ: 'hera',
   ウラノス: 'uranus',
   メティス: 'metis',
   テミス: 'themis',
@@ -79,15 +75,9 @@ export const names: Record<string, string> = {
   ムネモシュネ: 'mnemosyne',
   レト: 'leto',
   ディオネ: 'dione',
-  ユピテル: 'zeus',
-  ウェヌス: 'aphrodite',
-  ディアナ: 'artemis',
-  ケレス: 'demeter',
-  クピド: 'eros',
   エロス: 'eros',
   ヘスペロス: 'hesperus',
   ヒュペリオン: 'hyperion',
-  テルス: 'gaia',
   プロテウス: 'proteus',
   // ムーサ、ニンフなど
   ムーサ: 'muses',
@@ -296,9 +286,7 @@ export const names: Record<string, string> = {
   パラディオン: 'palladium',
   // 場所・民族
   テーバイ: 'thebes',
-  トロイア: 'troy',
   イリオス: 'troy',
-  イリオン: 'troy',
   テネドス: 'tenedos',
   アテナイ: 'athens',
   アルゴス: 'argos',
@@ -306,7 +294,6 @@ export const names: Record<string, string> = {
   ティリュンス: 'tiryns',
   スパルタ: 'sparta',
   コリントス: 'corinth',
-  エピュラ: 'corinth',
   イタケ: 'ithaca',
   デルポイ: 'delphi',
   クレタ: 'crete',
@@ -361,6 +348,31 @@ export const names: Record<string, string> = {
   キュレネ: 'cyllene',
   スキュロス: 'scyros',
   アルゴナウタイ: 'argonauts',
+};
+
+/**
+ * 別名 → 記事の slug。names と同じくリンクを付ける。
+ * ローマ名 (名前そのものが話題になる箇所で使う)、別名 (プルトンなど。名前を扱う節で使う)、
+ * 慣用として併用する名 (イリオスとトロイア) を登録する。
+ */
+export const aliases: Record<string, string> = {
+  // ローマ名
+  ユピテル: 'zeus',
+  ユノ: 'hera',
+  ネプトゥヌス: 'poseidon',
+  ミネルウァ: 'athena',
+  ディアナ: 'artemis',
+  ウェヌス: 'aphrodite',
+  ケレス: 'demeter',
+  クピド: 'eros',
+  テルス: 'gaia',
+  // 別名
+  プルトン: 'hades',
+  ペルセイス: 'perse',
+  イリオン: 'troy',
+  エピュラ: 'corinth',
+  // 慣用として併用する名
+  トロイア: 'troy',
 };
 
 /**

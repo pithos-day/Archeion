@@ -7,7 +7,7 @@
  *   - 採用: 最高点の説。同点なら支持する著者数 → 最古の著者の順
  *   - 異説の併記: 最高点の 50% 以上。それ未満でも、後世に広く受け継がれている説 (reception あり)
  */
-import { type AuthorId, authors, type WorkId, works } from '../data/sources';
+import { type AuthorId, authors, type WorkId, works } from '../data/sources.ts';
 
 type SourceKind = 'narrative' | 'mention';
 

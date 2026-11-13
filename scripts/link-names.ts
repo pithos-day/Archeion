@@ -1,7 +1,7 @@
 /**
  * 記事の本文で初めて出てくる固有名詞に、記事へのリンクを付ける。
  *
- * - 名前と slug の対応は src/data/names.ts。記事のない名前もリンクする (赤リンクになる)
+ * - 名前と slug の対応は src/data/names.ts の names と aliases。記事のない名前もリンクする (赤リンクになる)
  * - 出典の著者 (src/data/sources.ts の authors) は、著者の一覧の行 (`/authors/#<id>`) へリンクする
  * - 記事ごとに、同じリンク先へは最初の 1 回だけ。すでにリンクがあれば付けない
  * - 見出し、脚注、表、JSX の行、『作品名』、«原文»、既存のリンクの中は対象外
@@ -14,7 +14,7 @@
  */
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { names, unlinkedPhrases } from '../src/data/names.ts';
+import { aliases, names, unlinkedPhrases } from '../src/data/names.ts';
 import { authors } from '../src/data/sources.ts';
 
 const DOCS = 'src/content/docs';
@@ -33,7 +33,10 @@ const SKIPPED_LINE = /^(#|\[\^|import |<|\||\s)/;
 
 /** 表記 → リンク先。長い表記から先に探す (「ペルセウス」より前に「ペルセ」を見ないように)。 */
 const targets: [string, string][] = [
-  ...Object.entries(names).map(([name, slug]): [string, string] => [name, `/articles/${slug}/`]),
+  ...Object.entries({ ...names, ...aliases }).map(([name, slug]): [string, string] => [
+    name,
+    `/articles/${slug}/`,
+  ]),
   ...Object.entries(authors).map(([id, { name }]): [string, string] => [name, `/authors/#${id}`]),
 ].sort(([a], [b]) => b.length - a.length);
 

@@ -17,6 +17,7 @@
     "knip": "knip",
     "verify:citations": "node scripts/verify-citations.ts",
     "link:names": "node scripts/link-names.ts",
+    "check:articles": "node scripts/check-articles.ts",
     "show:sentences": "node scripts/show-sentences.ts"
   },
   "lint-staged": {
