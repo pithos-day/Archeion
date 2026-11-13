@@ -40,6 +40,7 @@ export const names: Record<string, string> = {
   タナトス: 'thanatos',
   ペルセ: 'perse',
   アケロオス: 'achelous',
+  ヘカテ: 'hecate',
   アソポス: 'asopus',
   グラウコス: 'glaucus',
   クロノス: 'cronus',
@@ -201,6 +202,7 @@ export const names: Record<string, string> = {
   カッサンドラ: 'cassandra',
   デイポボス: 'deiphobus',
   アイネイアス: 'aeneas',
+  クマエのシビュラ: 'cumaean-sibyl',
   アイゲウス: 'aegeus',
   ピッテウス: 'pittheus',
   トオサ: 'thoosa',
@@ -334,6 +336,9 @@ export const names: Record<string, string> = {
   イデ: 'ida',
   アウリス: 'aulis',
   タルタロス: 'tartarus',
+  クマエ: 'cumae',
+  アウェルヌス: 'avernus',
+  ラウィニウム: 'lavinium',
   エンナ: 'enna',
   キュジコス: 'cyzicus',
   エリダノス: 'eridanus',
@@ -371,6 +376,7 @@ export const aliases: Record<string, string> = {
   ペルセイス: 'perse',
   イリオン: 'troy',
   エピュラ: 'corinth',
+  デイポベ: 'cumaean-sibyl',
   // 慣用として併用する名
   トロイア: 'troy',
 };
@@ -384,4 +390,5 @@ export const unlinkedPhrases: string[] = [
   'ダルダノス人',
   'イピクロスの子イオラオス',
   'トリトン川',
+  'グラウコスの娘',
 ];

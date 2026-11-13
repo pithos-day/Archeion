@@ -469,6 +469,105 @@ const passages: VersePassages = [
       },
     ],
   },
+  {
+    lines: '14.110-112',
+    original:
+      'Pone tamen, Troiane, metum: potiere petitis Elysiasque domos et regna novissima mundi me duce cognosces simulacraque cara parentis.',
+    translation:
+      'だがトロイア人よ、恐れを捨てよ。あなたは求めるものを得るだろう。私の案内で、エリュシオンの館と世界の最果ての国と、父の愛しい影とを知るだろう。',
+  },
+  {
+    lines: '14.113',
+    original: 'Invia virtuti nulla est via!”',
+    translation: '勇気にとって通れない道はない」',
+  },
+  {
+    lines: '14.113-115',
+    original:
+      'Dixit et auro fulgentem ramum silva Iunonis Avernae monstravit iussitque suo divellere trunco.',
+    translation:
+      'こう言って、〔シビュラは〕アウェルヌスの女神の森に金に輝く枝を示し、それを幹から折り取るよう命じた。',
+  },
+  {
+    lines: '14.122-126',
+    original:
+      'Dumque iter horrendum per opaca crepuscula carpit, “seu dea tu praesens, seu dis gratissima” dixit, “numinis instar eris semper mihi meque fatebor muneris esse tui, quae me loca mortis adire, quae loca me visae voluisti evadere mortis.',
+    translation:
+      '〔アイネイアスは〕暗い薄明かりの中の恐ろしい道をたどりながら言った。「あなたが目の前におられる女神であれ、神々に最も愛される者であれ、私にとってはいつまでも神にひとしい方です。私はあなたの恵みを受けたと認めましょう。あなたは私を死の国へ行かせ、見た死の国から抜け出させてくださったのですから。',
+  },
+  {
+    lines: '14.127-128',
+    original:
+      'Pro quibus aerias meritis evectus ad auras templa tibi statuam, tribuam tibi turis honores.”',
+    translation:
+      'この恩に報いて、天の大気のもとへ戻ったら、あなたに神殿を建て、香を捧げてお祀りしましょう」',
+  },
+  {
+    lines: '14.129-131',
+    original:
+      'Respicit hunc vates et suspiratibus haustis “nec dea sum” dixit “nec sacri turis honore humanum dignare caput;',
+    translation:
+      '巫女は彼を振り返り、ため息をついて言った。「私は女神ではありません。人の身を、聖なる香の誉れにふさわしいとしないでください。',
+  },
+  {
+    lines: '14.131-133',
+    original:
+      'neu nescius erres, lux aeterna mihi carituraque fine dabatur, si mea virginitas Phoebo patuisset amanti.',
+    translation:
+      'あなたが知らずに思い違いをしないよう申しましょう。もし私が、恋するアポロンに処女を許していたなら、終わりのない永遠の命が私に与えられるはずでした。',
+  },
+  {
+    lines: '14.134-136',
+    original:
+      'Dum tamen hanc sperat dum praecorrumpere donis me cupit, “elige” ait, “virgo Cumaea, quid optes: optatis potiere tuis.”',
+    translation:
+      'アポロンはそれを望み、贈り物で私をあらかじめ誘惑しようとして言いました。「クマエの乙女よ、望むものを選ぶがよい。望みのものを得させよう」',
+  },
+  {
+    lines: '14.136-138',
+    original:
+      'Ego pulveris hausti ostendi cumulum: quot haberet corpora pulvis, tot mihi natales contingere vana rogavi;',
+    translation:
+      '私はすくい上げた砂の山を見せ、愚かにも、その砂の粒の数だけ誕生日を迎えられるようにと願いました。',
+  },
+  {
+    lines: '14.139',
+    original: 'excidit, ut peterem iuvenes quoque protinus annos.',
+    translation: 'その年月が若いままであるようにも願うことを、忘れていたのです。',
+  },
+  {
+    lines: '14.140-142',
+    original:
+      'Hos tamen ille mihi dabat aeternamque iuventam, si venerem paterer: contempto munere Phoebi innuba permaneo;',
+    translation:
+      'それでもアポロンは、私が愛を受け入れるなら、若い年月と永遠の若さを与えようとしました。私はアポロンの贈り物をはねつけ、嫁がずにいます。',
+  },
+  {
+    lines: '14.142-146',
+    original:
+      'sed iam felicior aetas terga dedit, tremuloque gradu venit aegra senectus, quae patienda diu est (nam iam mihi saecula septem acta vides): superest, numeros ut pulveris aequem, ter centum messes, ter centum musta videre.',
+    translation:
+      'けれども、もう幸せな年頃は背を向けて去り、病んだ老いが震える足取りでやって来ました。それを私は長く耐えねばなりません（ご覧のとおり、私はもう七百年を生きたのです）。砂の数に追いつくには、なお三百回の刈り入れと、三百回の葡萄の搾りを見なければなりません。',
+  },
+  {
+    lines: '14.147-150',
+    original:
+      'Tempus erit, cum de tanto me corpore parvam longa dies faciet consumptaque membra senecta ad minimum redigentur onus: nec amata videbor nec placuisse deo;',
+    translation:
+      'いつか、長い歳月が私をこれほどの体から小さくし、老いに衰えた手足はごくわずかな重さにまで縮むでしょう。私が愛されたとも、神の心にかなったとも見えなくなるでしょう。',
+  },
+  {
+    lines: '14.150-153',
+    original:
+      'Phoebus quoque forsitan ipse vel non cognoscet vel dilexisse negabit: usque adeo mutata ferar, nullique videnda, voce tamen noscar;',
+    translation:
+      'アポロン自身も、おそらく私を見分けないか、愛したことを否むでしょう。それほどまでに私は変わり果て、誰の目にも見えなくなりますが、声によって知られるでしょう。',
+  },
+  {
+    lines: '14.153',
+    original: 'vocem mihi fata relinquent.”',
+    translation: '運命は私に声を残すでしょう」',
+  },
 ];
 
 export default passages;
