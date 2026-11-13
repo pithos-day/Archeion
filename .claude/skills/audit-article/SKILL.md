@@ -20,15 +20,22 @@ description: >-
 ```sh
 pnpm check:articles
 pnpm verify:citations
+pnpm check
+pnpm lint
 ```
 
 - エラーは必ず直す。
 - `check:articles` の警告は、編集方針の例外に当たるかを一件ずつ判断する。例外なら「そのままでよい」と理由を書き、当たらなければ指摘にする。対象の記事以外の既存の警告は、指摘に混ぜない。
-- `pnpm link:names <ファイル>` を実行して差分が出ないこと（出たら、リンクの付け忘れ）。確かめたら差分は戻すか、修正に含める。
+- リンクの付け忘れ: `link:names` はファイルを書き換えるので、記事をスクラッチパッドにコピーし、コピーに対して実行して元と比べる。差分が出たら指摘にする。git で記事を戻さない (未コミットの編集が消える)。
+
+  ```sh
+  cp src/content/docs/articles/<slug>.mdx <スクラッチパッド>/<slug>.mdx
+  pnpm link:names <スクラッチパッド>/<slug>.mdx && diff src/content/docs/articles/<slug>.mdx <スクラッチパッド>/<slug>.mdx
+  ```
 
 ## 2. 論点表と本文
 
-対象の記事の論点表のスコアと判定を表示する（コマンドは `add-source` スキルの手順 4）。
+対象の記事の論点表のスコアと判定を表示する (コマンドは `AGENTS.md` の「コマンド」)。
 
 - 本文が `adopted` の説で書かれているか。`alternative` と `received` の説だけが「一説には…」で書かれているか。`minor` の説が本文に残っていないか。
 - 各出典が、論点の問いそのものに答えているか。周辺の事情に触れているだけの出典を数えていないか（原典は `pnpm show:sentences` で読む）。
@@ -39,8 +46,10 @@ pnpm verify:citations
 ## 3. 記事をまたぐ論点
 
 ```sh
-grep -rn "label: '<論点名の一部>'" src/data/claims/
+grep -rn "<論点のキーワード>" src/data/claims/   # 例: 武具 → trojan-war と odysseus
 ```
+
+論点の名前は記事ごとに少し違うことがあるので、キーワードを変えて何度か探す。
 
 同じ論点を持つほかの記事の論点表と、出典と判定が食い違っていないか。本文に書いた説が、ほかの記事で論点になっていないか。
 

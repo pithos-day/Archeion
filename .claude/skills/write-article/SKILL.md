@@ -21,18 +21,23 @@ description: >-
 ## 2. 原典を集める
 
 - 主要な原典 (ホメロス、ヘシオドス、悲劇、アポロドロス、ディオドロス、ヒュギーヌス、オウィディウス、パウサニアスなど) で、その人物や出来事を語る箇所を探す。原典テキストは `MYTH_CORPUS` (既定は `~/Documents/greek-mythology`) にある。
-- 箇所の文は `pnpm show:sentences <作品 id> <箇所>` で確かめる。未登録の作品は、`add-source` スキルの手順 2 で登録する。
+- 箇所の文は `pnpm show:sentences <作品 id> <箇所>` で確かめる。未登録の作品は先に登録する: `src/data/sources.ts` の `authors` と `works`、`src/data/passages/<作品 id>.ts`、`src/data/passages/index.ts` (型の説明は `sources.ts` と `src/lib/passages.ts` のコメント)。
 
 ## 3. 論点表を作る
 
 - `src/data/claims/<slug>.ts` を作る。既存のもの (`sphinx.ts` など) を手本にする。
 - 原典のあいだで記述が分かれる点を論点にし、説ごとに出典を `{ work, loc, kind }` で並べる。論点の問いに答えていない記述は数えない。
-- 論点が、ほかの記事の論点表にもあるかを `grep -rn "label: '<論点名>'" src/data/claims/` で探し、同じ出典でそろえる。
-- スコアと判定を表示して、採用説と併記する説を決める（コマンドは `add-source` スキルの手順 4）。
+- 論点が、ほかの記事の論点表にもあるかを `grep -rn "<論点のキーワード>" src/data/claims/` で探し、同じ出典でそろえる。論点の名前は記事ごとに少し違うことがあるので、キーワードを変えて何度か探す。
+- スコアと判定を表示して (コマンドは `AGENTS.md` の「コマンド」)、採用説と併記する説を決める。
 
 ## 4. 引用レジストリに文を加える
 
-脚注で引く文を `src/data/passages/<作品 id>.ts` に加える。手順と注意は `add-source` スキルの手順 3。
+脚注で引く文を `src/data/passages/<作品 id>.ts` に加える。
+
+- `pnpm show:sentences` の出力どおりに、文の番号 (散文) か行の範囲 (韻文) と原文を写す。
+- 同じ文の訳が既にあれば、それを使う。神々と英雄はギリシャ名で、表記は `names.ts` に合わせる。
+- 文法の解説（「双数形」など）を訳や `note` に書かない。
+- 長い文の一部だけを引くときは `parts` に分ける。
 
 ## 5. 本文を書く
 
@@ -50,8 +55,15 @@ description: >-
 
 ## 7. 確かめる
 
-`audit-article` スキルの手順で、新しい記事と、論点表を触ったほかの記事を確かめる。
+`audit-article` スキルの手順で、新しい記事と、論点表を触ったほかの記事を確かめる。最低限、次が通ること。
+
+```sh
+pnpm verify:citations
+pnpm check:articles
+pnpm check
+pnpm lint
+```
 
 ## コミット
 
-記事 1 本 (またはその版) ごとにコミットする（commit スキル、type は `docs`）。ほかの記事の論点表をそろえた変更は、別のコミットにする。
+`AGENTS.md` の「作業の手順」のとおり。commit スキルで、type は `docs`。

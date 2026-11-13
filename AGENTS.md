@@ -31,11 +31,23 @@
 | `pnpm link:names [ファイル...]` | 固有名詞に記事へのリンクを付ける (ファイルを書き換える) |
 | `pnpm lint` / `pnpm check` / `pnpm knip` | Biome / 型チェック / 未使用のコード |
 
+論点表のスコアと判定 (`adopted` 採用、`alternative` 併記、`received` 後世の受容で併記、`minor` 表だけ) は次で表示する。
+
+```sh
+node --input-type=module -e "
+const { scoreTopic } = await import('./src/lib/claims.ts');
+const { default: claims } = await import('./src/data/claims/' + process.argv[1] + '.ts');
+for (const t of claims) { const s = scoreTopic(t); console.log('■ ' + s.label); for (const v of s.variants) console.log('  ' + v.status.padEnd(12) + v.score + '\t' + v.label); }
+" <slug>
+```
+
 ## 作業の手順
 
-- 記事や版を書く: `write-article` スキル
-- 出典を加える、論点表を直す: `add-source` スキル
-- 記事を確かめる: `audit-article` スキル
+- 記事や版を書く: `write-article` スキル (`.claude/skills/write-article/SKILL.md`)
+- 出典を加える、論点表を直す: `add-source` スキル (`.claude/skills/add-source/SKILL.md`)
+- 記事を確かめる: `audit-article` スキル (`.claude/skills/audit-article/SKILL.md`)
+
+コミットは記事 1 本 (またはその版) ごと。ほかの記事の論点表をそろえる変更は、その原因になった変更と同じコミットに入れる。
 
 ## 開発サーバー
 

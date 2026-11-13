@@ -14,6 +14,8 @@ description: >-
 
 ## 1. 出典が論点に答えているかを決める
 
+作品が `src/data/sources.ts` の `works` に未登録なら、先に手順 2 の 1 で登録する (`show:sentences` は登録済みの作品しか読めない)。
+
 - 加える箇所を原典で読む: `pnpm show:sentences <作品 id> <箇所>`
 - その記述が、論点の問いそのものに答えているかを確かめる。周辺の事情に触れているだけなら、論点表には数えない（脚注の出典としては使える）。
 - 記述係数を決める: その出来事を語っていれば `narrative`、別の話の中で触れている、前提にしているだけなら `mention`。
@@ -40,17 +42,7 @@ description: >-
 
 `src/data/claims/<slug>.ts` の該当する論点の説に `{ work, loc, kind }` を加える。新しい説なら `variants` に加え、新しい論点なら `label` と `variants` を加える。
 
-加えたら、論点ごとのスコアと判定を表示して、採用説 (`adopted`) と併記 (`alternative`、`received`) が変わったかを見る。
-
-```sh
-node --input-type=module -e "
-const { scoreTopic } = await import('./src/lib/claims.ts');
-const { default: claims } = await import('./src/data/claims/' + process.argv[1] + '.ts');
-for (const t of claims) { const s = scoreTopic(t); console.log('■ ' + s.label); for (const v of s.variants) console.log('  ' + v.status.padEnd(12) + v.score + '\t' + v.label); }
-" <slug>
-```
-
-変更の前にも一度実行しておき、前後を比べる。
+変更の前と後で、論点表のスコアと判定を表示し (コマンドは `AGENTS.md` の「コマンド」)、採用説 (`adopted`) と併記 (`alternative`、`received`) が変わったかを比べる。
 
 ## 5. 本文を直す
 
@@ -64,10 +56,12 @@ for (const t of claims) { const s = scoreTopic(t); console.log('■ ' + s.label)
 同じ論点や同じ箇所が、ほかの記事にもないかを探す。
 
 ```sh
-grep -rn "label: '<論点名の一部>'" src/data/claims/
-grep -rn "work: '<作品 id>', loc: '<箇所>'" src/data/claims/
-grep -rln "@<作品 id>/<箇所>" src/content/docs/
+grep -rn "<論点のキーワード>" src/data/claims/      # 例: 武具 → trojan-war と odysseus の「アキレウスの武具の判定を下した者」
+grep -rn "work: '<作品 id>'" src/data/claims/        # 箇所の範囲は記事ごとに違うことがあるので、作品 id で探して箇所を見比べる
+grep -rln "@<作品 id>/" src/content/docs/
 ```
+
+論点の名前は記事ごとに少し違うことがある（「アキレウスの武具」と「アキレウスの武具の判定を下した者」）。キーワードを変えて何度か探す。
 
 本文に書いた説が、ほかの記事の論点表で論点になっていれば、その記事の論点表にも同じ出典を加え、手順 4〜5 を繰り返す。記事ごとに判定が食い違わないようにする。
 
@@ -78,8 +72,10 @@ grep -rln "@<作品 id>/<箇所>" src/content/docs/
 ```sh
 pnpm verify:citations
 pnpm check:articles
+pnpm check
+pnpm lint
 ```
 
 ## コミット
 
-記事 1 本ごと、または一つの論点の変更ごとにコミットする（commit スキル）。ほかの記事への反映は、元の変更と同じコミットに入れてよい。
+`AGENTS.md` の「作業の手順」のとおり。commit スキルで、出典の誤りの修正は `fix`、出典や説の追加は `docs`。
