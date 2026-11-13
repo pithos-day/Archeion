@@ -363,9 +363,44 @@ const passages: VersePassages = [
       'アイネイアスはすぐさまそれをつかみ、ためらう枝を勢いよく折り取って、予言者シビュラの住まいへ持って行った。',
   },
   {
+    lines: '6.237-244',
+    original:
+      'Spelunca alta fuit vastoque immanis hiatu, scrupea, tuta lacu nigro nemorumque tenebris, quam super haud ullae poterant impune volantes tendere iter pennis—talis sese halitus atris faucibus effundens supera ad convexa ferebat: quattuor hic primum nigrantis terga iuvencos constituit, frontique invergit vina sacerdos;',
+    translation:
+      '深い洞窟があった。大きく口を開けた恐ろしい洞窟で、岩がごつごつとし、黒い湖と森の闇に守られていた。その上を、鳥はどれも無事に翼で飛び越えることができなかった。それほどの息が黒い喉元から噴き出して、天空へ昇っていたのである。ここでまず、巫女は背の黒い若牛を四頭並べ、額に酒を注いだ。',
+  },
+  {
+    lines: '6.245-247',
+    original:
+      'et summas carpens media inter cornua saetas ignibus imponit sacris, libamina prima, voce vocans Hecaten, Caeloque Ereboque potentem.',
+    translation:
+      'そして角のあいだの毛先をむしり取り、最初の捧げ物として聖なる火にくべ、天にも冥府にも力を持つヘカテを声をあげて呼んだ。',
+  },
+  {
+    lines: '6.252-254',
+    original:
+      'Tum Stygio regi nocturnas inchoat aras, et solida imponit taurorum viscera flammis, pingue superque oleum infundens ardentibus extis.',
+    translation:
+      'それから〔アイネイアスは〕ステュクスの王のために夜の祭壇を築き始め、牡牛の内臓をそのまま炎にのせ、燃える臓物の上に脂ぎった油を注いだ。',
+  },
+  {
+    lines: '6.255-258',
+    original:
+      'Ecce autem, primi sub lumina solis et ortus, sub pedibus mugire solum, et iuga coepta moveri silvarum, visaeque canes ululare per umbram, adventante dea.',
+    translation:
+      'すると見よ、太陽が初めて光を放って昇るころ、足もとで地が唸り、森の尾根が揺れ動き始め、闇の中で犬たちが吠えるのが見えた。女神が近づいてきたのである。',
+  },
+  {
     lines: '6.258-259',
     original: 'Procul O procul este, profani, conclamat vates, totoque absistite luco;',
-    translation: '「離れよ、離れよ、汚れた者たち」と巫女は叫ぶ。「森のすべてから立ち去れ」',
+    translation: '「離れよ、離れよ、秘儀を知らぬ者たち」と巫女は叫ぶ。「森のすべてから立ち去れ。',
+  },
+  {
+    lines: '6.260-261',
+    original:
+      'tuque invade viam, vaginaque eripe ferrum: nunc animis opus, Aenea, nunc pectore firmo.',
+    translation:
+      'そしてあなたは道に踏み込み、鞘から剣を抜け。アイネイアスよ、今こそ勇気が要る。今こそ揺るがぬ心が」',
   },
   {
     lines: '6.262',
