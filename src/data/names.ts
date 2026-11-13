@@ -378,6 +378,8 @@ export const aliases: Record<string, string> = {
   イリオン: 'troy',
   エピュラ: 'corinth',
   デイポベ: 'cumaean-sibyl',
+  // 『デメテル讃歌』のケレオスの娘デモとは別人。その娘を書くときは unlinkedPhrases で区別する
+  デモ: 'cumaean-sibyl',
   // 慣用として併用する名
   トロイア: 'troy',
 };
