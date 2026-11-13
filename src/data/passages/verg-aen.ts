@@ -176,7 +176,7 @@ const passages: VersePassages = [
         original:
           'adforet, atque una Phoebi Triviaeque sacerdos, Deiphobe Glauci, fatur quae talia regi: Non hoc ista sibi tempus spectacula poscit;',
         translation:
-          '〔アカテスが〕来合わせ、アポロンと三叉路の女神に仕える巫女、グラウコスの娘デイポベもともに来て、王にこう語りかけた。「今は、そのような見物をしているときではありません。',
+          '〔アカテスが〕来合わせ、アポロンと三叉路の女神〔ヘカテ〕に仕える巫女、グラウコスの娘デイポベもともに来て、王にこう語りかけた。「今は、そのような見物をしているときではありません」',
       },
     ],
   },
@@ -290,7 +290,7 @@ const passages: VersePassages = [
     original:
       'Talibus orabat dictis, arasque tenebat, cum sic orsa loqui vates: Sate sanguine divom, Tros Anchisiade, facilis descensus Averno;',
     translation:
-      'このような言葉で祭壇に手をかけて祈る彼に、巫女はこう語り始めた。「神々の血を引く者、アンキセスの子なるトロイア人よ、アウェルヌスへ下るのはたやすい。',
+      'このような言葉で祭壇に手をかけて祈る彼に、巫女はこう語り始めた。「神々の血を引く者、アンキセスの子なるトロイア人よ、アウェルヌスへ下るのはたやすい」',
   },
   {
     lines: '6.127',
@@ -308,7 +308,7 @@ const passages: VersePassages = [
     original:
       'Latet arbore opaca aureus et foliis et lento vimine ramus, Iunoni infernae dictus sacer;',
     translation:
-      '陰の濃い木に、葉もしなやかな小枝も金でできた枝が隠れている。冥府の女神に捧げられた聖なる枝である。',
+      '陰の濃い木に、葉もしなやかな小枝も金でできた枝が隠れている。冥府の女神〔ペルセポネ〕に捧げられた聖なる枝である。',
   },
   {
     lines: '6.140-141',
@@ -346,7 +346,7 @@ const passages: VersePassages = [
     original:
       'Tum maximus heros maternas agnoscit aves, laetusque precatur: Este duces, O, si qua via est, cursumque per auras dirigite in lucos, ubi pinguem dives opacat ramus humum.',
     translation:
-      'そのとき偉大な英雄は、それが母の鳥だと気づき、喜んで祈った。「道があるなら、案内してくれ。豊かな枝が肥えた地面に影を落とす森へ、空を通って進路を導いてくれ。',
+      'そのとき偉大な英雄は、それが母の鳥だと気づき、喜んで祈った。「道があるなら、案内してくれ。豊かな枝が肥えた地面に影を落とす森へ、空を通って進路を導いてくれ」',
   },
   {
     lines: '6.201-204',
@@ -378,11 +378,16 @@ const passages: VersePassages = [
     translation: '彼は、進んで行く案内者に、ひるまぬ足取りで並んだ。',
   },
   {
+    lines: '6.391',
+    original: 'corpora viva nefas Stygia vectare carina.',
+    translation: '生きた体をステュクスの舟で運ぶことは許されていない。',
+  },
+  {
     lines: '6.405-407',
     original:
       'Si te nulla movet tantae pietatis imago, at ramum hunc (aperit ramum, qui veste latebat) adgnoscas.',
     translation:
-      'これほどの孝心の姿があなたの心を少しも動かさないとしても、この枝（と、衣の下に隠していた枝を見せる）には見覚えがあろう」',
+      '「これほどの孝心の姿があなたの心を少しも動かさないとしても、この枝（と、衣の下に隠していた枝を見せる）には見覚えがあろう」',
   },
   {
     lines: '6.407',

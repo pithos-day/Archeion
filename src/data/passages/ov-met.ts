@@ -479,35 +479,35 @@ const passages: VersePassages = [
   {
     lines: '14.113',
     original: 'Invia virtuti nulla est via!”',
-    translation: '勇気にとって通れない道はない」',
+    translation: '「勇気にとって通れない道はない」',
   },
   {
     lines: '14.113-115',
     original:
       'Dixit et auro fulgentem ramum silva Iunonis Avernae monstravit iussitque suo divellere trunco.',
     translation:
-      'こう言って、〔シビュラは〕アウェルヌスの女神の森に金に輝く枝を示し、それを幹から折り取るよう命じた。',
+      'こう言って、〔シビュラは〕アウェルヌスの女神〔ペルセポネ〕の森に金に輝く枝を示し、それを幹から折り取るよう命じた。',
   },
   {
     lines: '14.122-126',
     original:
       'Dumque iter horrendum per opaca crepuscula carpit, “seu dea tu praesens, seu dis gratissima” dixit, “numinis instar eris semper mihi meque fatebor muneris esse tui, quae me loca mortis adire, quae loca me visae voluisti evadere mortis.',
     translation:
-      '〔アイネイアスは〕暗い薄明かりの中の恐ろしい道をたどりながら言った。「あなたが目の前におられる女神であれ、神々に最も愛される者であれ、私にとってはいつまでも神にひとしい方です。私はあなたの恵みを受けたと認めましょう。あなたは私を死の国へ行かせ、見た死の国から抜け出させてくださったのですから。',
+      '〔アイネイアスは〕暗い薄明かりの中の恐ろしい道をたどりながら言った。「あなたが目の前におられる女神であれ、神々に最も愛される者であれ、私にとってはいつまでも神にひとしい方です。私はあなたの恵みを受けたと認めましょう。あなたは私を死の国へ行かせ、見た死の国から抜け出させてくださったのですから」',
   },
   {
     lines: '14.127-128',
     original:
       'Pro quibus aerias meritis evectus ad auras templa tibi statuam, tribuam tibi turis honores.”',
     translation:
-      'この恩に報いて、天の大気のもとへ戻ったら、あなたに神殿を建て、香を捧げてお祀りしましょう」',
+      '「この恩に報いて、天の大気のもとへ戻ったら、あなたに神殿を建て、香を捧げてお祀りしましょう」',
   },
   {
     lines: '14.129-131',
     original:
       'Respicit hunc vates et suspiratibus haustis “nec dea sum” dixit “nec sacri turis honore humanum dignare caput;',
     translation:
-      '巫女は彼を振り返り、ため息をついて言った。「私は女神ではありません。人の身を、聖なる香の誉れにふさわしいとしないでください。',
+      '巫女は彼を振り返り、ため息をついて言った。「私は女神ではありません。人の身を、聖なる香の誉れにふさわしいとしないでください」',
   },
   {
     lines: '14.131-133',
@@ -566,7 +566,7 @@ const passages: VersePassages = [
   {
     lines: '14.153',
     original: 'vocem mihi fata relinquent.”',
-    translation: '運命は私に声を残すでしょう」',
+    translation: '運命は私に声を残すでしょう。',
   },
 ];
 

@@ -203,6 +203,7 @@ export const names: Record<string, string> = {
   デイポボス: 'deiphobus',
   アイネイアス: 'aeneas',
   クマエのシビュラ: 'cumaean-sibyl',
+  ヘロピレ: 'herophile',
   アイゲウス: 'aegeus',
   ピッテウス: 'pittheus',
   トオサ: 'thoosa',
@@ -390,5 +391,5 @@ export const unlinkedPhrases: string[] = [
   'ダルダノス人',
   'イピクロスの子イオラオス',
   'トリトン川',
-  'グラウコスの娘',
+  'グラウコスの娘デイポベ',
 ];
