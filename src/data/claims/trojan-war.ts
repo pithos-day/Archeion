@@ -40,6 +40,19 @@ const claims: ArticleClaims = [
     ],
   },
   {
+    label: 'パリスとヘレネが初めて結ばれた場所',
+    variants: [
+      {
+        label: 'メネラオスの留守のスパルタ',
+        sources: [{ work: 'cypria', loc: 'cypria', kind: 'narrative' }],
+      },
+      {
+        label: 'スパルタを出てすぐのクラナエ島',
+        sources: [{ work: 'hom-il', loc: '3.442-446', kind: 'mention' }],
+      },
+    ],
+  },
+  {
     label: 'ヘレネはイリオスへ行ったか',
     variants: [
       {
