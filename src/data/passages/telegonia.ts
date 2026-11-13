@@ -1,6 +1,6 @@
 import type { ProsePassages } from '../../lib/passages.ts';
 
-/** エウガモン『テレゴニア』（プロクロスの梗概）の引用。 */
+/** プロクロス『クレストマティア』の『テレゴニア』の梗概の引用。 */
 const passages: ProsePassages = {
   telegonia: {
     length: 14,

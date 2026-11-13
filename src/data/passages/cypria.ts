@@ -1,6 +1,6 @@
 import type { ProsePassages } from '../../lib/passages.ts';
 
-/** スタシノス『キュプリア』（プロクロスの梗概）の引用。 */
+/** プロクロス『クレストマティア』の『キュプリア』の梗概の引用。 */
 const passages: ProsePassages = {
   cypria: {
     length: 49,

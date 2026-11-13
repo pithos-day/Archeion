@@ -86,10 +86,12 @@ interface LocalWork extends WorkBase {
   /** 出典表記で箇所の前に付ける語 (断片集の「断片」など)。 */
   unit?: string;
   /**
-   * 原典ファイルの一部だけがこの作品のとき (プロクロスの梗概の『小イリアス』など)、その箇所 (`loc`) と、
-   * 出典表記で箇所の代わりに書く語 (`label`)。論点表と脚注の箇所は `loc` と同じにする。
+   * 散逸した作品を、別の著作の中の梗概で読むとき (プロクロス『クレストマティア』の『小イリアス』の梗概など)、
+   * 原典ファイルの中の梗概の箇所 (`loc`) と、梗概を書いた著作 (`source`)。論点表と脚注の箇所は `loc` と同じにする。
+   * 出典表記は、文の書き手の著作を表に出し「プロクロス『クレストマティア』（『小イリアス』の梗概）」とする。
+   * 論点表のスコアは、元の作品の著者 (`author`) で数える。
    */
-  part?: { loc: string; label: string };
+  part?: { loc: string; source: string };
   /**
    * 原典がいくつかのページに分かれているとき、箇所の最初の番号 (`2.37` の `2`、序の `pr`) ごとのページ。
    * ここにない箇所は url のページを開く。
@@ -365,42 +367,42 @@ export const works = {
     title: 'キュプリア',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
     file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
-    part: { loc: 'cypria', label: 'プロクロスの梗概' },
+    part: { loc: 'cypria', source: 'プロクロス『クレストマティア』' },
   },
   'ilias-parva': {
     author: 'lesches',
     title: '小イリアス',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
     file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
-    part: { loc: 'ilias_parva', label: 'プロクロスの梗概' },
+    part: { loc: 'ilias_parva', source: 'プロクロス『クレストマティア』' },
   },
   aethiopis: {
     author: 'arctinus',
     title: 'アイティオピス',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
     file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
-    part: { loc: 'aethiopis', label: 'プロクロスの梗概' },
+    part: { loc: 'aethiopis', source: 'プロクロス『クレストマティア』' },
   },
   nosti: {
     author: 'agias',
     title: 'ノストイ',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
     file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
-    part: { loc: 'nosti', label: 'プロクロスの梗概' },
+    part: { loc: 'nosti', source: 'プロクロス『クレストマティア』' },
   },
   'iliou-persis': {
     author: 'arctinus',
     title: 'イリオス落城',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
     file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
-    part: { loc: 'iliou_persis', label: 'プロクロスの梗概' },
+    part: { loc: 'iliou_persis', source: 'プロクロス『クレストマティア』' },
   },
   telegonia: {
     author: 'eugammon',
     title: 'テレゴニア',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
     file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
-    part: { loc: 'telegonia', label: 'プロクロスの梗概' },
+    part: { loc: 'telegonia', source: 'プロクロス『クレストマティア』' },
   },
   'schol-od': {
     author: 'scholia-homer',
@@ -619,11 +621,12 @@ export function sourceUrl(workId: WorkId, loc: string): string {
   return page;
 }
 
-/** 「ヘシオドス『神統記』270–283」「ペレキュデス『歴史』断片 22」のような出典表記。 */
+/** 「ヘシオドス『神統記』270–283」「ペレキュデス『歴史』断片 22」「プロクロス『クレストマティア』（『小イリアス』の梗概）」のような出典表記。 */
 export function citeLabel(workId: WorkId, loc: string): string {
   const work: Work = works[workId];
   const cited = `${authors[work.author].name}『${work.title}』`;
-  if ('part' in work && work.part?.loc === loc) return `${cited}（${work.part.label}）`;
+  if ('part' in work && work.part?.loc === loc)
+    return `${work.part.source}（『${work.title}』の梗概）`;
   const label = 'urn' in work ? undefined : work.locLabels?.[loc];
   if (label) return `${cited}${label}`;
   const unit = 'unit' in work && work.unit ? `${work.unit} ` : '';

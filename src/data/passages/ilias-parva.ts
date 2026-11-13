@@ -1,6 +1,6 @@
 import type { ProsePassages } from '../../lib/passages.ts';
 
-/** レスケス『小イリアス』（プロクロスの梗概）の引用。 */
+/** プロクロス『クレストマティア』の『小イリアス』の梗概の引用。 */
 const passages: ProsePassages = {
   ilias_parva: {
     length: 15,

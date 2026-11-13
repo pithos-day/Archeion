@@ -1,6 +1,6 @@
 import type { ProsePassages } from '../../lib/passages.ts';
 
-/** アルクティノス『イリオス落城』（プロクロスの梗概）の引用。 */
+/** プロクロス『クレストマティア』の『イリオス落城』の梗概の引用。 */
 const passages: ProsePassages = {
   iliou_persis: {
     length: 19,

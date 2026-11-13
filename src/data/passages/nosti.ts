@@ -1,6 +1,6 @@
 import type { ProsePassages } from '../../lib/passages.ts';
 
-/** アギアス『ノストイ』（プロクロスの梗概）の引用。 */
+/** プロクロス『クレストマティア』の『ノストイ』の梗概の引用。 */
 const passages: ProsePassages = {
   nosti: {
     length: 12,

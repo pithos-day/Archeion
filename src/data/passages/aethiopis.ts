@@ -1,6 +1,6 @@
 import type { ProsePassages } from '../../lib/passages.ts';
 
-/** アルクティノス『アイティオピス』（プロクロスの梗概）の引用。 */
+/** プロクロス『クレストマティア』の『アイティオピス』の梗概の引用。 */
 const passages: ProsePassages = {
   aethiopis: {
     length: 17,
