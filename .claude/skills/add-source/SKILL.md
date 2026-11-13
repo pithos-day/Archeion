@@ -1,0 +1,85 @@
+---
+name: add-source
+description: >-
+  Archeion の記事に出典を加え、論点表、引用レジストリ、本文を、ほかの記事も含めてそろえる時に使用する。
+  新しい作品の登録 (sources.ts、passages、passages/index.ts)、レジストリへの文と訳の追加、論点表への出典の追加とスコアの再計算、
+  採用説が変わったときの本文の書き直し、同じ論点を持つほかの記事への反映までを行う。
+  「出典を追加」「この箇所も引いて」「論点表に加えて」「〜の説を足して」「脚注を足して」で起動する。
+  記事を一から書く依頼には write-article、確かめるだけの依頼には audit-article を使用する。
+---
+
+# 出典の追加
+
+規則は編集方針 `src/content/docs/policy.md` に従う。特に「定量基準」「記述の方針」「出典の示し方」「引用レジストリ」を、作業の前に読み直す。
+
+## 1. 出典が論点に答えているかを決める
+
+- 加える箇所を原典で読む: `pnpm show:sentences <作品 id> <箇所>`
+- その記述が、論点の問いそのものに答えているかを確かめる。周辺の事情に触れているだけなら、論点表には数えない（脚注の出典としては使える）。
+- 記述係数を決める: その出来事を語っていれば `narrative`、別の話の中で触れている、前提にしているだけなら `mention`。
+- 散逸した作品の梗概や断片は、元の作品の著者で数える。古注と辞典は、編纂物そのものを著者として数える。
+
+## 2. 作品が未登録なら登録する
+
+`src/data/sources.ts` の `works` にあるかを確かめる。なければ次の 3 か所を触る。
+
+1. `src/data/sources.ts`: 著者が `authors` になければ加える (`name`、`era`、`year`)。`era` は編集方針の年代係数の表に合わせる。作品を `works` に加える。Scaife Viewer にある作品は `urn`、ない作品は `url` と `file` (と必要なら `pages`、`anchor`、`dfhg`、`witnesses`、`part`)。型の説明は `sources.ts` のコメント。
+2. `src/data/passages/<作品 id>.ts` を作る。散文は `ProsePassages`、韻文は `VersePassages` (`src/lib/passages.ts`)。既存のファイル (`apollod-lib.ts`、`soph-ot.ts`) を手本にする。
+3. `src/data/passages/index.ts` に import と登録を加える。
+
+## 3. 引用レジストリに文を加える
+
+- `pnpm show:sentences` の出力どおりに、文の番号 (散文) か行の範囲 (韻文) と原文を写す。原文は手で整えない。
+- 訳を書く。同じ文の訳が既にあれば、それを使う。
+  - 神々と英雄は、ラテン語の原典でもギリシャ名で訳す。表記は `src/data/names.ts` の `names` に合わせる。
+  - 文法の解説（「双数形」など）を訳や `note` に書かない。訳語で表す。
+- 長い文 (韻文 5 行以上、散文 400 字以上) で一部だけ引くときは `parts` に分ける。
+- どの脚注も引かない文は加えない。
+
+## 4. 論点表に出典を加える
+
+`src/data/claims/<slug>.ts` の該当する論点の説に `{ work, loc, kind }` を加える。新しい説なら `variants` に加え、新しい論点なら `label` と `variants` を加える。
+
+加えたら、論点ごとのスコアと判定を表示して、採用説 (`adopted`) と併記 (`alternative`、`received`) が変わったかを見る。
+
+```sh
+node --input-type=module -e "
+const { scoreTopic } = await import('./src/lib/claims.ts');
+const { default: claims } = await import('./src/data/claims/' + process.argv[1] + '.ts');
+for (const t of claims) { const s = scoreTopic(t); console.log('■ ' + s.label); for (const v of s.variants) console.log('  ' + v.status.padEnd(12) + v.score + '\t' + v.label); }
+" <slug>
+```
+
+変更の前にも一度実行しておき、前後を比べる。
+
+## 5. 本文を直す
+
+- 採用説が変わったら、本文をその説に書き直す。前の採用説は、併記になったなら「一説には…」、`minor` になったなら本文から除く。
+- 脚注は `[^id]: @<作品 id>/<箇所>:<文>` の参照だけで書く。同じ事実の脚注は最大 3 件。古いもの、詳しいものの順に選ぶ。
+- 本文に「〜によれば、」のような著者名の前置きを書かない（編集方針の例外を除く）。
+- 新しい固有名詞を書いたら、`names.ts` に登録してから `pnpm link:names <ファイル>` を実行する。
+
+## 6. ほかの記事に反映する
+
+同じ論点や同じ箇所が、ほかの記事にもないかを探す。
+
+```sh
+grep -rn "label: '<論点名の一部>'" src/data/claims/
+grep -rn "work: '<作品 id>', loc: '<箇所>'" src/data/claims/
+grep -rln "@<作品 id>/<箇所>" src/content/docs/
+```
+
+本文に書いた説が、ほかの記事の論点表で論点になっていれば、その記事の論点表にも同じ出典を加え、手順 4〜5 を繰り返す。記事ごとに判定が食い違わないようにする。
+
+## 7. 確かめる
+
+`audit-article` スキルの手順で、触った記事をすべて確かめる。最低限、次が通ること。
+
+```sh
+pnpm verify:citations
+pnpm check:articles
+```
+
+## コミット
+
+記事 1 本ごと、または一つの論点の変更ごとにコミットする（commit スキル）。ほかの記事への反映は、元の変更と同じコミットに入れてよい。
