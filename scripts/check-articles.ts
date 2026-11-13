@@ -9,6 +9,14 @@
  *   編集方針の例外 (著者の意見、同じ箇所での比較、著者や作品そのものが話題) に当たるなら、そのままでよい
  * - 論点表で採用も併記もされない説: 脚注の出典がすべて、その記事の論点表で併記しない説 (minor) の出典にしか
  *   当たらない文 (警告)
+ *
+ * 警告を確かめて、編集方針の例外や誤検知だと判断した段落は、その直前の行に抑制マーカーを書くと警告しない。
+ *
+ *   .mdx: `{/* check:articles ok 著者名の前置き: <理由> *\/}` (`*\/` の `\` は書かない)
+ *   .md:  `<!-- check:articles ok 併記しない説: <理由> -->`
+ *
+ * マーカーは次の空でない行 (段落) の、その種類の警告だけを抑える。理由のないマーカーはエラー、
+ * 抑える警告のないマーカーは警告にする (本文を直したあとに残ったマーカーを消すため)。
  */
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -55,8 +63,48 @@ const AUTHOR_PREFIX = new RegExp(
   `^(?:(?:${authorNames.join('|')})(?:の『[^』]+』)?|『[^』]+』)(?:によれば|では)、`,
 );
 
-/** 本文の行か (frontmatter、見出し、脚注の定義、JSX、表、import を除く)。 */
-const BODY_LINE = /^(?!#|\[\^|import |<|\||\s|$)/;
+/** 本文の行か (frontmatter、見出し、脚注の定義、JSX、MDX の式、表、import を除く)。 */
+const BODY_LINE = /^(?!#|\[\^|import |<|\{|\||\s|$)/;
+
+const WARNING_KINDS = ['著者名の前置き', '併記しない説'] as const;
+type WarningKind = (typeof WARNING_KINDS)[number];
+/** 抑制マーカー。`{/* check:articles ok <種類>: <理由> *\/}` (.mdx) か `<!-- … -->` (.md)。 */
+const SUPPRESS_MARKER = /^(?:\{\/\*|<!--)\s*check:articles ok\s*(.*?)\s*(?:\*\/\}|-->)\s*$/;
+
+interface Marker {
+  line: number;
+  kind: WarningKind;
+  used: boolean;
+}
+
+/** 抑制マーカーを集める。対象の行 (マーカーの次の空でない行) の番号 → マーカー。 */
+function suppressMarkers(file: string, lines: string[]): Map<number, Marker[]> {
+  const markers = new Map<number, Marker[]>();
+  lines.forEach((line, index) => {
+    const body = line.match(SUPPRESS_MARKER)?.[1];
+    if (body === undefined) return;
+    const where = `${file}:${index + 1}`;
+    const [, kind, reason] = body.match(/^([^:：]+)[:：]\s*(.*)$/) ?? [];
+    if (!WARNING_KINDS.includes(kind as WarningKind)) {
+      errors.push(`${where}: 抑制マーカーの種類は ${WARNING_KINDS.join('、')} のどれか: ${body}`);
+      return;
+    }
+    if (!reason) {
+      errors.push(`${where}: 抑制マーカーに理由がない`);
+      return;
+    }
+    let target = index + 1;
+    while (
+      target < lines.length &&
+      ((lines[target] ?? '').trim() === '' || SUPPRESS_MARKER.test(lines[target] ?? ''))
+    )
+      target++;
+    const list = markers.get(target) ?? [];
+    list.push({ line: index + 1, kind: kind as WarningKind, used: false });
+    markers.set(target, list);
+  });
+  return markers;
+}
 const stripLinks = (text: string) => text.replace(/\[([^\]^][^\]]*)\]\([^)]*\)/g, '$1');
 
 interface SourceStatus {
@@ -110,13 +158,19 @@ for (const file of listFiles(DOCS).filter((path) => /\/(articles|versions)\//.te
   const refs = footnoteRefs(text);
   const lines = text.split('\n');
   const bodyStart = lines.indexOf('---', 1) + 1;
+  const markers = suppressMarkers(file, lines);
   lines.forEach((line, index) => {
     if (index < bodyStart || !BODY_LINE.test(line)) return;
     const where = `${file}:${index + 1}`;
+    const warn = (kind: WarningKind, message: string) => {
+      const marker = markers.get(index)?.find((candidate) => candidate.kind === kind);
+      if (marker) marker.used = true;
+      else warnings.push(`${where}: ${message}`);
+    };
     for (const raw of line.split(/(?<=。(?:\[\^[^\]]+\])*)/)) {
       const sentence = stripLinks(raw).replace(/^[-*]\s+/, '');
       const plain = sentence.replace(/\[\^[^\]]+\]/g, '');
-      if (AUTHOR_PREFIX.test(plain)) warnings.push(`${where}: 著者名の前置き: ${plain}`);
+      if (AUTHOR_PREFIX.test(plain)) warn('著者名の前置き', `著者名の前置き: ${plain}`);
 
       const cited = [...sentence.matchAll(/\[\^([^\]]+)\]/g)].flatMap(
         ([, id]) => refs.get(id ?? '') ?? [],
@@ -128,9 +182,12 @@ for (const file of listFiles(DOCS).filter((path) => /\/(articles|versions)\//.te
           .map((source) => source.status),
       );
       if (statuses.every((list) => list.length > 0 && list.every((status) => status === 'minor')))
-        warnings.push(`${where}: 併記しない説の出典だけで書いた文: ${plain}`);
+        warn('併記しない説', `併記しない説の出典だけで書いた文: ${plain}`);
     }
   });
+  for (const marker of [...markers.values()].flat())
+    if (!marker.used)
+      warnings.push(`${file}:${marker.line}: 抑制マーカーが抑える警告がない (${marker.kind})`);
 }
 
 for (const warning of warnings) console.warn(`△ ${warning}`);

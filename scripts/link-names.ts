@@ -29,7 +29,7 @@ const PROTECTED = new RegExp(
   ].join('|'),
   'g',
 );
-const SKIPPED_LINE = /^(#|\[\^|import |<|\||\s)/;
+const SKIPPED_LINE = /^(#|\[\^|import |<|\{|\||\s)/;
 
 /** 表記 → リンク先。長い表記から先に探す (「ペルセウス」より前に「ペルセ」を見ないように)。 */
 const targets: [string, string][] = [
