@@ -1,9 +1,30 @@
 // @ts-check
+import { readdirSync } from 'node:fs';
 import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import { wikiFootnotes } from './src/lib/footnote-plugin.ts';
 import { redLinks } from './src/lib/red-link-plugin.ts';
+
+// Markdown のプラグインと、プラグインが読み込むレジストリ。config から読み込んだモジュールは
+// HMR されないので、書き換えたら開発サーバーを再起動して読み込み直す
+const markdownPluginFiles = [
+  './src/lib/footnote-plugin.ts',
+  './src/lib/red-link-plugin.ts',
+  './src/lib/passages.ts',
+  './src/data/sources.ts',
+  ...readdirSync('./src/data/passages').map((file) => `./src/data/passages/${file}`),
+];
+
+/** @type {import('astro').AstroIntegration} */
+const restartOnMarkdownPluginChange = {
+  name: 'restart-on-markdown-plugin-change',
+  hooks: {
+    'astro:config:setup': ({ addWatchFile }) => {
+      for (const file of markdownPluginFiles) addWatchFile(new URL(file, import.meta.url));
+    },
+  },
+};
 
 // https://astro.build/config
 export default defineConfig({
@@ -22,6 +43,7 @@ export default defineConfig({
     }),
   },
   integrations: [
+    restartOnMarkdownPluginChange,
     starlight({
       title: 'Archeion',
       defaultLocale: 'root',
