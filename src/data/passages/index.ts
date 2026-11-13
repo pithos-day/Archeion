@@ -51,6 +51,7 @@ import pindP from './pind-p.ts';
 import plutSert from './plut-sert.ts';
 import plutThes from './plut-thes.ts';
 import quintSmyrn from './quint-smyrn.ts';
+import scholOd from './schol-od.ts';
 import sophAj from './soph-aj.ts';
 import sophEl from './soph-el.ts';
 import sophOt from './soph-ot.ts';
@@ -81,6 +82,7 @@ export const passages: Partial<Record<WorkId, WorkPassages>> = {
   'plut-thes': plutThes,
   'plut-sert': plutSert,
   'suda-lex': sudaLex,
+  'schol-od': scholOd,
   'eratosth-cat': eratosthCat,
   'hes-th': hesTh,
   'hom-od': homOd,

@@ -232,7 +232,7 @@ const claims: ArticleClaims = [
         label: 'トロイア人',
         sources: [
           { work: 'hom-od', loc: '11.543-547', kind: 'mention' },
-          { work: 'ilias-parva', loc: 'ilias_parva', kind: 'mention' },
+          { work: 'schol-od', loc: '2.11.2', kind: 'narrative' },
           { work: 'apollod-ep', loc: '5.6', kind: 'narrative' },
           { work: 'quint-smyrn', loc: '5.157-320', kind: 'narrative' },
         ],

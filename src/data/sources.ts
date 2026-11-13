@@ -42,6 +42,7 @@ export const authors = {
   agias: { name: 'アギアス', era: 3, year: -650 },
   eugammon: { name: 'エウガモン', era: 2, year: -570 },
   // 古注と辞典は、編纂物を一人の著者として数える。引用元の著者名は脚注の訳文に書く。
+  'scholia-homer': { name: 'ホメロス古注', era: 1, year: 500 },
   'scholia-pindar': { name: 'ピンダロス古注', era: 1, year: 500 },
   suda: { name: 'スーダ', era: 1, year: 970 },
   'asclepiades-tragilensis': { name: 'アスクレピアデス', era: 1, year: -340 },
@@ -400,6 +401,11 @@ export const works = {
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
     file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
     part: { loc: 'telegonia', label: 'プロクロスの梗概' },
+  },
+  'schol-od': {
+    author: 'scholia-homer',
+    title: 'オデュッセイア古注',
+    urn: 'urn:cts:greekLit:tlg5026.tlg007.1st1K-grc1',
   },
   'schol-pind-n': {
     author: 'scholia-pindar',
