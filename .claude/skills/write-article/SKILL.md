@@ -20,7 +20,7 @@ description: >-
 
 ## 2. 原典を集める
 
-- 主要な原典 (ホメロス、ヘシオドス、悲劇、アポロドロス、ディオドロス、ヒュギーヌス、オウィディウス、パウサニアスなど) で、その人物や出来事を語る箇所を探す。原典テキストは `MYTH_CORPUS` (既定は `~/Documents/greek-mythology`) にある。
+- 主要な原典 (ホメロス、ヘシオドス、悲劇、アポロドロス、ディオドロス、ヒュギーヌス、オウィディウス、パウサニアスなど) で、その人物や出来事を語る箇所を探す。原典テキストは `MYTH_CORPUS` (既定は `~/ghq/github.com/pithos-day/Archeion-corpus`) の `texts/<テキストの id>.jsonl` (1 行が 1 箇所) にあり、一覧は `catalog.json`。
 - 箇所の文は `pnpm show:sentences <作品 id> <箇所>` で確かめる。未登録の作品は先に登録する: `src/data/sources.ts` の `authors` と `works`、`src/data/passages/<作品 id>.ts`、`src/data/passages/index.ts` (型の説明は `sources.ts` と `src/lib/passages.ts` のコメント)。
 
 ## 3. 論点表を作る

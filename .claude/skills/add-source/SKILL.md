@@ -25,7 +25,7 @@ description: >-
 
 `src/data/sources.ts` の `works` にあるかを確かめる。なければ次の 3 か所を触る。
 
-1. `src/data/sources.ts`: 著者が `authors` になければ加える (`name`、`era`、`year`)。`era` は編集方針の年代係数の表に合わせる。作品を `works` に加える。Scaife Viewer にある作品は `urn`、ない作品は `url` と `file` (と必要なら `pages`、`anchor`、`dfhg`、`witnesses`、`part`)。型の説明は `sources.ts` のコメント。
+1. `src/data/sources.ts`: 著者が `authors` になければ加える (`name`、`era`、`year`)。`era` は編集方針の年代係数の表に合わせる。作品を `works` に加える。Scaife Viewer にある作品は `urn`、ない作品は `url` と `text` (原典コーパスのテキストの id。`catalog.json` で探す) (と必要なら `pages`、`anchor`、`dfhg`、`witnesses`、`part`)。型の説明は `sources.ts` のコメント。
 2. `src/data/passages/<作品 id>.ts` を作る。散文は `ProsePassages`、韻文は `VersePassages` (`src/lib/passages.ts`)。既存のファイル (`apollod-lib.ts`、`soph-ot.ts`) を手本にする。
 3. `src/data/passages/index.ts` に import と登録を加える。
 
