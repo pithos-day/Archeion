@@ -1,64 +1,116 @@
 /**
- * 手元の原典テキストを読み、箇所や文に分ける。照合 (verify-citations) と文の一覧 (show-sentences) で使う。
+ * 原典コーパス (Archeion-corpus) を読み、箇所や文に分ける。照合 (verify-citations) と文の一覧 (show-sentences) で使う。
  *
- * 原典の場所は環境変数 MYTH_CORPUS (既定は ~/Documents/greek-mythology)。
- * 原典の txt は、どの入手元のものも同じ形式 (`=====` の行までがヘッダ、`# Book 1` などの見出し)。
- * Perseus と First1KGreek の原典は、ファイル名が `<URN の作品部分>.txt`。
- * そのほかの原典は、出典レジストリ (src/data/sources.ts) にファイルのパスを書く。
+ * コーパスの場所は環境変数 MYTH_CORPUS (既定は ~/ghq/github.com/pithos-day/Archeion-corpus)。
+ * 使うコーパスの commit は corpus.lock に書いてあり、コーパスがその commit でなければエラーにする。
+ * コーパスを更新するときは、corpus.lock を書き換えて pnpm verify:citations を通す。
+ *
+ * コーパスの catalog.json がテキストの一覧、texts/<テキストの id>.jsonl が箇所ごとの本文。
+ * Scaife Viewer で開ける作品は CTS URN で、そのほかの作品は出典レジストリ (src/data/sources.ts) の
+ * text (テキストの id) でテキストを指す。
  */
+import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { compactRange, rangeEnds } from '../src/data/sources.ts';
 import { SENTENCE_END, splitSentences } from '../src/lib/passages.ts';
 
-const CORPUS = process.env.MYTH_CORPUS ?? join(homedir(), 'Documents/greek-mythology');
+const CORPUS =
+  process.env.MYTH_CORPUS ?? join(homedir(), 'ghq/github.com/pithos-day/Archeion-corpus');
+const LOCK = join(dirname(fileURLToPath(import.meta.url)), '..', 'corpus.lock');
 
-/**
- * 見出しのうち、箇所の番号として数えるもの (`# Book 1` など)。
- * 原典の TEI XML が CTS の引用単位として宣言している区分に合わせる。
- * 2行目は First1KGreek の断片集と古注、Perseus のエピグラム、
- * Perseus 以外の原典 (原典コレクションの scripts/normalize.py が見出しを付ける) で使う。
- */
-const NUMBERING_HEADINGS = new Set([
-  ...['Book', 'Chapter', 'Section', 'Poem'],
-  ...['Volume', 'Work', 'Fragment', 'Witness', 'Epigram', 'Epigraph', 'Line', 'Part', 'Page'],
-]);
-
-const pageIdCache = new Map<string, Set<string>>();
-
-/**
- * 原典の入手元のページ (保存した wikitext や HTML) にある id 属性の値。出典のリンクのアンカーが
- * 実在するかを確かめるのに使う。原典ファイル (`<作品>/txt/<名前>.txt`) の作品のディレクトリから探す。
- */
-export function pageIdsOf(file: string): Set<string> {
-  const dir = join(CORPUS, dirname(dirname(file)));
-  let ids = pageIdCache.get(dir);
-  if (!ids) {
-    ids = new Set(
-      listFiles(dir, /\.(wiki|html)$/).flatMap((path) =>
-        [...readFileSync(path, 'utf8').matchAll(/\bid=["']([^"']+)["']/g)].map(
-          (match) => match[1] ?? '',
-        ),
-      ),
-    );
-    pageIdCache.set(dir, ids);
+/** コーパスが corpus.lock の commit かを確かめる。 */
+function checkVersion(): void {
+  const wanted = readFileSync(LOCK, 'utf8').trim();
+  let actual: string;
+  try {
+    actual = execFileSync('git', ['-C', CORPUS, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  } catch {
+    throw new Error(`原典コーパスが見つからない (git のリポジトリでない): ${CORPUS}`);
   }
-  return ids;
+  if (actual !== wanted)
+    throw new Error(
+      `原典コーパスの commit が corpus.lock と違う: ${actual} (corpus.lock は ${wanted})。` +
+        `git -C ${CORPUS} checkout ${wanted} で合わせる`,
+    );
 }
 
-const dfhgUrnCache = new Map<string, Set<string>>();
+/** catalog.json のテキストの項目のうち、ここで使うもの。 */
+interface CatalogText {
+  id: string;
+  urn?: string;
+  anchors?: string[];
+}
 
-/** DFHG の断片集の、断片の URN (原典ファイルの元の JSON の `urn`)。`<ID>.text.txt` の `<ID>.json` から読む。 */
-export function dfhgUrnsOf(file: string): Set<string> {
-  let urns = dfhgUrnCache.get(file);
-  if (!urns) {
-    const path = join(CORPUS, file.replace(/(\.text)?\.txt$/, '.json'));
-    const entries = JSON.parse(readFileSync(path, 'utf8')) as { urn: string }[];
-    urns = new Set(entries.map((entry) => entry.urn));
-    dfhgUrnCache.set(file, urns);
+let catalogCache: Map<string, CatalogText> | undefined;
+
+function catalog(): Map<string, CatalogText> {
+  if (!catalogCache) {
+    checkVersion();
+    const { texts } = JSON.parse(readFileSync(join(CORPUS, 'catalog.json'), 'utf8')) as {
+      texts: CatalogText[];
+    };
+    catalogCache = new Map(texts.map((text) => [text.id, text]));
   }
-  return urns;
+  return catalogCache;
+}
+
+/** 照合する原典。CTS URN、またはコーパスのテキストの id で指定する。 */
+export type Source = { urn: string } | { text: string };
+
+function describe(source: Source): string {
+  return 'urn' in source ? source.urn : source.text;
+}
+
+/** 原典のテキストの id。 */
+function textIdOf(source: Source): string {
+  if ('text' in source) {
+    if (!catalog().has(source.text)) throw new Error(`原典コーパスにないテキスト: ${source.text}`);
+    return source.text;
+  }
+  const found = [...catalog().values()].find((text) => text.urn === source.urn);
+  if (!found) throw new Error(`原典コーパスにない CTS URN: ${source.urn}`);
+  return found.id;
+}
+
+/**
+ * 原典の入手元のページにある id 属性の値。出典のリンクのアンカーが実在するかを確かめるのに使う
+ * (catalog.json の anchors)。
+ */
+export function pageIdsOf(source: Source): Set<string> {
+  return new Set(catalog().get(textIdOf(source))?.anchors ?? []);
+}
+
+/** 箇所の本文の項目 (texts/<id>.jsonl の 1 行) のうち、ここで使うもの。DFHG の断片集は urn もある。 */
+interface CorpusRecord {
+  loc: string;
+  text: string;
+  verse: boolean;
+  urn?: string;
+}
+
+const recordCache = new Map<string, CorpusRecord[]>();
+
+function recordsOf(source: Source): CorpusRecord[] {
+  const id = textIdOf(source);
+  let records = recordCache.get(id);
+  if (!records) {
+    const path = join(CORPUS, 'texts', `${id}.jsonl`);
+    if (!existsSync(path)) throw new Error(`原典ファイルが見つからない: ${path}`);
+    records = readFileSync(path, 'utf8')
+      .split('\n')
+      .filter((line) => line !== '')
+      .map((line) => JSON.parse(line) as CorpusRecord);
+    recordCache.set(id, records);
+  }
+  return records;
+}
+
+/** DFHG の断片集の、断片の URN (DFHG のサイトで断片を開くアンカー)。 */
+export function dfhgUrnsOf(source: Source): Set<string> {
+  return new Set(recordsOf(source).flatMap((record) => (record.urn ? [record.urn] : [])));
 }
 
 export function listFiles(dir: string, pattern: RegExp): string[] {
@@ -70,54 +122,8 @@ export function listFiles(dir: string, pattern: RegExp): string[] {
 
 // ---------- 原典テキスト ----------
 
-const corpusFiles = new Map(
-  listFiles(CORPUS, /\.txt$/).map((path) => [
-    path
-      .split('/')
-      .at(-1)
-      ?.replace(/\.txt$/, ''),
-    path,
-  ]),
-);
-
-/** 照合する原典。CTS URN、または原典ファイルのパスで指定する。 */
-export type Source = { urn: string } | { file: string };
-
-function describe(source: Source): string {
-  return 'urn' in source ? source.urn : source.file;
-}
-
 /** 箇所 (`4.765` など) → 本文 の組を、原典の出てくる順に並べたもの。verse は韻文の行。 */
 export type CorpusLocs = [key: string, text: string, verse: boolean][];
-
-function appendLoc(locs: CorpusLocs, key: string, text: string, verse: boolean): void {
-  const last = locs.at(-1);
-  if (last && last[0] === key) last[1] += ` ${text}`;
-  else locs.push([key, text, verse]);
-}
-
-/** 原典の txt を箇所ごとに分ける。見出し (`# Book 1`) と韻文の行番号が箇所になる。 */
-function parseTei(lines: string[]): CorpusLocs {
-  const headingPath: (string | undefined)[] = [];
-  const locs: CorpusLocs = [];
-  for (const line of lines) {
-    const heading = line.match(/^(#+)\s+(\S+)\s+(\S+)/);
-    if (heading) {
-      const [, hashes, word, value] = heading;
-      if (NUMBERING_HEADINGS.has(word)) {
-        headingPath.length = hashes.length - 1;
-        headingPath[hashes.length - 1] = value;
-      }
-      continue;
-    }
-    if (line.startsWith('#') || line.trim() === '') continue;
-    const prefix = headingPath.filter((part) => part !== undefined);
-    const verse = line.match(/^\s*(\d+[a-z]?)\s{2}(.*)$/);
-    if (verse) appendLoc(locs, [...prefix, verse[1]].join('.'), verse[2], true);
-    else appendLoc(locs, prefix.join('.'), line.trim(), false);
-  }
-  return locs;
-}
 
 const corpusCache = new Map<string, CorpusLocs>();
 
@@ -126,20 +132,11 @@ export function loadCorpus(source: Source): CorpusLocs {
   const cacheKey = describe(source);
   const cached = corpusCache.get(cacheKey);
   if (cached) return cached;
-
-  let path: string | undefined;
-  if ('urn' in source) {
-    const workPart = source.urn.split(':').at(-1) ?? '';
-    path = corpusFiles.get(workPart);
-    if (!path) throw new Error(`原典ファイルが見つからない: ${workPart}.txt (${CORPUS})`);
-  } else {
-    path = join(CORPUS, source.file);
-    if (!existsSync(path)) throw new Error(`原典ファイルが見つからない: ${path}`);
-  }
-
-  const lines = readFileSync(path, 'utf8').split('\n');
-  const body = lines.slice(lines.findIndex((line) => /^={10,}$/.test(line)) + 1);
-  const locs = parseTei(body);
+  const locs: CorpusLocs = recordsOf(source).map((record) => [
+    record.loc,
+    record.text,
+    record.verse,
+  ]);
   corpusCache.set(cacheKey, locs);
   return locs;
 }

@@ -66,12 +66,12 @@ function verifyAnchor(where: string, workId: WorkId, url: string): void {
   const anchor = url.split('#')[1];
   if ('urn' in work || anchor === undefined) return;
   if (work.dfhg) {
-    if (!dfhgUrnsOf(work.file).has(anchor))
+    if (!dfhgUrnsOf(work).has(anchor))
       errors.push(`${where}: リンクの断片の URN #${anchor} が原典にない (${url})`);
     return;
   }
   if (work.url.includes('#')) return;
-  if (!pageIdsOf(work.file).has(decodeURIComponent(anchor)))
+  if (!pageIdsOf(work).has(decodeURIComponent(anchor)))
     errors.push(`${where}: リンクのアンカー #${anchor} が入手元のページにない (${url})`);
 }
 

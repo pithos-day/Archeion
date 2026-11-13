@@ -66,7 +66,7 @@ interface WorkBase {
 
 /** Scaife Viewer で開ける作品 (Perseus、First1KGreek)。 */
 interface CtsWork extends WorkBase {
-  /** CTS URN (版まで含む)。原典ファイル名と Scaife Viewer のリンクに使う。 */
+  /** CTS URN (版まで含む)。原典コーパスのテキストと Scaife Viewer のリンクに使う。 */
   urn: string;
 }
 
@@ -79,10 +79,10 @@ interface LocalWork extends WorkBase {
    */
   url: string;
   /**
-   * 原典ファイル。原典コレクションの最上位からの相対パス。
-   * 箇所は、ファイルの見出しの番号を「.」でつないだもの (`# Chapter 30` の `## Section 2` は `30.2`)。
+   * 原典コーパス (Archeion-corpus) のテキストの id (`hyginus/fabulae/wikisource-lat` など)。
+   * 箇所は、コーパスの texts/<id>.jsonl の loc (`# Chapter 30` の `## Section 2` は `30.2`)。
    */
-  file: string;
+  text: string;
   /** 出典表記で箇所の前に付ける語 (断片集の「断片」など)。 */
   unit?: string;
   /**
@@ -245,7 +245,7 @@ export const works = {
     author: 'diodorus-siculus',
     title: '歴史叢書',
     url: 'https://el.wikisource.org/w/index.php?title=%CE%99%CF%83%CF%84%CE%BF%CF%81%CE%B9%CE%BA%CE%AE_%CE%92%CE%B9%CE%B2%CE%BB%CE%B9%CE%BF%CE%B8%CE%AE%CE%BA%CE%B7&oldid=105741',
-    file: 'Wikisource/diodorus-siculus/historical-library/txt/historical-library.txt',
+    text: 'diodorus-siculus/historical-library/wikisource-grc',
   },
   'ov-met': {
     author: 'ovid',
@@ -311,7 +311,7 @@ export const works = {
     author: 'pherecydes',
     title: '歴史',
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20primum#urn:lofts:fhg.1.pherecydes',
-    file: 'DFHG/pherecydes-of-athens/PHERECYDES.text.txt',
+    text: 'pherecydes/fragmenta/dfhg',
     unit: '断片',
     dfhg: {
       'pherecydis_fragmenta.historiai.liber_secundus': ['26', '28'],
@@ -331,7 +331,7 @@ export const works = {
     author: 'pseudo-eratosthenes',
     title: 'カタステリスモイ',
     url: 'https://eulogikon.org/works/eratosthenes-cyrene-catasterisms-kly-ab',
-    file: 'Eulogikon/eratosthenes/catasterismi/txt/eratosthenes-cyrene-catasterisms-kly-ab.grc.txt',
+    text: 'pseudo-eratosthenes/catasterismi/eulogikon-grc',
   },
   'hyg-fab': {
     author: 'hyginus',
@@ -342,7 +342,7 @@ export const works = {
     },
     anchor: 'roman',
     locLabels: { pr: '序' },
-    file: 'Wikisource/hyginus/fabulae/txt/fabulae.txt',
+    text: 'hyginus/fabulae/wikisource-lat',
   },
   'hyg-astr': {
     author: 'hyginus',
@@ -354,54 +354,54 @@ export const works = {
       3: 'https://www.thelatinlibrary.com/hyginus/hyginus3.shtml',
       4: 'https://www.thelatinlibrary.com/hyginus/hyginus4.shtml',
     },
-    file: 'TheLatinLibrary/hyginus/de-astronomia/txt/de-astronomia.txt',
+    text: 'hyginus/de-astronomia/latinlibrary-lat',
   },
   'ant-lib': {
     author: 'antoninus-liberalis',
     title: '変身物語集',
     url: 'https://el.wikisource.org/w/index.php?title=%CE%9C%CE%B5%CF%84%CE%B1%CE%BC%CE%BF%CF%81%CF%86%CF%8E%CF%83%CE%B5%CF%89%CE%BD_%CF%83%CF%85%CE%BD%CE%B1%CE%B3%CF%89%CE%B3%CE%AE&oldid=148338',
-    file: 'Wikisource/antoninus-liberalis/metamorphoses/txt/metamorphoses.txt',
+    text: 'antoninus-liberalis/metamorphoses/wikisource-grc',
   },
   cypria: {
     author: 'stasinus',
     title: 'キュプリア',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
-    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    text: 'proclus/chrestomathia/eulogikon-grc',
     part: { loc: 'cypria', source: 'プロクロス『クレストマティア』' },
   },
   'ilias-parva': {
     author: 'lesches',
     title: '小イリアス',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
-    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    text: 'proclus/chrestomathia/eulogikon-grc',
     part: { loc: 'ilias_parva', source: 'プロクロス『クレストマティア』' },
   },
   aethiopis: {
     author: 'arctinus',
     title: 'アイティオピス',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
-    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    text: 'proclus/chrestomathia/eulogikon-grc',
     part: { loc: 'aethiopis', source: 'プロクロス『クレストマティア』' },
   },
   nosti: {
     author: 'agias',
     title: 'ノストイ',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
-    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    text: 'proclus/chrestomathia/eulogikon-grc',
     part: { loc: 'nosti', source: 'プロクロス『クレストマティア』' },
   },
   'iliou-persis': {
     author: 'arctinus',
     title: 'イリオス落城',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
-    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    text: 'proclus/chrestomathia/eulogikon-grc',
     part: { loc: 'iliou_persis', source: 'プロクロス『クレストマティア』' },
   },
   telegonia: {
     author: 'eugammon',
     title: 'テレゴニア',
     url: 'https://eulogikon.org/works/proclus-chrestomathy-uqy-aq',
-    file: 'Eulogikon/proclus/chrestomathia/txt/proclus-chrestomathy-uqy-aq.grc.txt',
+    text: 'proclus/chrestomathia/eulogikon-grc',
     part: { loc: 'telegonia', source: 'プロクロス『クレストマティア』' },
   },
   'schol-od': {
@@ -423,7 +423,7 @@ export const works = {
     author: 'asclepiades-tragilensis',
     title: '悲劇の題材',
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20tertium#urn:lofts:fhg.3.asclepiades_tragilensis',
-    file: 'DFHG/asclepiades-of-tragilos/ASCLEPIADES_TRAGILENSIS.text.txt',
+    text: 'asclepiades-tragilensis/fragmenta/dfhg',
     unit: '断片',
     dfhg: { 'asclepiadis_tragilensis_fragmenta.tragodumena.e_libris_incertis': ['21'] },
     witnesses: { '21.2': 'アテナイオス『食卓の賢人たち』10.456b' },
@@ -432,7 +432,7 @@ export const works = {
     author: 'herodorus',
     title: '断片集',
     url: 'http://www.dfhg-project.org/DFHG/index.php?volume=Volumen%20secundum#urn:lofts:fhg.2.herodorus_heracleensis',
-    file: 'DFHG/herodorus/HERODORUS_HERACLEENSIS.text.txt',
+    text: 'herodorus/fragmenta/dfhg',
     dfhg: { 'herodori_heracleensis_fragmenta.argonautica': ['39'] },
   },
   'verg-aen': {
