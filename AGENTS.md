@@ -19,7 +19,7 @@
 
 記事の一覧、カテゴリ、赤リンク、執筆待ちの一覧はコンテンツから自動で作られるので、記事を足すときに `astro.config.mjs` などへの登録は要らない。
 
-原典テキストはリポジトリの外にあり、`MYTH_CORPUS` (既定は `~/Documents/greek-mythology`) から読む。読み方は `scripts/corpus.ts`。
+原典テキストは別のリポジトリ [Archeion-corpus](https://github.com/pithos-day/Archeion-corpus) にあり、`MYTH_CORPUS` (既定は `~/ghq/github.com/pithos-day/Archeion-corpus`) から読む。使うコーパスの commit は `corpus.lock` に書き、コーパスがその commit でないとスクリプトはエラーになる。コーパスを更新するときは `corpus.lock` を書き換えて `pnpm verify:citations` を通す。読み方は `scripts/corpus.ts`、データの形式はコーパスの README。
 
 ## コマンド
 
